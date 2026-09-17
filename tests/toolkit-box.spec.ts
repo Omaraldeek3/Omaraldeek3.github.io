@@ -43,8 +43,9 @@ test('closed box keeps v1 dimensions: six rectilinear single-outline panels', ()
   expect(buildBox({ ...plain, sizing: 'inside' }).outside).toEqual({ width: 126, depth: 86, height: 66 });
 });
 
-for (const type of types) for (const dividers of [{ rows: 0, columns: 0 }, { rows: 2, columns: 1 }]) {
-  test(`${type} box with ${dividers.rows}x${dividers.columns} dividers: every point of material belongs to exactly one part`, () => {
+const allFlat = { corners: true, bottom: true, top: true };
+for (const type of types) for (const dividers of [{ rows: 0, columns: 0 }, { rows: 2, columns: 1 }, { rows: 2, columns: 1, flat: allFlat }]) {
+  test(`${type} box with ${dividers.rows}x${dividers.columns} dividers${'flat' in dividers ? ' and flat edges' : ''}: every point of material belongs to exactly one part`, () => {
     const options = { ...plain, type, ...dividers, width: 150, depth: 110, height: 90 };
     const box = buildBox(options), { model } = buildModel(options), own = new Ownership(model);
     let checked = 0;
@@ -60,10 +61,34 @@ for (const type of types) for (const dividers of [{ rows: 0, columns: 0 }, { row
         checked++;
       }
     }
-    expect(checked).toBeGreaterThan(500);
+    expect(checked).toBeGreaterThan('flat' in dividers ? 50 : 500);
     for (const { shape } of box.parts) expect(shape.contours.filter(c => c.closed && signedArea(c.points) > 0)).toHaveLength(1);
   });
 }
+
+test('flat edge groups become butt joints while other edges keep fingers', () => {
+  const t = 3, rectangle = (shape: Shape) => shape.contours[0].points.length === 4;
+  const flatBottom = buildBox({ ...plain, flat: { corners: false, bottom: true, top: false } });
+  expect(bounds(part(flatBottom, 'Bottom').shape)).toMatchObject({ width: 120 - 2 * t, height: 80 - 2 * t });
+  expect(rectangle(part(flatBottom, 'Bottom').shape)).toBe(true);
+  expect(rectangle(part(flatBottom, 'Top').shape)).toBe(false);
+  expect(bounds(part(flatBottom, 'Front').shape)).toMatchObject({ width: 120, height: 60 });
+  const flatCorners = buildBox({ ...plain, flat: { corners: true, bottom: false, top: false } });
+  expect(bounds(part(flatCorners, 'Left').shape).width).toBeCloseTo(80 - 2 * t);
+  expect(bounds(part(flatCorners, 'Front').shape).width).toBeCloseTo(120);
+  expect(rectangle(part(flatCorners, 'Left').shape)).toBe(false);
+  const glued = buildBox({ ...plain, flat: { corners: true, bottom: true, top: true } });
+  for (const { name, shape } of glued.parts) expect(rectangle(shape), name).toBe(true);
+  expect(bounds(part(glued, 'Top').shape)).toMatchObject({ width: 120 - 2 * t, height: 80 - 2 * t });
+  expect(bounds(part(glued, 'Left').shape)).toMatchObject({ width: 80 - 2 * t, height: 60 });
+  // Sliding lid side walls keep the back corner so the strip above the slot stays attached.
+  const sliding = buildBox({ ...plain, type: 'sliding', flat: { corners: true, bottom: true, top: true } });
+  expect(bounds(part(sliding, 'Left').shape).width).toBeCloseTo(80);
+  expect(bounds(part(sliding, 'Back').shape).width).toBeCloseTo(120 - 2 * t);
+  expect(material(part(sliding, 'Left').shape, 78.5, t / 2)).toBe(true);
+  const drawer = buildBox({ ...plain, type: 'drawer', flat: { corners: true, bottom: true, top: true } });
+  for (const name of ['Sleeve top', 'Sleeve bottom', 'Drawer bottom']) expect(rectangle(part(drawer, name).shape), name).toBe(true);
+});
 
 test('box types produce their parts and fit together with clearance', () => {
   const names = (type: BoxOptions['type']) => buildBox({ ...plain, type }).parts.map(p => p.name);

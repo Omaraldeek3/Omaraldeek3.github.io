@@ -96,3 +96,19 @@ test('box maker builds every box type, dividers, labels and a 3D view, then nest
   await page.getByRole('button',{name:'Arrange parts',exact:true}).click();
   await expect(page.getByText('Layout ready',{exact:true})).toBeVisible({timeout:30000});
 });
+test('box maker flat edges make glued panels without fingers and still nest',async({page})=>{
+  await page.goto('/tools');await page.getByRole('button',{name:'Box maker',exact:true}).click();
+  const row=(name:string)=>page.locator('.parts-list tbody tr').filter({has:page.getByRole('cell',{name,exact:true})});
+  await expect(row('Bottom').locator('td').nth(1)).toHaveText('120 × 80');
+  await page.locator('label.toggle',{hasText:'Bottom edges'}).click();await expect(page.getByLabel('Bottom edges')).toBeChecked();
+  await expect(row('Bottom').locator('td').nth(1)).toHaveText('114 × 74');
+  await page.locator('label.toggle',{hasText:'Vertical corners'}).click();await page.locator('label.toggle',{hasText:'Top edges'}).click();
+  await expect(row('Left').locator('td').nth(1)).toHaveText('74 × 60');
+  await page.getByRole('radio',{name:'Open tray',exact:true}).click();
+  await expect(page.getByLabel('Top edges')).toHaveCount(0);
+  await expect(page.locator('.parts-list tbody tr')).toHaveCount(5);
+  await page.getByRole('button',{name:'Arrange on sheet',exact:true}).click();
+  await expect(page.getByText('5 parts loaded')).toBeVisible();
+  await page.getByRole('button',{name:'Arrange parts',exact:true}).click();
+  await expect(page.getByText('Layout ready',{exact:true})).toBeVisible({timeout:30000});
+});
