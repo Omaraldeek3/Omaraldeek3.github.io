@@ -1,0 +1,6 @@
+@import "tailwindcss";
+@import "./previews.css";
+@import "./styles/base.css";
+@import "./styles/cinema.css";
+@import "./styles/pages.css";
+@import "./styles/responsive.css";

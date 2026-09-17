@@ -1,0 +1,50 @@
+.site-preview { container-type:inline-size; overflow:hidden; width:100%; background:#f5f0e6; color:#3c2c23; }
+.preview-window { width:100%; }
+.preview-browser { direction:ltr; height:3cqw; min-height:12px; display:flex; align-items:center; justify-content:space-between; padding:0 1.8cqw; font:400 1cqw var(--font-latin),sans-serif; background:#e9e6df; color:#8c8b82; border-bottom:1px solid #00000010; }
+.preview-browser>div { display:flex; gap:.4cqw; }
+.preview-browser i { height:.5cqw; width:.5cqw; border-radius:50%; background:#b9b7af; }
+.preview-nav { padding:2cqw 4cqw; display:flex; justify-content:space-between; align-items:center; height:9cqw; }
+.preview-nav strong { font-size:3.4cqw; font-weight:650; }
+.preview-nav>div { display:flex; gap:2.6cqw; font-size:1.05cqw; }
+.preview-menu { font-size:1.6cqw; }
+.brand-dot { color:#aa8153; }
+.preview-body { display:grid; grid-template-columns:1fr 1fr; min-height:35cqw; }
+.preview-copy { padding:3cqw 4cqw 4cqw; }
+.preview-eyebrow { font-size:.95cqw; display:block; margin-bottom:1.6cqw; }
+.preview-heading { font-size:6.2cqw; font-weight:500; line-height:1.35; white-space:pre-line; }
+.preview-copy p { color:inherit; opacity:.75; font-size:1.1cqw; margin-top:1.9cqw; }
+.preview-cta { display:inline-flex; justify-content:space-between; align-items:center; gap:3cqw; margin-top:3cqw; padding:1cqw 1.5cqw; font-size:1cqw; background:#473629; color:#eee4cf; border-radius:1px; }
+.preview-cta>span { font-size:1.8cqw; }
+.preview-image { position:relative; min-height:30cqw; }
+.coffee-image { margin:1cqw 3cqw 1cqw 0; border-radius:44% 44% 0 0; overflow:hidden; }
+[dir="ltr"] .coffee-image { margin:1cqw 0 1cqw 3cqw; }
+.coffee-image img { filter:brightness(.7) saturate(.7); }
+.coffee-stamp { position:absolute; top:33%; left:35%; width:15cqw; height:15cqw; border:1px solid #d4c4a5; border-radius:50%; display:grid; place-content:center; text-align:center; color:#e9dfc9; font:3cqw Georgia,serif; line-height:1.3; background:#5a352966; }
+.image-caption { position:absolute; bottom:2.5cqw; inset-inline:3cqw; color:#fff; font-size:.9cqw; }
+.preview-footer { display:flex; justify-content:space-between; margin:2cqw 4cqw 0; padding:1.5cqw 0; border-top:1px solid #48372426; font-size:.85cqw; }
+.interior.site-preview { background:#e7e7de; color:#393b30; }
+.interior .preview-nav strong { font-family:var(--font-latin),var(--font-arabic),sans-serif; font-weight:400; }
+.interior .brand-dot { color:#747d57; }
+.interior .preview-body { grid-template-columns:1fr; position:relative; padding:0 4cqw; }
+.interior .preview-copy { padding:1cqw 0 2cqw; display:grid; grid-template-columns:1fr 1.2fr; align-items:end; }
+.interior .preview-heading { font-size:4.8cqw; grid-row:1/4; grid-column:2; }
+.interior .preview-eyebrow { margin:0; align-self:start; font-size:.9cqw; }
+.interior .preview-copy p { margin-top:1cqw; font-size:1cqw; }
+.interior .preview-cta { background:none; color:inherit; border-bottom:1px solid #737765; padding:.5cqw 0; width:fit-content; margin-top:1.5cqw; }
+.interior-image { min-height:24cqw; }
+.interior-image img { object-position:50% 55%; filter:saturate(.6); }
+.interior .preview-footer { margin-top:1.6cqw; }
+.business.site-preview { background:#edeff4; color:#143267; }
+.business .preview-nav strong { font-weight:700; }
+.business .brand-dot { color:#3470d4; }
+.business .preview-body { background:#183b7d; color:#f1f1e9; grid-template-columns:1.1fr 1fr; margin:0 3cqw; }
+.business .preview-copy { padding:4cqw 3cqw; }
+.business .preview-heading { font-size:5cqw; }
+.business .preview-cta { background:#e6efb4; color:#183b7d; }
+.business-art { overflow:hidden; position:relative; min-height:33cqw; background:linear-gradient(45deg,#2e55a0,#163474); direction:ltr; }
+.orbit { position:absolute; border:1px solid #7a9fde; width:31cqw; height:31cqw; border-radius:50%; top:6cqw; left:6cqw; }
+.orbit-two { width:24cqw; height:24cqw; top:9.5cqw; left:9.5cqw; }
+.orbit-three { width:17cqw; height:17cqw; top:13cqw; left:13cqw; background:#afc2ea; border:0; }
+.orbit-dot { position:absolute; width:3cqw; height:3cqw; top:8cqw; left:9cqw; background:#e1efac; border-radius:50%; }
+.orbit-caption { position:absolute; top:17cqw; left:19cqw; font:700 4cqw var(--font-latin),sans-serif; line-height:.85; color:#234078; }
+

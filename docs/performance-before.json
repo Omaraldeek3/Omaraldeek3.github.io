@@ -1,0 +1,682 @@
+{
+  "recordedAt": "2026-09-15T09:39:02.611Z",
+  "label": "before",
+  "method": "Production localhost, cold browser cache, warm server image cache. Mobile: 390x844 DPR2, 1.6Mbps down, 150ms latency, 4x CPU slowdown. Desktop: 1440x1000 DPR1, unthrottled. Three fresh browser contexts each. Encoded response body KiB excludes headers; measurements are local lab results, not field metrics.",
+  "results": [
+    {
+      "scenario": "ar-mobile",
+      "run": 1,
+      "lcpMs": 2944,
+      "lcpElement": "P hero-description",
+      "cls": 0,
+      "fcpMs": 2944,
+      "longTaskTotalMs": 2027,
+      "longTaskMaxMs": 1710,
+      "totalEncodedKiB": 536.2,
+      "jsEncodedKiB": 190.7,
+      "imageEncodedKiB": 107.6,
+      "fontEncodedKiB": 186.3,
+      "requests": 26,
+      "images": [
+        {
+          "displayWidth": 221,
+          "naturalWidth": 351,
+          "currentSrc": "/_next/image?url=%2Fimages%2Finterior.jpg&w=750&q=75",
+          "loading": "eager"
+        },
+        {
+          "displayWidth": 146,
+          "naturalWidth": 273,
+          "currentSrc": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "loading": "eager"
+        },
+        {
+          "displayWidth": 141,
+          "naturalWidth": 273,
+          "currentSrc": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "loading": "lazy"
+        },
+        {
+          "displayWidth": 283,
+          "naturalWidth": 351,
+          "currentSrc": "/_next/image?url=%2Fimages%2Finterior.jpg&w=750&q=75",
+          "loading": "lazy"
+        }
+      ],
+      "largest": [
+        {
+          "url": "/_next/static/media/noto_sans_arabic_arabic_wght_normal-s.p.30bz475acv3ru.woff2",
+          "KiB": 162
+        },
+        {
+          "url": "/_next/static/chunks/3kmozkq6tgqnz.js",
+          "KiB": 70
+        },
+        {
+          "url": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "KiB": 62
+        },
+        {
+          "url": "/_next/static/chunks/3tojqcddmicyf.js",
+          "KiB": 51
+        },
+        {
+          "url": "/_next/image?url=%2Fimages%2Finterior.jpg&w=750&q=75",
+          "KiB": 46
+        },
+        {
+          "url": "/_next/static/chunks/2-rtuqsgzmno4.js",
+          "KiB": 44
+        },
+        {
+          "url": "/_next/static/media/manrope_latin_wght_normal-s.p.1p_a2k8qd5zhp.woff2",
+          "KiB": 24
+        },
+        {
+          "url": "/_next/static/chunks/1wb1e9t4ru0_l.css",
+          "KiB": 12
+        }
+      ]
+    },
+    {
+      "scenario": "ar-mobile",
+      "run": 2,
+      "lcpMs": 2756,
+      "lcpElement": "P hero-description",
+      "cls": 0,
+      "fcpMs": 2756,
+      "longTaskTotalMs": 2371,
+      "longTaskMaxMs": 1789,
+      "totalEncodedKiB": 536.2,
+      "jsEncodedKiB": 190.7,
+      "imageEncodedKiB": 107.6,
+      "fontEncodedKiB": 186.3,
+      "requests": 26,
+      "images": [
+        {
+          "displayWidth": 221,
+          "naturalWidth": 351,
+          "currentSrc": "/_next/image?url=%2Fimages%2Finterior.jpg&w=750&q=75",
+          "loading": "eager"
+        },
+        {
+          "displayWidth": 146,
+          "naturalWidth": 273,
+          "currentSrc": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "loading": "eager"
+        },
+        {
+          "displayWidth": 141,
+          "naturalWidth": 273,
+          "currentSrc": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "loading": "lazy"
+        },
+        {
+          "displayWidth": 283,
+          "naturalWidth": 351,
+          "currentSrc": "/_next/image?url=%2Fimages%2Finterior.jpg&w=750&q=75",
+          "loading": "lazy"
+        }
+      ],
+      "largest": [
+        {
+          "url": "/_next/static/media/noto_sans_arabic_arabic_wght_normal-s.p.30bz475acv3ru.woff2",
+          "KiB": 162
+        },
+        {
+          "url": "/_next/static/chunks/3kmozkq6tgqnz.js",
+          "KiB": 70
+        },
+        {
+          "url": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "KiB": 62
+        },
+        {
+          "url": "/_next/static/chunks/3tojqcddmicyf.js",
+          "KiB": 51
+        },
+        {
+          "url": "/_next/image?url=%2Fimages%2Finterior.jpg&w=750&q=75",
+          "KiB": 46
+        },
+        {
+          "url": "/_next/static/chunks/2-rtuqsgzmno4.js",
+          "KiB": 44
+        },
+        {
+          "url": "/_next/static/media/manrope_latin_wght_normal-s.p.1p_a2k8qd5zhp.woff2",
+          "KiB": 24
+        },
+        {
+          "url": "/_next/static/chunks/1wb1e9t4ru0_l.css",
+          "KiB": 12
+        }
+      ]
+    },
+    {
+      "scenario": "ar-mobile",
+      "run": 3,
+      "lcpMs": 2776,
+      "lcpElement": "P hero-description",
+      "cls": 0,
+      "fcpMs": 2776,
+      "longTaskTotalMs": 2076,
+      "longTaskMaxMs": 1787,
+      "totalEncodedKiB": 536.2,
+      "jsEncodedKiB": 190.7,
+      "imageEncodedKiB": 107.6,
+      "fontEncodedKiB": 186.3,
+      "requests": 26,
+      "images": [
+        {
+          "displayWidth": 221,
+          "naturalWidth": 351,
+          "currentSrc": "/_next/image?url=%2Fimages%2Finterior.jpg&w=750&q=75",
+          "loading": "eager"
+        },
+        {
+          "displayWidth": 146,
+          "naturalWidth": 273,
+          "currentSrc": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "loading": "eager"
+        },
+        {
+          "displayWidth": 141,
+          "naturalWidth": 273,
+          "currentSrc": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "loading": "lazy"
+        },
+        {
+          "displayWidth": 283,
+          "naturalWidth": 351,
+          "currentSrc": "/_next/image?url=%2Fimages%2Finterior.jpg&w=750&q=75",
+          "loading": "lazy"
+        }
+      ],
+      "largest": [
+        {
+          "url": "/_next/static/media/noto_sans_arabic_arabic_wght_normal-s.p.30bz475acv3ru.woff2",
+          "KiB": 162
+        },
+        {
+          "url": "/_next/static/chunks/3kmozkq6tgqnz.js",
+          "KiB": 70
+        },
+        {
+          "url": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "KiB": 62
+        },
+        {
+          "url": "/_next/static/chunks/3tojqcddmicyf.js",
+          "KiB": 51
+        },
+        {
+          "url": "/_next/image?url=%2Fimages%2Finterior.jpg&w=750&q=75",
+          "KiB": 46
+        },
+        {
+          "url": "/_next/static/chunks/2-rtuqsgzmno4.js",
+          "KiB": 44
+        },
+        {
+          "url": "/_next/static/media/manrope_latin_wght_normal-s.p.1p_a2k8qd5zhp.woff2",
+          "KiB": 24
+        },
+        {
+          "url": "/_next/static/chunks/1wb1e9t4ru0_l.css",
+          "KiB": 12
+        }
+      ]
+    },
+    {
+      "scenario": "en-mobile",
+      "run": 1,
+      "lcpMs": 2644,
+      "lcpElement": "P hero-description",
+      "cls": 0,
+      "fcpMs": 2644,
+      "longTaskTotalMs": 1766,
+      "longTaskMaxMs": 1508,
+      "totalEncodedKiB": 533.8,
+      "jsEncodedKiB": 190.7,
+      "imageEncodedKiB": 107.6,
+      "fontEncodedKiB": 186.3,
+      "requests": 26,
+      "images": [
+        {
+          "displayWidth": 221,
+          "naturalWidth": 351,
+          "currentSrc": "/_next/image?url=%2Fimages%2Finterior.jpg&w=750&q=75",
+          "loading": "eager"
+        },
+        {
+          "displayWidth": 146,
+          "naturalWidth": 273,
+          "currentSrc": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "loading": "eager"
+        },
+        {
+          "displayWidth": 141,
+          "naturalWidth": 273,
+          "currentSrc": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "loading": "lazy"
+        },
+        {
+          "displayWidth": 283,
+          "naturalWidth": 351,
+          "currentSrc": "/_next/image?url=%2Fimages%2Finterior.jpg&w=750&q=75",
+          "loading": "lazy"
+        }
+      ],
+      "largest": [
+        {
+          "url": "/_next/static/media/noto_sans_arabic_arabic_wght_normal-s.p.30bz475acv3ru.woff2",
+          "KiB": 162
+        },
+        {
+          "url": "/_next/static/chunks/3kmozkq6tgqnz.js",
+          "KiB": 70
+        },
+        {
+          "url": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "KiB": 62
+        },
+        {
+          "url": "/_next/static/chunks/3tojqcddmicyf.js",
+          "KiB": 51
+        },
+        {
+          "url": "/_next/image?url=%2Fimages%2Finterior.jpg&w=750&q=75",
+          "KiB": 46
+        },
+        {
+          "url": "/_next/static/chunks/2-rtuqsgzmno4.js",
+          "KiB": 44
+        },
+        {
+          "url": "/_next/static/media/manrope_latin_wght_normal-s.p.1p_a2k8qd5zhp.woff2",
+          "KiB": 24
+        },
+        {
+          "url": "/_next/static/chunks/1wb1e9t4ru0_l.css",
+          "KiB": 12
+        }
+      ]
+    },
+    {
+      "scenario": "en-mobile",
+      "run": 2,
+      "lcpMs": 2692,
+      "lcpElement": "P hero-description",
+      "cls": 0,
+      "fcpMs": 2692,
+      "longTaskTotalMs": 1801,
+      "longTaskMaxMs": 1536,
+      "totalEncodedKiB": 533.8,
+      "jsEncodedKiB": 190.7,
+      "imageEncodedKiB": 107.6,
+      "fontEncodedKiB": 186.3,
+      "requests": 26,
+      "images": [
+        {
+          "displayWidth": 221,
+          "naturalWidth": 351,
+          "currentSrc": "/_next/image?url=%2Fimages%2Finterior.jpg&w=750&q=75",
+          "loading": "eager"
+        },
+        {
+          "displayWidth": 146,
+          "naturalWidth": 273,
+          "currentSrc": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "loading": "eager"
+        },
+        {
+          "displayWidth": 141,
+          "naturalWidth": 273,
+          "currentSrc": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "loading": "lazy"
+        },
+        {
+          "displayWidth": 283,
+          "naturalWidth": 351,
+          "currentSrc": "/_next/image?url=%2Fimages%2Finterior.jpg&w=750&q=75",
+          "loading": "lazy"
+        }
+      ],
+      "largest": [
+        {
+          "url": "/_next/static/media/noto_sans_arabic_arabic_wght_normal-s.p.30bz475acv3ru.woff2",
+          "KiB": 162
+        },
+        {
+          "url": "/_next/static/chunks/3kmozkq6tgqnz.js",
+          "KiB": 70
+        },
+        {
+          "url": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "KiB": 62
+        },
+        {
+          "url": "/_next/static/chunks/3tojqcddmicyf.js",
+          "KiB": 51
+        },
+        {
+          "url": "/_next/image?url=%2Fimages%2Finterior.jpg&w=750&q=75",
+          "KiB": 46
+        },
+        {
+          "url": "/_next/static/chunks/2-rtuqsgzmno4.js",
+          "KiB": 44
+        },
+        {
+          "url": "/_next/static/media/manrope_latin_wght_normal-s.p.1p_a2k8qd5zhp.woff2",
+          "KiB": 24
+        },
+        {
+          "url": "/_next/static/chunks/1wb1e9t4ru0_l.css",
+          "KiB": 12
+        }
+      ]
+    },
+    {
+      "scenario": "en-mobile",
+      "run": 3,
+      "lcpMs": 2740,
+      "lcpElement": "P hero-description",
+      "cls": 0,
+      "fcpMs": 2740,
+      "longTaskTotalMs": 1826,
+      "longTaskMaxMs": 1566,
+      "totalEncodedKiB": 533.8,
+      "jsEncodedKiB": 190.7,
+      "imageEncodedKiB": 107.6,
+      "fontEncodedKiB": 186.3,
+      "requests": 26,
+      "images": [
+        {
+          "displayWidth": 221,
+          "naturalWidth": 351,
+          "currentSrc": "/_next/image?url=%2Fimages%2Finterior.jpg&w=750&q=75",
+          "loading": "eager"
+        },
+        {
+          "displayWidth": 146,
+          "naturalWidth": 273,
+          "currentSrc": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "loading": "eager"
+        },
+        {
+          "displayWidth": 141,
+          "naturalWidth": 273,
+          "currentSrc": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "loading": "lazy"
+        },
+        {
+          "displayWidth": 283,
+          "naturalWidth": 351,
+          "currentSrc": "/_next/image?url=%2Fimages%2Finterior.jpg&w=750&q=75",
+          "loading": "lazy"
+        }
+      ],
+      "largest": [
+        {
+          "url": "/_next/static/media/noto_sans_arabic_arabic_wght_normal-s.p.30bz475acv3ru.woff2",
+          "KiB": 162
+        },
+        {
+          "url": "/_next/static/chunks/3kmozkq6tgqnz.js",
+          "KiB": 70
+        },
+        {
+          "url": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "KiB": 62
+        },
+        {
+          "url": "/_next/static/chunks/3tojqcddmicyf.js",
+          "KiB": 51
+        },
+        {
+          "url": "/_next/image?url=%2Fimages%2Finterior.jpg&w=750&q=75",
+          "KiB": 46
+        },
+        {
+          "url": "/_next/static/chunks/2-rtuqsgzmno4.js",
+          "KiB": 44
+        },
+        {
+          "url": "/_next/static/media/manrope_latin_wght_normal-s.p.1p_a2k8qd5zhp.woff2",
+          "KiB": 24
+        },
+        {
+          "url": "/_next/static/chunks/1wb1e9t4ru0_l.css",
+          "KiB": 12
+        }
+      ]
+    },
+    {
+      "scenario": "ar-desktop",
+      "run": 1,
+      "lcpMs": 776,
+      "lcpElement": "IMG ",
+      "cls": 0,
+      "fcpMs": 776,
+      "longTaskTotalMs": 560,
+      "longTaskMaxMs": 560,
+      "totalEncodedKiB": 568.4,
+      "jsEncodedKiB": 190.7,
+      "imageEncodedKiB": 139.9,
+      "fontEncodedKiB": 186.3,
+      "requests": 26,
+      "images": [
+        {
+          "displayWidth": 426,
+          "naturalWidth": 900,
+          "currentSrc": "/_next/image?url=%2Fimages%2Finterior.jpg&w=1080&q=75",
+          "loading": "eager"
+        },
+        {
+          "displayWidth": 291,
+          "naturalWidth": 599,
+          "currentSrc": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "loading": "eager"
+        },
+        {
+          "displayWidth": 462,
+          "naturalWidth": 599,
+          "currentSrc": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "loading": "lazy"
+        },
+        {
+          "displayWidth": 953,
+          "naturalWidth": 900,
+          "currentSrc": "/_next/image?url=%2Fimages%2Finterior.jpg&w=1080&q=75",
+          "loading": "lazy"
+        }
+      ],
+      "largest": [
+        {
+          "url": "/_next/static/media/noto_sans_arabic_arabic_wght_normal-s.p.30bz475acv3ru.woff2",
+          "KiB": 162
+        },
+        {
+          "url": "/_next/image?url=%2Fimages%2Finterior.jpg&w=1080&q=75",
+          "KiB": 78
+        },
+        {
+          "url": "/_next/static/chunks/3kmozkq6tgqnz.js",
+          "KiB": 70
+        },
+        {
+          "url": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "KiB": 62
+        },
+        {
+          "url": "/_next/static/chunks/3tojqcddmicyf.js",
+          "KiB": 51
+        },
+        {
+          "url": "/_next/static/chunks/2-rtuqsgzmno4.js",
+          "KiB": 44
+        },
+        {
+          "url": "/_next/static/media/manrope_latin_wght_normal-s.p.1p_a2k8qd5zhp.woff2",
+          "KiB": 24
+        },
+        {
+          "url": "/_next/static/chunks/1wb1e9t4ru0_l.css",
+          "KiB": 12
+        }
+      ]
+    },
+    {
+      "scenario": "ar-desktop",
+      "run": 2,
+      "lcpMs": 796,
+      "lcpElement": "IMG ",
+      "cls": 0,
+      "fcpMs": 796,
+      "longTaskTotalMs": 583,
+      "longTaskMaxMs": 583,
+      "totalEncodedKiB": 568.4,
+      "jsEncodedKiB": 190.7,
+      "imageEncodedKiB": 139.9,
+      "fontEncodedKiB": 186.3,
+      "requests": 26,
+      "images": [
+        {
+          "displayWidth": 426,
+          "naturalWidth": 900,
+          "currentSrc": "/_next/image?url=%2Fimages%2Finterior.jpg&w=1080&q=75",
+          "loading": "eager"
+        },
+        {
+          "displayWidth": 291,
+          "naturalWidth": 599,
+          "currentSrc": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "loading": "eager"
+        },
+        {
+          "displayWidth": 462,
+          "naturalWidth": 599,
+          "currentSrc": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "loading": "lazy"
+        },
+        {
+          "displayWidth": 953,
+          "naturalWidth": 900,
+          "currentSrc": "/_next/image?url=%2Fimages%2Finterior.jpg&w=1080&q=75",
+          "loading": "lazy"
+        }
+      ],
+      "largest": [
+        {
+          "url": "/_next/static/media/noto_sans_arabic_arabic_wght_normal-s.p.30bz475acv3ru.woff2",
+          "KiB": 162
+        },
+        {
+          "url": "/_next/image?url=%2Fimages%2Finterior.jpg&w=1080&q=75",
+          "KiB": 78
+        },
+        {
+          "url": "/_next/static/chunks/3kmozkq6tgqnz.js",
+          "KiB": 70
+        },
+        {
+          "url": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "KiB": 62
+        },
+        {
+          "url": "/_next/static/chunks/3tojqcddmicyf.js",
+          "KiB": 51
+        },
+        {
+          "url": "/_next/static/chunks/2-rtuqsgzmno4.js",
+          "KiB": 44
+        },
+        {
+          "url": "/_next/static/media/manrope_latin_wght_normal-s.p.1p_a2k8qd5zhp.woff2",
+          "KiB": 24
+        },
+        {
+          "url": "/_next/static/chunks/1wb1e9t4ru0_l.css",
+          "KiB": 12
+        }
+      ]
+    },
+    {
+      "scenario": "ar-desktop",
+      "run": 3,
+      "lcpMs": 760,
+      "lcpElement": "IMG ",
+      "cls": 0,
+      "fcpMs": 760,
+      "longTaskTotalMs": 565,
+      "longTaskMaxMs": 565,
+      "totalEncodedKiB": 568.4,
+      "jsEncodedKiB": 190.7,
+      "imageEncodedKiB": 139.9,
+      "fontEncodedKiB": 186.3,
+      "requests": 26,
+      "images": [
+        {
+          "displayWidth": 426,
+          "naturalWidth": 900,
+          "currentSrc": "/_next/image?url=%2Fimages%2Finterior.jpg&w=1080&q=75",
+          "loading": "eager"
+        },
+        {
+          "displayWidth": 291,
+          "naturalWidth": 599,
+          "currentSrc": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "loading": "eager"
+        },
+        {
+          "displayWidth": 462,
+          "naturalWidth": 599,
+          "currentSrc": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "loading": "lazy"
+        },
+        {
+          "displayWidth": 953,
+          "naturalWidth": 900,
+          "currentSrc": "/_next/image?url=%2Fimages%2Finterior.jpg&w=1080&q=75",
+          "loading": "lazy"
+        }
+      ],
+      "largest": [
+        {
+          "url": "/_next/static/media/noto_sans_arabic_arabic_wght_normal-s.p.30bz475acv3ru.woff2",
+          "KiB": 162
+        },
+        {
+          "url": "/_next/image?url=%2Fimages%2Finterior.jpg&w=1080&q=75",
+          "KiB": 78
+        },
+        {
+          "url": "/_next/static/chunks/3kmozkq6tgqnz.js",
+          "KiB": 70
+        },
+        {
+          "url": "/_next/image?url=%2Fimages%2Fcoffee.jpg&w=640&q=75",
+          "KiB": 62
+        },
+        {
+          "url": "/_next/static/chunks/3tojqcddmicyf.js",
+          "KiB": 51
+        },
+        {
+          "url": "/_next/static/chunks/2-rtuqsgzmno4.js",
+          "KiB": 44
+        },
+        {
+          "url": "/_next/static/media/manrope_latin_wght_normal-s.p.1p_a2k8qd5zhp.woff2",
+          "KiB": 24
+        },
+        {
+          "url": "/_next/static/chunks/1wb1e9t4ru0_l.css",
+          "KiB": 12
+        }
+      ]
+    }
+  ]
+}
