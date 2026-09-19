@@ -32,7 +32,9 @@ img { object-fit:cover; }
    shared with the study pages, so the v2 red is a literal here, not a token
    from the home page's .v2 scope. */
 .nav-tools { display:inline-flex; align-items:center; gap:9px; min-height:38px; padding:0 15px; border:1px solid #ff3d1f; border-radius:999px; color:var(--paper); transition:background .2s,color .2s; }
-.nav-tools:hover { background:#ff3d1f; color:#0e0e0d; }
+/* Two classes beat `.desktop-nav a:hover` (0,2,1); the single-class form above
+   lost on specificity and the pill text went red on red. */
+.desktop-nav .nav-tools:hover { background:#ff3d1f; color:#0e0e0d; }
 .nav-tools:hover .nav-free { color:#0e0e0d; border-color:#0e0e0d73; }
 .nav-free { font-size:10px; line-height:1.7; letter-spacing:.06em; color:#ff3d1f; border:1px solid #ff3d1f73; border-radius:999px; padding:0 7px; }
 .nav-actions { display:flex; align-items:center; gap:24px; }

@@ -11,7 +11,7 @@ import { Contact, Footer, isolated, validUrl } from "@/components/sections";
 
 // With JavaScript off the decorative strokes must still be drawn, so the
 // motion initial states are overridden here. <noscript> keeps this page-scoped.
-const NO_SCRIPT_STYLE = ".v2 .hero-contour path,.v2 .footer-contour path,.v2 .studio-box path,.v2 .hairline{stroke-dasharray:none !important;transform:none !important}.v2 .contour-fallback{visibility:visible}";
+const NO_SCRIPT_STYLE = "<style>.v2 .hero-contour path,.v2 .footer-contour path,.v2 .studio-box path,.v2 .hairline{stroke-dasharray:none !important;transform:none !important}.v2 .contour-fallback{visibility:visible}</style>";
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
