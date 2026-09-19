@@ -3,6 +3,11 @@ import { copy, profile, type Locale } from "@/content/site";
 import { ProjectBrief } from "./interactions";
 
 export function Arrow() { return <span className="direction-arrow" aria-hidden="true">↗</span>; }
+// Copy keeps Latin words inside Arabic sentences in [brackets]. They render as
+// <bdi> so the punctuation around them stays put in RTL. Plain text in, nodes out.
+export function isolated(text: string) {
+  return text.split(/\[([^\]]+)\]/g).map((part, index) => index % 2 ? <bdi key={index}>{part}</bdi> : part);
+}
 export function SectionHeading({ label, title, text }: { label: string; title: string; text?: string }) {
   return <div className="section-heading"><span className="eyebrow">{label}</span><div><h2>{title}</h2>{text && <p>{text}</p>}</div></div>;
 }

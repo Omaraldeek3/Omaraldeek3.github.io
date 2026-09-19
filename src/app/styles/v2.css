@@ -100,6 +100,8 @@ html[lang="ar"] .v2 h1, html[lang="ar"] .v2 h2 { font-family:var(--font-arabic),
 .v2 .layer-text { margin-top:14px; font-size:18px; line-height:1.9; max-width:62ch; }
 .v2 .layer-proof { margin-top:16px; display:inline-flex; align-items:center; gap:14px; min-height:44px; color:var(--paper); font-size:15px; border-bottom:1px solid #ff3d1f59; }
 .v2 .layer-proof:hover { border-bottom-color:var(--cut); }
+.v2 .layer-numeral { grid-column:1; }
+.v2 .layer-tag, .v2 .layer h3, .v2 .layer-text, .v2 .layer-proof { grid-column:2; }
 
 /* The separating hairline draws itself once, from the inline-start edge. */
 .v2 .hairline { display:block; height:1px; background:var(--cut); transform-origin:left center; }
@@ -219,6 +221,7 @@ html[lang="ar"] .v2 h1, html[lang="ar"] .v2 h2 { font-family:var(--font-arabic),
 @media (max-width:900px) {
   .v2 .layer { grid-template-columns:minmax(0,1fr); gap:14px; }
   .v2 .layer-numeral { grid-row:auto; }
+  .v2 .layer-tag, .v2 .layer h3, .v2 .layer-text, .v2 .layer-proof { grid-column:1; }
   .v2 .studio-tools { grid-template-columns:1fr; }
 }
 @media (max-width:700px) {
