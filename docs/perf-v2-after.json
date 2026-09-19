@@ -1,0 +1,125 @@
+{
+  "label": "after",
+  "commit": "f310560a3cea1a9726f70cb91cb43eccbc1cbbaf",
+  "measured_at": "2026-09-19T19:08:56.539Z",
+  "lighthouseVersion": "13.5.0",
+  "serveVersion": "14.2.6",
+  "method": "static export (GITHUB_PAGES=true, next build) served with npx serve -l 4173; 3 runs per locale; median of each metric",
+  "command": "npx lighthouse@13.5.0 http://localhost:4173/<locale>/ --only-categories=performance,accessibility --form-factor=mobile --output=json",
+  "notes": "Single machine, run while other dev servers were up; absolute values are not a lab baseline, the before/after comparison uses the same conditions.",
+  "pages": {
+    "/ar/": {
+      "runs": [
+        {
+          "lighthouseVersion": "13.5.0",
+          "performance": 0.77,
+          "accessibility": 0.96,
+          "LCP_ms": 3975,
+          "CLS": 0,
+          "TBT_ms": 317,
+          "FCP_ms": 2209,
+          "SI_ms": 3721,
+          "LCP_element": "",
+          "a11y_failing": [
+            "color-contrast=0"
+          ]
+        },
+        {
+          "lighthouseVersion": "13.5.0",
+          "performance": 0.84,
+          "accessibility": 0.96,
+          "LCP_ms": 3447,
+          "CLS": 0,
+          "TBT_ms": 258,
+          "FCP_ms": 1769,
+          "SI_ms": 3453,
+          "LCP_element": "",
+          "a11y_failing": [
+            "color-contrast=0"
+          ]
+        },
+        {
+          "lighthouseVersion": "13.5.0",
+          "performance": 0.81,
+          "accessibility": 0.96,
+          "LCP_ms": 3372,
+          "CLS": 0,
+          "TBT_ms": 373,
+          "FCP_ms": 1980,
+          "SI_ms": 2517,
+          "LCP_element": "",
+          "a11y_failing": [
+            "color-contrast=0"
+          ]
+        }
+      ],
+      "median": {
+        "performance": 0.81,
+        "accessibility": 0.96,
+        "LCP_ms": 3447,
+        "CLS": 0,
+        "TBT_ms": 317,
+        "FCP_ms": 1980,
+        "SI_ms": 3453
+      }
+    },
+    "/en/": {
+      "runs": [
+        {
+          "lighthouseVersion": "13.5.0",
+          "performance": 0.83,
+          "accessibility": 0.96,
+          "LCP_ms": 3393,
+          "CLS": 0,
+          "TBT_ms": 285,
+          "FCP_ms": 1995,
+          "SI_ms": 3408,
+          "LCP_element": "",
+          "a11y_failing": [
+            "color-contrast=0",
+            "label-content-name-mismatch=0"
+          ]
+        },
+        {
+          "lighthouseVersion": "13.5.0",
+          "performance": 0.89,
+          "accessibility": 0.96,
+          "LCP_ms": 3261,
+          "CLS": 0,
+          "TBT_ms": 192,
+          "FCP_ms": 1630,
+          "SI_ms": 2368,
+          "LCP_element": "",
+          "a11y_failing": [
+            "color-contrast=0",
+            "label-content-name-mismatch=0"
+          ]
+        },
+        {
+          "lighthouseVersion": "13.5.0",
+          "performance": 0.74,
+          "accessibility": 0.96,
+          "LCP_ms": 3324,
+          "CLS": 0,
+          "TBT_ms": 567,
+          "FCP_ms": 2206,
+          "SI_ms": 3432,
+          "LCP_element": "",
+          "a11y_failing": [
+            "color-contrast=0",
+            "label-content-name-mismatch=0"
+          ]
+        }
+      ],
+      "median": {
+        "performance": 0.83,
+        "accessibility": 0.96,
+        "LCP_ms": 3324,
+        "CLS": 0,
+        "TBT_ms": 285,
+        "FCP_ms": 1995,
+        "SI_ms": 3408
+      }
+    }
+  }
+}
