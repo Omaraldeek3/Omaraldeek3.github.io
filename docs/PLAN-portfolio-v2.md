@@ -1,6 +1,6 @@
 # Plan: portfolio v2 — "The Cut Line / خط القصّ"
 
-Status: **draft 2, for astra's closure review.**
+Status: **approved for implementation** by astra at `0e8743e`, with the execution safeguards in §11.
 
 - Brief: `docs/BRIEF-portfolio-v2.md`.
 - Review addressed: `docs/REVIEW-astra-plan-v1.md` (all 8 points; the mapping is in §10).
@@ -533,3 +533,19 @@ None are blocking. Omar may still adjust these after seeing the page:
 | 6. Signature | The text stays HTML, and a decorative contour path around it is traced. There is no glyph tracing (§4.7). `themeColor` is the literal `"#0e0e0d"` (§6). |
 | 7. Build gate | PowerShell with a unique validated temp path, `try/finally`, the exit code preserved and restoration verified separately (§7.1). |
 | 8. Evidence | The Lighthouse method is the same for before and after on the static export, and the Sep 15 file is not used as a baseline (§7.4). Contrast is measured in the browser, including the CTA and the focus rings, and the red-on-paper failure is designed out (§2). Studies overflow is checked (§7.2 #1). The claim about toolkit tests is scoped (§7.2 #10). |
+
+## 11. Execution safeguards (astra's closure review, binding)
+
+These take precedence over §7 where they are stricter.
+
+1. **Lighthouse.**
+   - Select both categories explicitly: `--only-categories=performance,accessibility`.
+   - Pin one version for before and after, for example `npx lighthouse@<same-version>`. Record that version in both JSON files.
+   - Both outputs must contain performance and accessibility results.
+2. **Zoom.** The 720px-viewport check in §7.2 #7 tests reflow, not browser zoom.
+   - Report reflow and zoom separately.
+   - Check real 200% browser zoom by hand, at 1440 px with Ctrl + `+`, and attach a screenshot.
+3. **Build gate hardening (§7.1).**
+   - Before moving `src/app/api`, resolve the repository path and the temp path with `Resolve-Path` / `[IO.Path]::GetFullPath`. Assert that the repo path ends in `src\app\api` inside this repository.
+   - Use `-ErrorAction Stop` on **both** `Move-Item` calls.
+   - Save any existing `$env:GITHUB_PAGES` value first, and restore that value in `finally`. Only remove the variable if it was unset before.
