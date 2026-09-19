@@ -1,0 +1,249 @@
+/* Portfolio v2 — "The Cut Line / خط القصّ".
+   Every rule here is scoped under .v2, the wrapper the home page renders around
+   <main> and the footer. No :root, no body, no bare element selectors, so
+   /tools and the /work/[slug] study pages cannot see any of it.
+   Tokens follow the machine convention Cut Studio already uses: red cuts,
+   blue engraves. Contrast pairs are recorded in docs/PLAN-portfolio-v2.md §2. */
+
+.v2 {
+  --sheet:#0e0e0d;
+  --paper:#ece7dc;
+  --muted:#9a958b;
+  --cut:#ff3d1f;
+  --engrave:#3d7bff;
+  --line:#2b2b26;
+  /* Shared surfaces (contact, brief, footer) read the older token names. */
+  --bg:var(--sheet);
+  --gold:var(--cut);
+  --mint:var(--cut);
+  background:var(--sheet);
+  color:var(--paper);
+  position:relative;
+  min-height:100svh;
+}
+
+/* Grain: an inline SVG, so there is no image request. 4% over everything. */
+.v2::before {
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+  opacity:.04;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='2' stitchTiles='stitch'/></filter><rect width='140' height='140' filter='url(%23g)'/></svg>");
+}
+
+.v2 p { color:var(--muted); }
+.v2 h1, .v2 h2, .v2 h3 { font-weight:400; }
+.v2 .mono { font-family:ui-monospace,"SFMono-Regular",Menlo,monospace; font-size:11px; letter-spacing:.07em; direction:ltr; unicode-bidi:isolate; }
+.v2 .eyebrow { color:var(--cut); font-size:12px; letter-spacing:.1em; margin-bottom:22px; }
+.v2 bdi { unicode-bidi:isolate; }
+
+/* Latin display: Manrope 800. Arabic display: Tajawal 700, normal spacing,
+   line-height >= 1.25 so tashkeel and descenders are never clipped. */
+html[lang="en"] .v2 h1, html[lang="en"] .v2 h2 { font-family:var(--font-latin),sans-serif; font-weight:800; letter-spacing:-.04em; line-height:1.12; }
+html[lang="ar"] .v2 h1, html[lang="ar"] .v2 h2 { font-family:var(--font-arabic),var(--font-latin),sans-serif; font-weight:700; letter-spacing:normal; line-height:1.3; }
+.v2 h1, .v2 h2 { overflow:visible; }
+
+.v2 .button { border-radius:0; font-size:15px; }
+.v2 .button-cut { background:var(--cut); color:var(--sheet); border-color:var(--cut); }
+.v2 .button-cut:hover { background:#ff5a41; }
+.v2 .button-outline { border-color:#ffffff2e; color:var(--paper); }
+.v2 .button-outline:hover { border-color:var(--cut); background:#ff3d1f0f; }
+.v2 .button-sheet { background:var(--sheet); color:var(--paper); border-color:var(--sheet); }
+.v2 .button-sheet:hover { background:#000; }
+.v2 :focus-visible { outline:2px solid var(--cut); outline-offset:5px; }
+
+/* ---- 4.0 Hero ------------------------------------------------------------ */
+
+/* A minimum height, never a fixed one: long Arabic lines grow past it. */
+.v2 .hero { position:relative; min-height:100svh; display:flex; flex-direction:column; justify-content:space-between; gap:60px; padding:150px 0 0; isolation:isolate; }
+.v2 .hero-grid { position:absolute; inset:0; z-index:0; opacity:.5; background-image:linear-gradient(#ffffff0a 1px,transparent 1px),linear-gradient(90deg,#ffffff0a 1px,transparent 1px); background-size:88px 88px; }
+.v2 .hero-copy { position:relative; z-index:1; }
+.v2 .hero-eyebrow { display:block; color:var(--muted); font-size:13px; letter-spacing:.04em; margin-bottom:26px; }
+.v2 .hero-headline { position:relative; }
+.v2 .hero h1 { font-size:clamp(40px,7.6vw,104px); max-width:16ch; }
+.v2 .hero h1>span { display:block; }
+.v2 .hero-accent { color:var(--cut); }
+.v2 .hero-lead { max-width:58ch; margin-top:30px; font-size:18px; line-height:1.9; }
+.v2 .hero-actions { display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin-top:36px; }
+.v2 .hero-rail { position:relative; z-index:1; display:flex; flex-wrap:wrap; gap:14px 30px; justify-content:space-between; align-items:center; border-top:1px solid var(--line); padding-block:16px; font-size:12px; color:var(--muted); }
+.v2 .hero-rail a { display:inline-flex; align-items:center; gap:12px; min-height:44px; color:var(--muted); }
+.v2 .hero-rail a:hover { color:var(--paper); }
+
+/* Registration marks: the hero and the footer are the only two places they
+   are allowed, so they never bury the work. */
+.v2 .reg-mark { position:absolute; width:13px; height:13px; z-index:2; pointer-events:none; }
+.v2 .reg-mark::before, .v2 .reg-mark::after { content:""; position:absolute; background:var(--cut); }
+.v2 .reg-mark::before { inset-inline:0; top:6px; height:1px; }
+.v2 .reg-mark::after { inset-block:0; inset-inline-start:6px; width:1px; }
+.v2 .reg-mark-tl { top:104px; inset-inline-start:24px; }
+.v2 .reg-mark-tr { top:104px; inset-inline-end:24px; }
+.v2 .reg-mark-bl { bottom:74px; inset-inline-start:24px; }
+.v2 .reg-mark-br { bottom:74px; inset-inline-end:24px; }
+.v2 .hero-readout { position:absolute; z-index:2; bottom:74px; inset-inline-end:52px; color:var(--muted); font-size:10px; }
+.v2 .hero-contour { position:absolute; z-index:-1; inset:-26px -18px; width:calc(100% + 36px); height:calc(100% + 52px); overflow:visible; pointer-events:none; }
+.v2 .hero-contour path { fill:none; stroke:var(--cut); stroke-width:1.5; vector-effect:non-scaling-stroke; }
+.v2 .hero-contour circle { fill:var(--cut); }
+
+/* ---- 4.1 Three layers ---------------------------------------------------- */
+
+.v2 .layers { padding-block:110px 90px; }
+.v2 .layers-head h2 { font-size:clamp(34px,4.6vw,68px); max-width:22ch; }
+.v2 .layers-rows { margin-top:56px; border-bottom:1px solid var(--line); }
+.v2 .layer { position:relative; padding-block:46px; display:grid; grid-template-columns:minmax(84px,164px) 1fr; gap:10px 44px; align-items:start; }
+.v2 .layer-numeral { grid-row:1/span 3; font-family:var(--font-latin),sans-serif; font-weight:800; font-size:clamp(58px,8.4vw,132px); line-height:.88; letter-spacing:-.04em; color:transparent; -webkit-text-stroke:1px #ff3d1f73; transition:color .3s,-webkit-text-stroke-color .3s; }
+.v2 .layer:hover .layer-numeral, .v2 .layer:focus-within .layer-numeral { color:var(--cut); -webkit-text-stroke-color:var(--cut); }
+.v2 .layer-tag { color:var(--muted); font-size:11px; }
+.v2 .layer-design .layer-tag { color:var(--engrave); }
+.v2 .layer h3 { font-size:clamp(28px,3.4vw,46px); line-height:1.25; }
+.v2 .layer-text { margin-top:14px; font-size:18px; line-height:1.9; max-width:62ch; }
+.v2 .layer-proof { margin-top:16px; display:inline-flex; align-items:center; gap:14px; min-height:44px; color:var(--paper); font-size:15px; border-bottom:1px solid #ff3d1f59; }
+.v2 .layer-proof:hover { border-bottom-color:var(--cut); }
+
+/* The separating hairline draws itself once, from the inline-start edge. */
+.v2 .hairline { display:block; height:1px; background:var(--cut); transform-origin:left center; }
+[dir="rtl"] .v2 .hairline { transform-origin:right center; }
+.v2 .layer>.hairline { position:absolute; top:0; inset-inline:0; }
+
+/* ---- 4.2 The factory ----------------------------------------------------- */
+
+.v2 .factory { position:relative; padding-block:110px; }
+.v2 .factory-head h2 { font-size:clamp(38px,6vw,86px); }
+.v2 .factory-intro { max-width:62ch; margin-top:24px; font-size:18px; line-height:1.9; }
+.v2 .factory-body { position:relative; display:grid; grid-template-columns:minmax(0,1fr) 320px; gap:54px; align-items:start; margin-top:56px; }
+.v2 .factory-list { position:relative; }
+.v2 .factory-stations { position:relative; margin:0; padding:0; list-style:none; }
+.v2 .factory-stations::before { content:""; position:absolute; inset:-16px -20px; border-inline-start:1px dashed var(--engrave); border-top:1px dashed var(--engrave); border-bottom:1px dashed var(--engrave); pointer-events:none; }
+.v2 .station { position:relative; display:grid; grid-template-columns:auto 1fr; gap:6px 26px; padding-block:28px; border-bottom:1px solid var(--line); }
+.v2 .station:first-child { border-top:1px solid var(--line); }
+.v2 .station-code { color:var(--muted); font-size:11px; padding-top:9px; }
+.v2 .station h3 { font-size:clamp(24px,2.6vw,34px); line-height:1.3; }
+.v2 .station-text { margin-top:12px; font-size:17px; line-height:1.9; max-width:60ch; }
+.v2 .station-tags { display:flex; flex-wrap:wrap; gap:8px 16px; margin-top:14px; }
+.v2 .station-tags span { font-family:ui-monospace,"SFMono-Regular",Menlo,monospace; font-size:11px; letter-spacing:.06em; color:var(--engrave); border-bottom:1px solid #3d7bff59; padding-bottom:3px; }
+.v2 .station[data-active] .station-code { color:var(--cut); }
+.v2 .station[data-active] h3 { color:#fff; }
+.v2 .factory-track { position:absolute; inset-inline-start:0; top:0; bottom:0; width:1px; background:var(--line); }
+.v2 .factory-fill { position:absolute; inset:0; background:var(--cut); transform-origin:top center; }
+.v2 .factory-packet-wrap { position:absolute; inset:0; }
+.v2 .factory-packet { position:absolute; inset-inline-start:-3px; top:0; width:7px; height:7px; background:var(--cut); }
+.v2 .factory-list { padding-inline-start:34px; }
+.v2 .oversight { padding:26px 28px; border:1px dashed var(--engrave); }
+.v2 .oversight h3 { font-size:21px; line-height:1.4; }
+.v2 .oversight p { margin-top:12px; font-size:15px; line-height:1.85; }
+.v2 .oversight-tags { display:flex; flex-wrap:wrap; gap:8px 16px; margin-top:16px; }
+.v2 .oversight-tags span { font-family:ui-monospace,"SFMono-Regular",Menlo,monospace; font-size:11px; color:var(--engrave); }
+.v2 .factory-channel { margin-top:30px; }
+.v2 .factory-channel a { display:inline-flex; align-items:center; gap:14px; min-height:44px; color:var(--paper); border-bottom:1px solid #ff3d1f59; }
+
+/* ---- 4.3 Cut Studio band (the only light section) ------------------------ */
+
+.v2 .studio { background:var(--paper); color:var(--sheet); padding-block:104px; }
+.v2 .studio .eyebrow { color:#8a857c; }
+.v2 .studio p { color:#4c4840; }
+.v2 .studio-inner { display:grid; grid-template-columns:1.02fr .98fr; gap:64px; align-items:center; }
+.v2 .studio h2 { font-size:clamp(32px,4.4vw,62px); color:var(--sheet); }
+.v2 .studio-text { margin-top:22px; font-size:18px; line-height:1.9; max-width:52ch; }
+/* --cut on --paper is 2.87, so red is decoration here and the focus ring is
+   --sheet. Nothing in this band sets text in red. */
+.v2 .studio :focus-visible { outline-color:var(--sheet); }
+.v2 .studio-actions { margin-top:30px; }
+.v2 .studio-small { margin-top:22px; font-size:13px; line-height:1.8; color:#6d685e; }
+.v2 .studio-box { width:100%; height:auto; display:block; }
+.v2 .studio-box .cut { fill:none; stroke:#ff3d1f; stroke-width:1.4; vector-effect:non-scaling-stroke; }
+.v2 .studio-box .engrave { fill:none; stroke:#3d7bff; stroke-width:1; stroke-dasharray:5 4; vector-effect:non-scaling-stroke; }
+.v2 .studio-box .label { font-family:ui-monospace,Menlo,monospace; font-size:5px; fill:#8a857c; letter-spacing:.08em; }
+.v2 .studio-tools { margin:34px 0 0; padding:0; list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:0 30px; }
+.v2 .studio-tools li { display:flex; gap:14px; align-items:baseline; padding-block:13px; border-top:1px solid #0e0e0d1f; font-size:16px; }
+.v2 .studio-tools .mono { color:#8a857c; font-size:10px; }
+.v2 .studio-tools .name { color:var(--sheet); }
+
+/* ---- 4.4 Design studies -------------------------------------------------- */
+
+.v2 .studies { padding-block:110px; }
+.v2 .studies-head h2 { font-size:clamp(34px,4.6vw,68px); }
+.v2 .studies-intro { max-width:58ch; margin-top:22px; font-size:18px; line-height:1.9; }
+.v2 .studies-strip { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; margin-top:52px; }
+.v2 .study { display:flex; flex-direction:column; gap:16px; }
+.v2 .study-frame { position:relative; border:1px solid var(--line); background:#141412; padding:16px; overflow:hidden; }
+.v2 .study-frame .site-preview { box-shadow:none; }
+.v2 .study-meta { display:flex; flex-wrap:wrap; gap:6px 18px; justify-content:space-between; align-items:baseline; }
+.v2 .study-meta h3 { font-size:23px; line-height:1.3; }
+.v2 .study-meta .study-disclosure { color:var(--muted); font-size:12px; }
+
+/* ---- 4.5 How I work ------------------------------------------------------ */
+
+.v2 .principles { padding-block:100px; border-top:1px solid var(--line); }
+.v2 .principles h2 { font-size:clamp(32px,4.4vw,62px); max-width:24ch; }
+.v2 .principle-list { margin:46px 0 0; padding:0; list-style:none; border-top:1px solid var(--line); }
+.v2 .principle-list li { border-bottom:1px solid var(--line); padding-block:26px; font-size:clamp(19px,2.1vw,28px); line-height:1.5; color:var(--paper); display:flex; gap:26px; align-items:baseline; }
+.v2 .principle-list .mono { color:var(--cut); font-size:11px; }
+
+/* ---- 4.6 Contact --------------------------------------------------------- */
+
+.v2 .contact-section { background:var(--sheet); border-top:1px solid var(--line); padding-block:110px; }
+.v2 .contact-section h2 { font-size:clamp(34px,5.6vw,80px); }
+.v2 .contact-bottom { display:grid; grid-template-columns:minmax(0,1fr); gap:34px; margin-top:44px; }
+.v2 .contact-links { width:100%; max-width:none; }
+.v2 .contact-links>.button { margin:0 12px 12px 0; }
+.v2 .brief { max-width:640px; }
+.v2 .brief>summary { color:var(--paper); border-bottom-color:#ff3d1f59; }
+.v2 .brief form { background:#141412; border-color:var(--line); }
+.v2 .brief input, .v2 .brief textarea { background:#0b0b0a; border-color:#3a3a33; color:var(--paper); }
+
+/* ---- 4.7 Footer signature ------------------------------------------------ */
+
+.v2 .footer { border-top:1px solid var(--line); padding-block:64px 34px; }
+.v2 .signature-block { position:relative; display:grid; place-items:center; padding-block:clamp(40px,7vw,84px); }
+.v2 .footer-signature { font-family:var(--font-latin),sans-serif; font-weight:800; font-size:clamp(30px,10.2vw,148px); letter-spacing:-.045em; line-height:1.2; color:var(--paper); white-space:nowrap; margin:0; }
+.v2 .footer-contour { position:absolute; inset:-12px; width:calc(100% + 24px); height:calc(100% + 24px); overflow:visible; pointer-events:none; color:var(--cut); }
+.v2 .footer-contour path { fill:none; stroke:currentColor; stroke-width:1.5; vector-effect:non-scaling-stroke; }
+.v2 .footer-legal { display:flex; flex-wrap:wrap; gap:10px 26px; justify-content:space-between; align-items:center; border-top:1px solid var(--line); padding-top:20px; font-size:12px; color:var(--muted); }
+.v2 .footer-legal a { display:inline-flex; align-items:center; min-height:44px; color:var(--muted); }
+.v2 .footer-legal a:hover { color:var(--paper); }
+.v2 .footer-legal .cut-link { color:var(--cut); }
+
+/* ---- Responsive ---------------------------------------------------------- */
+
+@media (max-width:1100px) {
+  .v2 .factory-body { grid-template-columns:minmax(0,1fr); gap:38px; }
+  .v2 .studio-inner { grid-template-columns:minmax(0,1fr); gap:40px; }
+}
+@media (max-width:1024px) {
+  /* Below 1025px the studies become a native scroll-snap strip. The overflow
+     lives on the strip only, so the document never gains a horizontal scroll. */
+  .v2 .studies-strip { display:flex; gap:20px; overflow-x:auto; overscroll-behavior-x:contain; scroll-snap-type:x mandatory; padding-bottom:10px; }
+  .v2 .study { flex:0 0 min(78%,340px); scroll-snap-align:start; }
+}
+@media (max-width:900px) {
+  .v2 .layer { grid-template-columns:minmax(0,1fr); gap:14px; }
+  .v2 .layer-numeral { grid-row:auto; }
+  .v2 .studio-tools { grid-template-columns:1fr; }
+}
+@media (max-width:700px) {
+  .v2 .hero { padding-top:118px; gap:44px; }
+  .v2 .hero-grid { background-size:64px 64px; }
+  .v2 .hero h1 { font-size:clamp(34px,11.4vw,58px); max-width:none; }
+  html[lang="en"] .v2 .hero h1 { font-size:clamp(30px,9.6vw,50px); }
+  .v2 .hero-lead { font-size:16px; }
+  .v2 .hero-rail { font-size:11px; }
+  .v2 .reg-mark-bl, .v2 .reg-mark-br { bottom:96px; }
+  .v2 .hero-readout { display:none; }
+  .v2 .layers, .v2 .factory, .v2 .studies, .v2 .principles, .v2 .contact-section { padding-block:72px; }
+  .v2 .factory-list { padding-inline-start:24px; }
+  .v2 .factory-stations::before { inset:-12px -12px; }
+  .v2 .station { gap:4px 18px; }
+  .v2 .studio { padding-block:72px; }
+  .v2 .studio-tools li { font-size:15px; }
+  .v2 .footer-legal { justify-content:flex-start; }
+}
+@media (max-width:380px) {
+  .v2 .hero h1 { font-size:clamp(30px,10.6vw,44px); }
+  .v2 .layer-numeral { font-size:56px; }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .v2 *, .v2 *::before, .v2 *::after { animation:none !important; transition:none !important; }
+  .v2 .button:hover, .v2 .button:active { transform:none; }
+}
