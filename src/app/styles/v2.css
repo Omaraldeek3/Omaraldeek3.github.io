@@ -12,6 +12,10 @@
   --cut:#ff3d1f;
   --engrave:#3d7bff;
   --line:#2b2b26;
+  /* Secondary text on --paper. Measured on the built page with Lighthouse 13.5.0
+     (axe color-contrast): #8a857c on --paper is 2.97 and fails 4.5:1.
+     #5f5a52 is 5.55:1 and keeps the same secondary weight. */
+  --muted-paper:#5f5a52;
   /* Shared surfaces (contact, brief, footer) read the older token names. */
   --bg:var(--sheet);
   --gold:var(--cut);
@@ -148,7 +152,7 @@ html[lang="en"] .v2 .hero h1 { font-size:clamp(54px,5.4vw,82px); }
 /* ---- 4.3 Cut Studio band (the only light section) ------------------------ */
 
 .v2 .studio { background:var(--paper); color:var(--sheet); padding-block:104px; }
-.v2 .studio .eyebrow { color:#8a857c; }
+.v2 .studio .eyebrow { color:var(--muted-paper); }
 .v2 .studio p { color:#4c4840; }
 .v2 .studio-inner { display:grid; grid-template-columns:1.02fr .98fr; gap:64px; align-items:center; }
 .v2 .studio h2 { font-size:clamp(32px,4.4vw,62px); color:var(--sheet); }
@@ -157,7 +161,7 @@ html[lang="en"] .v2 .hero h1 { font-size:clamp(54px,5.4vw,82px); }
    --sheet. Nothing in this band sets text in red. */
 .v2 .studio :focus-visible { outline-color:var(--sheet); }
 .v2 .studio-actions { margin-top:30px; }
-.v2 .studio-small { margin-top:22px; font-size:13px; line-height:1.8; color:#6d685e; }
+.v2 .studio-small { margin-top:22px; font-size:13px; line-height:1.8; color:var(--muted-paper); }
 .v2 .studio-box { width:100%; height:auto; display:block; }
 /* The box is scaled uniformly (viewBox 290x264, width:100%, height:auto), so
    the stroke needs no non-scaling-stroke. It must not have one: Chromium then
@@ -170,7 +174,7 @@ html[lang="en"] .v2 .hero h1 { font-size:clamp(54px,5.4vw,82px); }
 .v2 .studio-box .label { font-family:ui-monospace,Menlo,monospace; font-size:5px; fill:#3d7bff; letter-spacing:.08em; }
 .v2 .studio-tools { margin:34px 0 0; padding:0; list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:0 30px; }
 .v2 .studio-tools li { display:flex; gap:14px; align-items:baseline; padding-block:13px; border-top:1px solid #0e0e0d1f; font-size:16px; }
-.v2 .studio-tools .mono { color:#8a857c; font-size:10px; }
+.v2 .studio-tools .mono { color:var(--muted-paper); font-size:10px; }
 .v2 .studio-tools .name { color:var(--sheet); }
 
 /* ---- 4.4 Design studies -------------------------------------------------- */
