@@ -1,15 +1,13 @@
 "use client";
 
-import { LazyMotion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
-import { useRef, useState, useEffect, useSyncExternalStore, type ReactNode, type CSSProperties, type FormEvent } from "react";
+import { LazyMotion, useReducedMotion, useScroll } from "motion/react";
+import { useRef, useState, useEffect, useSyncExternalStore, type ReactNode, type FormEvent } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import type { copy, Locale } from "@/content/site";
 import * as m from "motion/react-m";
-import { useMediaQuery } from "@/components/use-media-query";
 
 const timing = { duration: 0.55, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] };
-const spring = { stiffness: 120, damping: 24, mass: 0.6 };
 const subscribeHydration = () => () => {};
 const clientSnapshot = () => true;
 const serverSnapshot = () => false;
@@ -75,53 +73,6 @@ export function Reveal({ children, className = "" }: { children: ReactNode; clas
 export function HeroTitle({ lines }: { lines: string[] }) {
   const reduced = useReducedMotion();
   return <h1>{lines.map((line, i) => <m.span key={line} className={i === lines.length - 1 ? "hero-accent" : ""} initial={{ y: reduced ? 0 : 14 }} animate={{ y: 0 }} transition={reduced ? { duration: 0 } : { ...timing, delay: i * 0.09 }}>{line}</m.span>)}</h1>;
-}
-
-export function HeroComposition(props: { children: ReactNode; caption: string }) {
-  const enabled = useMediaQuery("(hover: hover) and (pointer: fine) and (min-width: 701px) and (prefers-reduced-motion: no-preference)");
-  if (enabled) return <InteractiveHeroComposition {...props} />;
-  return <div className="hero-composition"><div className="composition-cards">{props.children}</div><div className="composition-caption"><span className="caption-line" aria-hidden="true" />{props.caption}<span className="mono">01 / 03</span></div></div>;
-}
-
-function InteractiveHeroComposition({ children, caption }: { children: ReactNode; caption: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
-  const x = useMotionValue(0), y = useMotionValue(0);
-  const rotateX = useSpring(y, spring), rotateY = useSpring(x, spring);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const lift = useTransform(scrollYProgress, [0, 1], [0, -36]);
-  return <div className="hero-composition" ref={ref} onPointerMove={e => {
-    if (reduced || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-    const box = e.currentTarget.getBoundingClientRect();
-    x.set(((e.clientX - box.left) / box.width - 0.5) * 5);
-    y.set(-((e.clientY - box.top) / box.height - 0.5) * 5);
-  }} onPointerLeave={() => { x.set(0); y.set(0); }}>
-    <div className="composition-grid" aria-hidden="true" />
-    <m.div className="composition-cards" initial={{ opacity: 0.8 }} animate={{ opacity: 1 }} transition={reduced ? { duration: 0 } : { ...timing, delay: 0.12 }} style={{ rotateX: reduced ? 0 : rotateX, rotateY: reduced ? 0 : rotateY, y: reduced ? 0 : lift }}>{children}</m.div>
-    <div className="composition-caption"><span className="caption-line" aria-hidden="true" />{caption}<span className="mono">01 / 03</span></div>
-  </div>;
-}
-
-export function StackCard(props: { children: ReactNode; index: number }) {
-  const enabled = useMediaQuery("(min-width: 1025px) and (min-height: 850px) and (prefers-reduced-motion: no-preference)");
-  if (enabled) return <AnimatedStackCard {...props} />;
-  return <article className="work-card" style={{"--card-index":props.index} as CSSProperties}>{props.children}</article>;
-}
-
-function AnimatedStackCard({ children, index }: { children: ReactNode; index: number }) {
-  const ref = useRef<HTMLElement>(null);
-  const reduced = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 18%", "end 10%"] });
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.965]);
-  return <m.article ref={ref} className="work-card" style={{ "--card-index": index, scale: reduced ? 1 : scale } as CSSProperties} >{children}</m.article>;
-}
-
-export function Process({ steps }: { steps: Text["steps"] }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
-  const vertical = useMediaQuery("(max-width: 700px)");
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 75%", "end 60%"] });
-  return <div ref={ref} className="process-timeline"><div className="process-track" aria-hidden="true"><m.div style={{ scaleX: reduced || vertical ? 1 : scrollYProgress, scaleY: reduced || !vertical ? 1 : scrollYProgress }} /></div><ol className="process-list">{steps.map((step, i) => <li key={step.title}><span className="step-number mono">0{i + 1}</span><div><h3>{step.title}</h3><p>{step.text}</p></div></li>)}</ol></div>;
 }
 
 export function ProjectBrief({ text: t }: { text: Pick<Text,"prepare"|"briefTitle"|"briefHelp"|"nameLabel"|"ideaLabel"|"briefSubmit"|"briefError"|"briefDone"|"briefNeedsJS"> }) {

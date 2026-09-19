@@ -59,10 +59,14 @@ html[lang="ar"] .v2 h1, html[lang="ar"] .v2 h2 { font-family:var(--font-arabic),
 /* A minimum height, never a fixed one: long Arabic lines grow past it. */
 .v2 .hero { position:relative; min-height:100svh; display:flex; flex-direction:column; justify-content:space-between; gap:60px; padding:150px 0 0; isolation:isolate; }
 .v2 .hero-grid { position:absolute; inset:0; z-index:0; opacity:.5; background-image:linear-gradient(#ffffff0a 1px,transparent 1px),linear-gradient(90deg,#ffffff0a 1px,transparent 1px); background-size:88px 88px; }
-.v2 .hero-copy { position:relative; z-index:1; }
+.v2 .hero-copy { position:relative; z-index:1; max-width:730px; }
+/* These widths and the English size are what the hero was reviewed with. They
+   used to reach it unscoped from the v1 cinema.css, and now live here. */
+html[lang="en"] .v2 .hero-copy { max-width:800px; }
 .v2 .hero-eyebrow { display:block; color:var(--muted); font-size:13px; letter-spacing:.04em; margin-bottom:26px; }
 .v2 .hero-headline { position:relative; }
 .v2 .hero h1 { font-size:clamp(40px,7.6vw,104px); max-width:16ch; }
+html[lang="en"] .v2 .hero h1 { font-size:clamp(54px,5.4vw,82px); }
 .v2 .hero h1>span { display:block; }
 .v2 .hero-accent { color:var(--cut); }
 .v2 .hero-lead { max-width:58ch; margin-top:30px; font-size:18px; line-height:1.9; }
@@ -213,6 +217,7 @@ html[lang="ar"] .v2 h1, html[lang="ar"] .v2 h2 { font-family:var(--font-arabic),
 /* ---- Responsive ---------------------------------------------------------- */
 
 @media (max-width:1100px) {
+  .v2 .hero-copy { max-width:600px; }
   .v2 .factory-body { grid-template-columns:minmax(0,1fr); gap:38px; }
   .v2 .studio-inner { grid-template-columns:minmax(0,1fr); gap:40px; }
 }
@@ -223,6 +228,7 @@ html[lang="ar"] .v2 h1, html[lang="ar"] .v2 h2 { font-family:var(--font-arabic),
   .v2 .study { flex:0 0 min(78%,340px); scroll-snap-align:start; }
 }
 @media (max-width:900px) {
+  .v2 .hero-copy { max-width:580px; }
   .v2 .layer { grid-template-columns:minmax(0,1fr); gap:14px; }
   .v2 .layer-numeral { grid-row:auto; }
   .v2 .layer-tag, .v2 .layer h3, .v2 .layer-text, .v2 .layer-proof { grid-column:1; }
@@ -230,6 +236,7 @@ html[lang="ar"] .v2 h1, html[lang="ar"] .v2 h2 { font-family:var(--font-arabic),
 }
 @media (max-width:700px) {
   .v2 .hero { padding-top:118px; gap:44px; }
+  .v2 .hero-copy { max-width:none; }
   .v2 .hero-grid { background-size:64px 64px; }
   .v2 .hero h1 { font-size:clamp(34px,11.4vw,58px); max-width:none; }
   html[lang="en"] .v2 .hero h1 { font-size:clamp(30px,9.6vw,50px); }

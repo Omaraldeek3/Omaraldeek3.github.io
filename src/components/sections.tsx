@@ -14,9 +14,6 @@ export function validUrl(value: string) {
 export function isolated(text: string) {
   return text.split(/\[([^\]]+)\]/g).map((part, index) => index % 2 ? <bdi key={index}>{part}</bdi> : part);
 }
-export function SectionHeading({ label, title, text }: { label: string; title: string; text?: string }) {
-  return <div className="section-heading"><span className="eyebrow">{label}</span><div><h2>{title}</h2>{text && <p>{text}</p>}</div></div>;
-}
 // Brand names are the same in both languages, so they are not in `copy`.
 const linkLabels: Record<keyof typeof profile.links, string> = { github: "GitHub", linkedin: "LinkedIn", youtube: "YouTube", tiktok: "TikTok", instagram: "Instagram", x: "X", behance: "Behance" };
 export function Contact({ locale }: { locale: Locale }) {

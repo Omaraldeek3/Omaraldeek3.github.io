@@ -57,13 +57,9 @@ img { object-fit:cover; }
 .button:hover { transform:translateY(-2px); } .button:active { transform:scale(.98); }
 .button-gold,.button-mint { color:#17140f; background:var(--gold); }
 .button-gold:hover,.button-mint:hover { background:#dbc6a8; }
-.button-line { border-bottom-color:#bfb5a16b; padding-inline:0; }
 .button-outline { border-color:#a5957566; }
 .button-outline:hover { background:#c4ab8810; border-color:var(--gold); }
-.text-link { display:inline-flex; min-height:48px; gap:32px; align-items:center; border-bottom:1px solid #8c795a; color:var(--gold); font-size:16px; }
 summary { cursor:pointer; list-style:none; } summary::-webkit-details-marker { display:none; }
-.toggle-sign { font-family:Arial,sans-serif; font-weight:300; font-size:25px; color:var(--gold); transition:transform .2s; display:inline-block; }
-.service-entry[open] .toggle-sign,.faq-list details[open] .toggle-sign { transform:rotate(45deg); }
 .project-disclosure { color:#aaa494; font-size:12px; display:block; margin-top:4px; }
 .tags { display:flex; flex-wrap:wrap; gap:10px; }
 .tags>span { color:#bcb29f; font-size:12px; border-bottom:1px solid #65563d; padding-bottom:5px; }
