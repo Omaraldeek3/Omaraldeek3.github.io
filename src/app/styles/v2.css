@@ -85,6 +85,8 @@ html[lang="ar"] .v2 h1, html[lang="ar"] .v2 h2 { font-family:var(--font-arabic),
 .v2 .hero-contour { position:absolute; z-index:-1; inset:-26px -18px; width:calc(100% + 36px); height:calc(100% + 52px); overflow:visible; pointer-events:none; }
 .v2 .hero-contour path { fill:none; stroke:var(--cut); stroke-width:1.5; vector-effect:non-scaling-stroke; }
 .v2 .hero-contour circle { fill:var(--cut); }
+/* The stretched 0-100 contour is the no-JavaScript fallback only; see cut-line.tsx. */
+.v2 .contour-fallback { visibility:hidden; }
 
 /* ---- 4.1 Three layers ---------------------------------------------------- */
 
