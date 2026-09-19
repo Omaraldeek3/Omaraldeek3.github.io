@@ -82,6 +82,10 @@ export function PointerReadout() {
   return <span className="hero-readout mono" aria-hidden="true">{readout}</span>;
 }
 
+// The server cannot know the motion preference, so `initial` never depends on
+// it: server and client render the same starting state. Under reduced motion
+// the target is applied at once with no duration, instead of on scroll.
+
 // A generic in-view pathLength for a real <path>, used by the box flat and the
 // footer contour. Rendered inside a server-owned <svg>.
 export function DrawPath({ d, delay = 0, duration = 1.1, className }: { d: string; delay?: number; duration?: number; className?: string }) {
@@ -89,8 +93,9 @@ export function DrawPath({ d, delay = 0, duration = 1.1, className }: { d: strin
   return <m.path
     className={className}
     d={d}
-    initial={reduced ? { pathLength: 1 } : { pathLength: 0 }}
-    whileInView={{ pathLength: 1 }}
+    initial={{ pathLength: 0 }}
+    animate={reduced ? { pathLength: 1 } : undefined}
+    whileInView={reduced ? undefined : { pathLength: 1 }}
     viewport={{ once: true, amount: 0.35 }}
     transition={reduced ? { duration: 0 } : { duration, delay, ease }}
   />;
@@ -101,8 +106,9 @@ export function Hairline() {
   return <m.span
     className="hairline"
     aria-hidden="true"
-    initial={reduced ? { scaleX: 1 } : { scaleX: 0 }}
-    whileInView={{ scaleX: 1 }}
+    initial={{ scaleX: 0 }}
+    animate={reduced ? { scaleX: 1 } : undefined}
+    whileInView={reduced ? undefined : { scaleX: 1 }}
     viewport={{ once: true, amount: 0.5 }}
     transition={reduced ? { duration: 0 } : { duration: 0.8, ease }}
   />;

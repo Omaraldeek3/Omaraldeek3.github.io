@@ -1,13 +1,19 @@
 "use client";
 
 import * as m from "motion/react-m";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import { useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
+
+const subscribeHydration = () => () => {};
 
 // Decoration only. The station list beside this is server-rendered and always
 // fully readable; nothing here gates reading, focus order or the DOM order.
 export function FactoryTrack() {
-  const reduced = useReducedMotion();
+  // The server cannot know the motion preference, so it renders the reduced
+  // state (fill at 1, no packet), and so does the hydration pass. Motion is
+  // switched on afterwards, which keeps the server and client HTML identical.
+  const hydrated = useSyncExternalStore(subscribeHydration, () => true, () => false);
+  const reduced = useReducedMotion() || !hydrated;
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start 85%", "end 60%"] });
   const progress = useSpring(scrollYProgress, { stiffness: 90, damping: 26, mass: 0.4 });

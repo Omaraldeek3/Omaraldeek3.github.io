@@ -97,6 +97,9 @@ test("without JavaScript the factory has six stations and Buzz sits outside the 
 // §7.2 #6 and #8: reduced motion runs nothing, and empty contacts render no links.
 test("reduced motion has no packet and no running animations; empty profile renders no contact links", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
+  // The server cannot know the preference, so this also guards against a
+  // hydration mismatch in any component that reads it.
+  const errors = watchErrors(page);
   await page.goto("/en", { waitUntil: "networkidle" });
   await page.waitForTimeout(500);
   await expect(page.locator("#systems-flow .factory-packet")).toHaveCount(0);
@@ -105,6 +108,7 @@ test("reduced motion has no packet and no running animations; empty profile rend
   await expect(contact.locator('a[href^="https://wa.me/"]')).toHaveCount(0);
   await expect(contact.locator('a[href^="mailto:"]')).toHaveCount(0);
   await expect(contact.locator("a[target=_blank]")).toHaveCount(0);
+  expect(errors).toEqual([]);
 });
 
 // §7.2 #7: reflow at a 720px viewport (a 1440 layout at 200%) and a short screen.

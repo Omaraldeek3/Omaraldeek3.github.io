@@ -61,18 +61,20 @@ export function Navigation({ locale, name, location, text: t }: { locale: Locale
 export function PageProgress() {
   const { scrollYProgress } = useScroll();
   const reduced = useReducedMotion();
-  return reduced ? null : <m.div className="page-progress" style={{ scaleX: scrollYProgress }} aria-hidden="true" />;
+  // Rendered only after hydration: the server cannot know the motion preference.
+  const hydrated = useSyncExternalStore(subscribeHydration, clientSnapshot, serverSnapshot);
+  return !hydrated || reduced ? null : <m.div className="page-progress" style={{ scaleX: scrollYProgress }} aria-hidden="true" />;
 }
 
 export function Reveal({ children, className = "" }: { children: ReactNode; className?: string }) {
   const reduced = useReducedMotion();
   // Content is visible in server HTML; animations never gate reading.
-  return <m.div className={className} initial={{ y: reduced ? 0 : 14 }} whileInView={{ y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={reduced ? { duration: 0 } : timing}>{children}</m.div>;
+  return <m.div className={className} initial={{ y: 14 }} animate={reduced ? { y: 0 } : undefined} whileInView={reduced ? undefined : { y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={reduced ? { duration: 0 } : timing}>{children}</m.div>;
 }
 
 export function HeroTitle({ lines }: { lines: string[] }) {
   const reduced = useReducedMotion();
-  return <h1>{lines.map((line, i) => <m.span key={line} className={i === lines.length - 1 ? "hero-accent" : ""} initial={{ y: reduced ? 0 : 14 }} animate={{ y: 0 }} transition={reduced ? { duration: 0 } : { ...timing, delay: i * 0.09 }}>{line}</m.span>)}</h1>;
+  return <h1>{lines.map((line, i) => <m.span key={line} className={i === lines.length - 1 ? "hero-accent" : ""} initial={{ y: 14 }} animate={{ y: 0 }} transition={reduced ? { duration: 0 } : { ...timing, delay: i * 0.09 }}>{line}</m.span>)}</h1>;
 }
 
 export function ProjectBrief({ text: t }: { text: Pick<Text,"prepare"|"briefTitle"|"briefHelp"|"nameLabel"|"ideaLabel"|"briefSubmit"|"briefError"|"briefDone"|"briefNeedsJS"> }) {
