@@ -11,7 +11,7 @@ const arabic = localFont({ src: [
   { path: "../../../node_modules/@fontsource/tajawal/files/tajawal-arabic-700-normal.woff2", weight: "700", style: "normal" },
 ], variable: "--font-arabic", preload: false, display: "swap" });
 const latin = localFont({ src: "../../../node_modules/@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2", variable: "--font-latin", display: "swap", weight: "200 800" });
-export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#0c0c0b" };
+export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#0e0e0d" };
 export function generateStaticParams() { return locales.map(locale => ({ locale })); }
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -28,5 +28,5 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function LocaleLayout({ children, params }: { children: React.ReactNode; params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
-  return <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} className={`${arabic.variable} ${latin.variable}`}><body><a className="skip-link" href="#main">{copy[locale].skip}</a><MotionProvider><PageProgress /><Navigation locale={locale} name={profile.name[locale]} location={profile.location[locale]} text={{nav:copy[locale].nav, navigation:copy[locale].navigation, discuss:copy[locale].discuss, menu:copy[locale].menu, close:copy[locale].close}} />{children}</MotionProvider></body></html>;
+  return <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} className={`${arabic.variable} ${latin.variable}`}><body><a className="skip-link" href="#main">{copy[locale].skip}</a><MotionProvider><PageProgress /><Navigation locale={locale} name={profile.name[locale]} location={profile.location[locale]} text={{nav:copy[locale].nav, navigation:copy[locale].navigation, discuss:copy[locale].discuss, menu:copy[locale].menu, close:copy[locale].close, wordmarkLine:copy[locale].wordmarkLine, free:copy[locale].free}} />{children}</MotionProvider></body></html>;
 }

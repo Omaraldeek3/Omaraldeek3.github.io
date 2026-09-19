@@ -18,7 +18,7 @@ type Text = typeof copy.en;
 const loadMotionFeatures = () => import("./motion-features").then(module => module.default);
 export function MotionProvider({children}:{children:ReactNode}) { return <LazyMotion features={loadMotionFeatures} strict>{children}</LazyMotion>; }
 
-export function Navigation({ locale, name, location, text: t }: { locale: Locale; name: string; location: string; text: Pick<Text,"nav"|"navigation"|"discuss"|"menu"|"close"> }) {
+export function Navigation({ locale, name, location, text: t }: { locale: Locale; name: string; location: string; text: Pick<Text,"nav"|"navigation"|"discuss"|"menu"|"close"|"wordmarkLine"|"free"> }) {
   const pathname = usePathname();
   const dialog = useRef<HTMLDialogElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
@@ -38,11 +38,15 @@ export function Navigation({ locale, name, location, text: t }: { locale: Locale
     return () => { document.body.style.overflow = previous; };
   }, [open]);
   function close() { dialog.current?.close(); setOpen(false); trigger.current?.focus(); }
-  const ids = ["work", "services", "process", "contact"];
+  // The header is shared with /work/[slug], so every section link is absolute:
+  // a bare "#code" would point at an anchor those pages do not have.
+  const toolsHref = locale === "ar" ? "/tools?lang=ar" : "/tools";
+  const sections = [{ id: "code", label: t.nav[0] }, { id: "design", label: t.nav[1] }, { id: "systems", label: t.nav[2] }];
+  const toolsLabel = t.nav[3];
   return <>
     <header className={`header ${scrolled ? "is-scrolled" : ""}`}>
-      <Link href={`/${locale}`} className="wordmark" aria-label={name}><span>{name}<small>{locale === "ar" ? "تصميم وتطوير" : "DESIGN & DEVELOPMENT"}</small></span></Link>
-      <nav className="desktop-nav" aria-label={t.navigation}>{t.nav.map((n, i) => <a href={`/${locale}#${ids[i]}`} key={n}>{n}</a>)}</nav>
+      <Link href={`/${locale}`} className="wordmark" aria-label={name}><span>{name}<small>{t.wordmarkLine}</small></span></Link>
+      <nav className="desktop-nav" aria-label={t.navigation}>{sections.map(section => <a href={`/${locale}#${section.id}`} key={section.id}>{section.label}</a>)}<Link className="nav-tools" href={toolsHref}>{toolsLabel}<span className="nav-free">{t.free}</span></Link></nav>
       <div className="nav-actions"><Link className="language-switch" href={switchUrl} lang={other} hrefLang={other} aria-label={other === "en" ? "Switch to English" : "التبديل إلى العربية"}><span aria-hidden="true">◎</span>{other === "en" ? "EN" : "عربي"}</Link><a href={`/${locale}#contact`} className="nav-contact">{t.discuss}<span className="direction-arrow" aria-hidden="true">↗</span></a><button ref={trigger} type="button" className="menu-toggle" aria-label={t.menu} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => { dialog.current?.showModal(); setOpen(true); }}><span /><span /></button></div>
     </header>
     <dialog ref={dialog} id="mobile-navigation" className="mobile-dialog" aria-label={t.navigation} onCancel={e => { e.preventDefault(); close(); }} onClick={e => { if (e.target === dialog.current) close(); }} onKeyDown={e => {
@@ -52,7 +56,7 @@ export function Navigation({ locale, name, location, text: t }: { locale: Locale
       const first = items[0], last = items[items.length - 1];
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-    }}><div className="mobile-dialog-inner"><button className="dialog-close" aria-label={t.close} onClick={close}>×</button><span className="eyebrow">{name}</span><nav>{t.nav.map((n, i) => <a href={`/${locale}#${ids[i]}`} key={n} onClick={close}><span className="mono">0{i + 1}</span>{n}<span className="direction-arrow">↗</span></a>)}</nav><p>{location}</p></div></dialog>
+    }}><div className="mobile-dialog-inner"><button className="dialog-close" aria-label={t.close} onClick={close}>×</button><span className="eyebrow">{name}</span><nav>{sections.map((section, i) => <a href={`/${locale}#${section.id}`} key={section.id} onClick={close}><span className="mono">0{i + 1}</span>{section.label}<span className="direction-arrow">↗</span></a>)}<Link href={toolsHref} onClick={close}><span className="mono">04</span>{toolsLabel}<span className="direction-arrow">↗</span></Link></nav><p>{location}</p></div></dialog>
   </>;
 }
 
