@@ -4,6 +4,8 @@ import { copy, isLocale, profile } from "@/content/site";
 import { HeroTitle } from "@/components/interactions";
 import { HeroContour, Hairline, PointerReadout } from "@/components/cut-line";
 import { FactoryTrack } from "@/components/factory";
+import { BoxFlat } from "@/components/box-flat";
+import { titles, toolIds } from "@/toolkit/copy";
 import { isolated, validUrl } from "@/components/sections";
 
 // With JavaScript off the decorative strokes must still be drawn, so the
@@ -87,6 +89,21 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             </aside>
           </div>
           {youtube && <p className="factory-channel"><a href={youtube} target="_blank" rel="noopener noreferrer">{t.watchChannel}<span aria-hidden="true">↗</span></a></p>}
+        </div>
+      </section>
+      <section id="cut-studio" className="studio">
+        <div className="wrap studio-inner">
+          <BoxFlat />
+          <div className="studio-copy">
+            <span className="eyebrow">{t.toolsLabel}</span>
+            <h2>{isolated(t.toolsTitle)}</h2>
+            <p className="studio-text">{isolated(t.toolsText)}</p>
+            <ol className="studio-tools">
+              {toolIds.map((id, index) => <li key={id}><span className="mono" dir="ltr">{String(index + 1).padStart(2, "0")}</span><span className="name">{titles[id][locale === "ar" ? 1 : 0]}</span></li>)}
+            </ol>
+            <div className="studio-actions"><Link className="button button-sheet" href={toolsHref}>{t.toolsCta}<span aria-hidden="true">↗</span></Link></div>
+            <p className="studio-small">{isolated(t.toolsSmallPrint)}</p>
+          </div>
         </div>
       </section>
     </main>
