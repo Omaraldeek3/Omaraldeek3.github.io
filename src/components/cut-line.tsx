@@ -107,3 +107,26 @@ export function Hairline() {
     transition={reduced ? { duration: 0 } : { duration: 0.8, ease }}
   />;
 }
+
+// The footer part: a rounded rectangle with two holding tabs (the gaps at the
+// top and bottom centre), like a part not yet broken free of the sheet. Both
+// halves draw when the footer comes into view; then the signature drops 2px.
+const SIGNATURE_FALLBACK = "M50.8 0 L97 0 Q100 0 100 6 L100 94 Q100 100 97 100 L50.8 100 M49.2 100 L3 100 Q0 100 0 94 L0 6 Q0 0 3 0 L49.2 0";
+function signatureHalves({ w, h }: Size) {
+  const r = 12, tab = 7, mid = w / 2;
+  return [
+    `M${mid + tab} 0 L${w - r} 0 Q${w} 0 ${w} ${r} L${w} ${h - r} Q${w} ${h} ${w - r} ${h} L${mid + tab} ${h}`,
+    `M${mid - tab} ${h} L${r} ${h} Q0 ${h} 0 ${h - r} L0 ${r} Q0 0 ${r} 0 L${mid - tab} 0`,
+  ];
+}
+export function SignatureCut({ children }: { children: ReactNode }) {
+  const reduced = useReducedMotion();
+  const [ref, size] = useSize();
+  const duration = reduced ? 0 : 1.2;
+  return <m.div className="signature-block" initial="sheet" whileInView="cut" viewport={{ once: true, amount: 0.5 }}>
+    <svg ref={ref} className="footer-contour" viewBox={size ? `0 0 ${size.w} ${size.h}` : "0 0 100 100"} preserveAspectRatio="none" aria-hidden="true">
+      {size ? signatureHalves(size).map((d, index) => <m.path key={index} d={d} variants={{ sheet: { pathLength: reduced ? 1 : 0 }, cut: { pathLength: 1 } }} transition={{ duration, ease }} />) : <path className="contour-fallback" d={SIGNATURE_FALLBACK} />}
+    </svg>
+    <m.div variants={{ sheet: { y: 0 }, cut: { y: reduced ? 0 : 2 } }} transition={reduced ? { duration: 0 } : { duration: 0.35, delay: duration, ease }}>{children}</m.div>
+  </m.div>;
+}

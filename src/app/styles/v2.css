@@ -198,7 +198,9 @@ html[lang="ar"] .v2 h1, html[lang="ar"] .v2 h2 { font-family:var(--font-arabic),
 
 /* ---- 4.7 Footer signature ------------------------------------------------ */
 
-.v2 .footer { border-top:1px solid var(--line); padding-block:64px 34px; }
+.v2 .footer { position:relative; border-top:1px solid var(--line); padding-block:64px 34px; }
+.v2 .footer .reg-mark-tl, .v2 .footer .reg-mark-tr { top:24px; }
+.v2 .footer .reg-mark-bl, .v2 .footer .reg-mark-br { bottom:24px; }
 .v2 .signature-block { position:relative; display:grid; place-items:center; padding-block:clamp(40px,7vw,84px); }
 .v2 .footer-signature { font-family:var(--font-latin),sans-serif; font-weight:800; font-size:clamp(30px,10.2vw,148px); letter-spacing:-.045em; line-height:1.2; color:var(--paper); white-space:nowrap; margin:0; }
 .v2 .footer-contour { position:absolute; inset:-12px; width:calc(100% + 24px); height:calc(100% + 24px); overflow:visible; pointer-events:none; color:var(--cut); }

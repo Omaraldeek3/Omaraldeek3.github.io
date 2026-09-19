@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { copy, isLocale, profile } from "@/content/site";
+import { copy, isLocale, profile, projects } from "@/content/site";
 import { HeroTitle } from "@/components/interactions";
 import { HeroContour, Hairline, PointerReadout } from "@/components/cut-line";
 import { FactoryTrack } from "@/components/factory";
-import { isolated, validUrl } from "@/components/sections";
+import { SitePreview } from "@/components/preview";
+import { Contact, Footer, isolated, validUrl } from "@/components/sections";
 
 // With JavaScript off the decorative strokes must still be drawn, so the
 // motion initial states are overridden here. <noscript> keeps this page-scoped.
@@ -89,6 +90,34 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           {youtube && <p className="factory-channel"><a href={youtube} target="_blank" rel="noopener noreferrer">{t.watchChannel}<span aria-hidden="true">↗</span></a></p>}
         </div>
       </section>
+      <section id="studies" className="studies">
+        <div className="wrap">
+          <div className="studies-head">
+            <span className="eyebrow">{t.studiesLabel}</span>
+            <h2>{t.studiesTitle}</h2>
+            <p className="studies-intro">{t.studiesIntro}</p>
+          </div>
+          <div className="studies-strip">
+            {projects.map(project => <Link className="study" href={`/${locale}/work/${project.slug}`} key={project.slug}>
+              <div className="study-frame"><SitePreview project={project} locale={locale} imageSizes="(max-width: 1024px) 78vw, 30vw" /></div>
+              <div className="study-meta">
+                <h3>{project[locale].name}</h3>
+                <span className="study-disclosure">{t.concept}</span>
+              </div>
+            </Link>)}
+          </div>
+        </div>
+      </section>
+      <section className="principles">
+        <div className="wrap">
+          <h2>{t.principlesTitle}</h2>
+          <ol className="principle-list">
+            {t.principles.map((principle, index) => <li key={principle}><span className="mono" dir="ltr">{`0${index + 1}`}</span>{principle}</li>)}
+          </ol>
+        </div>
+      </section>
+      <Contact locale={locale} />
     </main>
+    <Footer locale={locale} cut />
   </div>;
 }
