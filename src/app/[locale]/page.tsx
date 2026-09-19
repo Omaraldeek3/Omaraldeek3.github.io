@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { copy, isLocale, profile } from "@/content/site";
 import { HeroTitle } from "@/components/interactions";
 import { HeroContour, Hairline, PointerReadout } from "@/components/cut-line";
-import { isolated } from "@/components/sections";
+import { FactoryTrack } from "@/components/factory";
+import { isolated, validUrl } from "@/components/sections";
 
 // With JavaScript off the decorative strokes must still be drawn, so the
 // motion initial states are overridden here. <noscript> keeps this page-scoped.
@@ -15,6 +16,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   const t = copy[locale];
   // Every Arabic entry point to Cut Studio uses the query, never a path.
   const toolsHref = locale === "ar" ? "/tools?lang=ar" : "/tools";
+  // The channel link renders only when the profile holds a valid https URL.
+  const youtube = validUrl(profile.links.youtube);
   return <div className="v2">
     <noscript dangerouslySetInnerHTML={{ __html: NO_SCRIPT_STYLE }} />
     <main id="main">
@@ -54,6 +57,36 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
               <a className="layer-proof" href={layer.proofHref}>{isolated(layer.proof)}<span aria-hidden="true">↗</span></a>
             </article>)}
           </div>
+        </div>
+      </section>
+      <section id="systems-flow" className="factory">
+        <div className="wrap">
+          <div className="factory-head">
+            <span className="eyebrow">{t.factoryLabel}</span>
+            <h2>{t.factoryTitle}</h2>
+            <p className="factory-intro">{t.factoryIntro}</p>
+          </div>
+          <div className="factory-body">
+            <div className="factory-list">
+              <FactoryTrack />
+              <ol className="factory-stations">
+                {t.stations.map(station => <li className="station" key={station.code}>
+                  <span className="station-code mono" dir="ltr">{station.code}</span>
+                  <div className="station-body">
+                    <h3>{station.title}</h3>
+                    <p className="station-text">{isolated(station.text)}</p>
+                    <div className="station-tags">{station.tags.map(tag => <span key={tag} dir="ltr">{tag}</span>)}</div>
+                  </div>
+                </li>)}
+              </ol>
+            </div>
+            <aside className="oversight">
+              <h3>{t.oversightTitle}</h3>
+              <p>{isolated(t.oversightText)}</p>
+              <div className="oversight-tags">{t.oversightTags.map(tag => <span key={tag} dir="ltr">{tag}</span>)}</div>
+            </aside>
+          </div>
+          {youtube && <p className="factory-channel"><a href={youtube} target="_blank" rel="noopener noreferrer">{t.watchChannel}<span aria-hidden="true">↗</span></a></p>}
         </div>
       </section>
     </main>

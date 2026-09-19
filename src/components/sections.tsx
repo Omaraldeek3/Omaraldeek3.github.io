@@ -3,6 +3,11 @@ import { copy, profile, type Locale } from "@/content/site";
 import { ProjectBrief } from "./interactions";
 
 export function Arrow() { return <span className="direction-arrow" aria-hidden="true">↗</span>; }
+// One gate for every profile link: a full https URL, or nothing at all.
+export function validUrl(value: string) {
+  if (!value) return null;
+  try { const url = new URL(value); return url.protocol === "https:" ? url.toString() : null; } catch { return null; }
+}
 // Copy keeps Latin words inside Arabic sentences in [brackets]. They render as
 // <bdi> so the punctuation around them stays put in RTL. Plain text in, nodes out.
 export function isolated(text: string) {
