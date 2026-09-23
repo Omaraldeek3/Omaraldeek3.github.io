@@ -442,6 +442,65 @@ a { color: var(--live); }
 .study-meta h2 { margin: 0.2rem 0 0.15rem; font-size: 1.2rem; }
 .study-meta p { margin: 0; color: var(--text-secondary); font-size: 0.92rem; }
 
+/* ——— Contact ——— */
+
+.contact-channels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-block-end: 2rem;
+}
+
+.contact-pending {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.86rem;
+  max-inline-size: 52ch;
+}
+
+.contact-form {
+  display: grid;
+  gap: 0.9rem;
+  max-inline-size: 34rem;
+}
+
+.contact-form label {
+  display: grid;
+  gap: 0.4rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.contact-form input,
+.contact-form textarea {
+  inline-size: 100%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 0.7rem 0.8rem;
+  color: var(--text-primary);
+  font: inherit;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus { border-color: var(--live); }
+
+.contact-form button { justify-self: start; }
+
+.contact-ok { color: var(--live); margin: 0; }
+.contact-problem { color: var(--warn); margin: 0; }
+
+.contact-faq { margin-block-start: 3rem; max-inline-size: 60ch; }
+
+.contact-faq summary {
+  cursor: pointer;
+  color: var(--text-secondary);
+  padding-block: 0.5rem;
+}
+
+.contact-faq h3 { margin: 1rem 0 0.25rem; font-size: 1rem; }
+.contact-faq p { margin: 0; color: var(--text-secondary); }
+
 /* ——— Shell ——— */
 
 .skip-link {

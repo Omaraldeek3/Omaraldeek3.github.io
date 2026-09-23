@@ -5,6 +5,7 @@ import { Fields } from "@/ui/fields";
 import { LabSection } from "@/ui/lab-section";
 import { Process } from "@/ui/process";
 import { About } from "@/ui/about";
+import { Contact } from "@/ui/contact";
 
 export default async function Home({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
@@ -16,7 +17,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
       <LabSection locale={locale} />
       <Process locale={locale} />
       <About locale={locale} />
-      <section id="contact" className="section" />
+      <Contact locale={locale} />
     </main>
   );
 }
