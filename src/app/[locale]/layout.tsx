@@ -11,6 +11,7 @@ import "../globals.css";
 import "../lab.css";
 import "../motion.css";
 import "../saas.css";
+import "../concepts.css";
 
 // Every face is served from node_modules, so a visit makes no font request to
 // any third party. Tajawal is the Arabic counterpart to the Latin grotesk:
@@ -39,6 +40,15 @@ const mono = localFont({
   variable: "--font-mono-loaded",
   weight: "100 800",
   display: "swap",
+});
+
+// Only the design studies use it: the rounded face some of them are set in.
+const rounded = localFont({
+  src: "../../../node_modules/@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2",
+  variable: "--font-rounded-loaded",
+  weight: "200 800",
+  display: "swap",
+  preload: false,
 });
 
 export const viewport: Viewport = {
@@ -88,7 +98,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
     <html
       lang={locale}
       dir={locale === "ar" ? "rtl" : "ltr"}
-      className={`${arabic.variable} ${latin.variable} ${mono.variable}`}
+      className={`${arabic.variable} ${latin.variable} ${mono.variable} ${rounded.variable}`}
     >
       <body>
         {/* Driven entirely by a scroll timeline in CSS; with no such timeline

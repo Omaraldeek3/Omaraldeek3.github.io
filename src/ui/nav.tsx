@@ -2,7 +2,8 @@ import Link from "next/link";
 import { copy, profile } from "@/content/site";
 import { oppositeLocale, type Locale } from "@/content/locales";
 
-// Anchors and links only, so the whole nav works with JavaScript disabled.
+// Links only, so the whole nav works with JavaScript disabled. Each section
+// link carries the locale, so it also leads home from a lab page.
 export function Nav({ locale }: { locale: Locale }) {
   const t = copy[locale];
   const other = oppositeLocale(locale);
@@ -17,10 +18,10 @@ export function Nav({ locale }: { locale: Locale }) {
           {profile.name[locale]}
         </Link>
         <div className="nav-links">
-          <a href="#lab">{t.nav2.lab}</a>
-          <a href="#process">{t.nav2.process}</a>
-          <a href="#about">{t.nav2.about}</a>
-          <a href="#contact">{t.nav2.contact}</a>
+          <Link href={`/${locale}#lab`}>{t.nav2.lab}</Link>
+          <Link href={`/${locale}#process`}>{t.nav2.process}</Link>
+          <Link href={`/${locale}#about`}>{t.nav2.about}</Link>
+          <Link href={`/${locale}#contact`}>{t.nav2.contact}</Link>
         </div>
         <Link className="locale-switch" href={`/${other}`} lang={other}>
           {t.nav2.switchTo}

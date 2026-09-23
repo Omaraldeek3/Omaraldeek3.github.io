@@ -96,6 +96,10 @@ export const copy = {
     backTop: "إلى الأعلى",
     backWork: "العودة إلى الأعمال", goal: "الهدف", solution: "الحل التصميمي", delivered: "الأجزاء المنفذة", preview: "المعاينة", openPreview: "افتح المعاينة المحلية", nextProject: "المشروع التالي", projectDetails: "عن المشروع", previewNotice: "هذه معاينة تصميمية محلية. العلامة والمحتوى توضيحيان، ولا يوجد نشاط تجاري أو حجز أو شراء فعلي.", backProject: "العودة إلى تفاصيل المشروع",
     concept: "نموذج تجريبي — ليس مشروع عميل",
+    studiesAll: "الكل", studiesFilter: "تصفية الدراسات حسب المجال", studiesCount: "دراسة، كل واحدة بهويتها",
+    studyIdentity: "الهوية", studyPalette: "الألوان", studyFace: "الخط", studyComponents: "عناصر الواجهة",
+    studyIdea: "الفكرة", studyDecisions: "قرارات التصميم", studyPage: "الصفحة الرئيسية", studyNext: "الدراسة التالية",
+    studyBack: "كل الدراسات", studySample: "أبجد هوز حطي كلمن",
 
     // ——— الهيكل الجديد: مجالات خمسة، ومختبر يضم الأعمال الحقيقية ———
     nav2: { lab: "المختبر", process: "كيف أعمل", about: "عنّي", contact: "تواصل", switchTo: "English" },
@@ -209,6 +213,10 @@ export const copy = {
     backTop: "Back to top",
     backWork: "Back to work", goal: "The goal", solution: "Design approach", delivered: "What was built", preview: "Preview", openPreview: "Open local preview", nextProject: "Next project", projectDetails: "About the project", previewNotice: "A local design concept. The brand and content are illustrative; no real business, booking or purchase is available.", backProject: "Back to project details",
     concept: "Design concept — not a client project",
+    studiesAll: "All", studiesFilter: "Filter studies by field", studiesCount: "studies, each with its own identity",
+    studyIdentity: "Identity", studyPalette: "Colour", studyFace: "Type", studyComponents: "Interface parts",
+    studyIdea: "The idea", studyDecisions: "Design decisions", studyPage: "The home page", studyNext: "Next study",
+    studyBack: "All studies", studySample: "The quick brown fox jumps",
 
     // ——— The new structure: five fields, one lab holding the real work ———
     nav2: { lab: "Lab", process: "How I work", about: "About", contact: "Contact", switchTo: "العربية" },

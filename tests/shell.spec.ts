@@ -5,8 +5,9 @@ test("the nav holds the four section links and no Cut Studio entry", async ({ pa
   await page.goto("/ar");
   const nav = page.locator("nav");
   await expect(nav).not.toContainText("Cut Studio");
+  // Each link carries the locale, so it leads home from any page.
   for (const id of ["#lab", "#process", "#about", "#contact"])
-    await expect(nav.locator(`a[href='${id}']`)).toHaveCount(1);
+    await expect(nav.locator(`a[href='/ar${id}']`)).toHaveCount(1);
 });
 
 test("the locale switch keeps you on the same page", async ({ page }) => {
