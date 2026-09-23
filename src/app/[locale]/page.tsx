@@ -1,6 +1,10 @@
 import { notFound } from "next/navigation";
 import { isLocale } from "@/content/locales";
 import { Hero } from "@/ui/hero";
+import { Fields } from "@/ui/fields";
+import { LabSection } from "@/ui/lab-section";
+import { Process } from "@/ui/process";
+import { About } from "@/ui/about";
 
 export default async function Home({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
@@ -8,10 +12,11 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
   return (
     <main id="main">
       <Hero locale={locale} />
-      <section id="lab" />
-      <section id="process" />
-      <section id="about" />
-      <section id="contact" />
+      <Fields locale={locale} />
+      <LabSection locale={locale} />
+      <Process locale={locale} />
+      <About locale={locale} />
+      <section id="contact" className="section" />
     </main>
   );
 }
