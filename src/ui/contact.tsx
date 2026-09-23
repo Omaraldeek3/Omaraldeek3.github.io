@@ -48,7 +48,7 @@ export function Contact({ locale }: { locale: Locale }) {
   }
 
   return (
-    <Section id="contact" label={t.contactLabel} title={t.contactTitle}>
+    <Section id="contact" index="05 / 05" label={t.contactLabel} title={t.contactTitle}>
       <div className="contact-channels">
         {profile.whatsapp && (
           <a href={`https://wa.me/${profile.whatsapp}`}>{t.whatsapp}</a>

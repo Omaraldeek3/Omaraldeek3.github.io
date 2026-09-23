@@ -8,36 +8,41 @@ import { Footer } from "@/ui/footer";
 import "../globals.css";
 
 // Every face is served from node_modules, so a visit makes no font request to
-// any third party. Arabic gets two of them, the way a printed page does: a
-// geometric Kufi cut for the display sizes and a humanist one for reading.
+// any third party. Tajawal is the Arabic counterpart to the Latin grotesk:
+// same geometry, same weight at display size, so a headline reads the same in
+// either language. Tajawal ships as static cuts, hence the weight list.
 const arabic = localFont({
-  src: "../../../node_modules/@fontsource-variable/cairo/files/cairo-arabic-wght-normal.woff2",
+  src: [
+    { path: "../../../node_modules/@fontsource/tajawal/files/tajawal-arabic-400-normal.woff2", weight: "400" },
+    { path: "../../../node_modules/@fontsource/tajawal/files/tajawal-arabic-500-normal.woff2", weight: "500" },
+    { path: "../../../node_modules/@fontsource/tajawal/files/tajawal-arabic-700-normal.woff2", weight: "700" },
+    { path: "../../../node_modules/@fontsource/tajawal/files/tajawal-arabic-900-normal.woff2", weight: "900" },
+  ],
   variable: "--font-ar-loaded",
-  weight: "200 1000",
-  display: "swap",
-});
-
-const arabicDisplay = localFont({
-  src: "../../../node_modules/@fontsource-variable/noto-kufi-arabic/files/noto-kufi-arabic-arabic-wght-normal.woff2",
-  variable: "--font-ar-display-loaded",
-  weight: "100 900",
   display: "swap",
 });
 
 const latin = localFont({
-  src: "../../../node_modules/@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2",
+  src: "../../../node_modules/@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2",
   variable: "--font-en-loaded",
-  weight: "200 800",
+  weight: "300 700",
+  display: "swap",
+});
+
+const mono = localFont({
+  src: "../../../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2",
+  variable: "--font-mono-loaded",
+  weight: "100 800",
   display: "swap",
 });
 
 export const viewport: Viewport = {
+  // One scheme only. The site is built on a single dark surface, so a light
+  // theme would be a second design, not a variant of this one.
+  colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
-  themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#14120e" },
-    { media: "(prefers-color-scheme: light)", color: "#f4f1ea" },
-  ],
+  themeColor: "#09090b",
 };
 
 export function generateStaticParams() {
@@ -78,7 +83,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
     <html
       lang={locale}
       dir={locale === "ar" ? "rtl" : "ltr"}
-      className={`${arabic.variable} ${arabicDisplay.variable} ${latin.variable}`}
+      className={`${arabic.variable} ${latin.variable} ${mono.variable}`}
     >
       <body>
         <Nav locale={locale} />

@@ -19,15 +19,18 @@ test("every token resolves in both colour schemes", async ({ page }) => {
   }
 });
 
-test("the palette actually changes between schemes", async ({ page }) => {
+// The site is built on one dark surface on purpose. A light scheme would be a
+// second design rather than a variant of this one, so the palette must not
+// move when the visitor's system preference does — and a half-applied light
+// scheme, which is what a stray token would produce, must never appear.
+test("the palette holds still across colour schemes", async ({ page }) => {
   await page.emulateMedia({ colorScheme: "dark" });
   await page.goto("/ar");
-  const dark = await page.evaluate(readTokens, ["--surface-0", "--text-primary"]);
+  const dark = await page.evaluate(readTokens, NAMES);
   await page.emulateMedia({ colorScheme: "light" });
   await page.goto("/ar");
-  const light = await page.evaluate(readTokens, ["--surface-0", "--text-primary"]);
-  expect(dark[0]).not.toBe(light[0]);
-  expect(dark[1]).not.toBe(light[1]);
+  const light = await page.evaluate(readTokens, NAMES);
+  expect(light).toEqual(dark);
 });
 
 test("the page background follows the surface token", async ({ page }) => {
@@ -97,13 +100,13 @@ test("no horizontal overflow at phone width", async ({ page }) => {
   expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false);
 });
 
-test("Arabic sets display and text in two different faces", async ({ page }) => {
+test("the mono face is its own, not the text face", async ({ page }) => {
   await page.goto("/ar");
-  const [display, text] = await page.evaluate(() => [
-    getComputedStyle(document.querySelector("h1")!).fontFamily,
+  const [mono, text] = await page.evaluate(() => [
+    getComputedStyle(document.querySelector(".section-index")!).fontFamily,
     getComputedStyle(document.body).fontFamily,
   ]);
-  expect(display).not.toBe("");
+  expect(mono).not.toBe("");
   expect(text).not.toBe("");
-  expect(display).not.toBe(text);
+  expect(mono).not.toBe(text);
 });

@@ -1,40 +1,40 @@
 import { copy } from "@/content/site";
 import type { Locale } from "@/content/locales";
-import { HeroInk } from "./hero-ink";
 
-// Type only. The animated production line moved to the factory page, where the
-// six stations it draws are named right underneath it. What moves here is the
-// red plate behind the headline, which HeroInk knocks out of register.
 export function Hero({ locale }: { locale: Locale }) {
   const t = copy[locale];
   return (
-    <HeroInk>
-      <div className="shell">
-        <p className="hero-eyebrow mono">{t.heroEyebrow}</p>
-        <div className="hero-plate">
-          <div className="hero-ink-ghost" aria-hidden="true">
-            {t.heroLines.map(line => (
-              <span key={line}>{line}</span>
-            ))}
-          </div>
-          <h1 className="hero-headline">
-            {t.heroLines.map(line => (
-              <span key={line}>{line}</span>
-            ))}
-          </h1>
-        </div>
-        <div className="hero-foot">
-          <p className="hero-lead">{t.heroLead}</p>
-          <div className="hero-actions">
-            <a className="button button-live" href="#lab">
-              {t.labLabel}
-            </a>
-            <a className="button button-quiet" href="#contact">
-              {t.discuss}
-            </a>
-          </div>
-        </div>
+    <section className="hero">
+      {/* Dot matrix and one warm light. Both decorative, both behind the type. */}
+      <div className="hero-ground" aria-hidden="true" />
+
+      {/* Each chip repeats a fact a section below also states, so a narrow
+          viewport can drop them without losing anything. */}
+      {t.heroChips.map(chip => (
+        <span className="hero-chip" key={chip.text} aria-hidden="true">
+          <b>{chip.mark}</b>
+          {chip.text}
+        </span>
+      ))}
+
+      <p className="hero-badge">{t.heroBadge}</p>
+      <h1 className="hero-headline">
+        {t.heroLines.map(line => (
+          <span key={line}>{line}</span>
+        ))}
+      </h1>
+      <p className="hero-lead">{t.heroLead}</p>
+      <div className="hero-actions">
+        <a className="button button-live" href="#lab">
+          {t.labLabel}
+        </a>
+        <a className="button button-quiet" href="#contact">
+          {t.discuss}
+        </a>
       </div>
-    </HeroInk>
+      <p className="hero-scroll mono" aria-hidden="true">
+        {t.scrollCue}
+      </p>
+    </section>
   );
 }

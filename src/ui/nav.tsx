@@ -9,9 +9,11 @@ export function Nav({ locale }: { locale: Locale }) {
   return (
     <header className="site-nav">
       <a className="skip-link" href="#main">{t.skip}</a>
-      <nav className="shell site-nav-inner" aria-label={t.navigation}>
+      <nav className="site-nav-inner" aria-label={t.navigation}>
         <Link className="wordmark" href={`/${locale}`}>
-          <span className="wordmark-dot" aria-hidden="true" />
+          <span className="wordmark-dot" aria-hidden="true">
+            {locale === "ar" ? "ع" : "O"}
+          </span>
           {profile.name[locale]}
         </Link>
         <div className="nav-links">

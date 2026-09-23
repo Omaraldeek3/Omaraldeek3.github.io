@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { isLocale } from "@/content/locales";
 import { Hero } from "@/ui/hero";
+import { Stats } from "@/ui/stats";
 import { Fields } from "@/ui/fields";
 import { LabSection } from "@/ui/lab-section";
 import { Process } from "@/ui/process";
@@ -13,6 +14,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
   return (
     <main id="main">
       <Hero locale={locale} />
+      <Stats locale={locale} />
       <Fields locale={locale} />
       <LabSection locale={locale} />
       <Process locale={locale} />

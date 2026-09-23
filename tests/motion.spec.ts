@@ -84,49 +84,33 @@ test("the scene does not throw on any viewport", async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
-// ——— The hero's two ink plates ———
 
-const inkVar = (page: import("@playwright/test").Page, name: string) =>
-  page.locator("section.hero").evaluate(
-    (el, property) => getComputedStyle(el).getPropertyValue(property).trim(),
-    name,
-  );
+// ——— The hero ———
 
-test("the hero prints a second plate, marked decorative", async ({ page }) => {
+test("the hero's ground and chips are decoration, not content", async ({ page }) => {
   await page.goto("/ar");
-  const ghost = page.locator(".hero-ink-ghost");
-  await expect(ghost).toBeVisible();
-  await expect(ghost).toHaveAttribute("aria-hidden", "true");
-  // Both plates carry the same words, so the red one must never be read out.
-  await expect(page.locator("h1")).toHaveCount(1);
+  await expect(page.locator(".hero-ground")).toHaveAttribute("aria-hidden", "true");
+  const chips = page.locator(".hero-chip");
+  await expect(chips).toHaveCount(4);
+  for (let i = 0; i < 4; i++)
+    await expect(chips.nth(i)).toHaveAttribute("aria-hidden", "true");
 });
 
-test("reduced motion prints one plate only", async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: "reduce" });
+test("the chips sit against the hero box rather than in its flow", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/ar");
-  await expect(page.locator("h1")).toBeVisible();
-  await expect(page.locator(".hero-ink-ghost")).toBeHidden();
+  const placement = await page.locator(".hero-chip").first().evaluate(el =>
+    getComputedStyle(el).position);
+  expect(placement).toBe("absolute");
 });
 
-test("scrolling pulls the plates out of register", async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: "no-preference" });
+test("every fact on a chip is also stated in a section below", async ({ page }) => {
   await page.goto("/ar");
-  await expect.poll(() => inkVar(page, "--ink-x")).not.toBe("");
-  const atRest = parseFloat(await inkVar(page, "--ink-x"));
-  await page.mouse.wheel(0, 700);
-  await expect
-    .poll(async () => parseFloat(await inkVar(page, "--ink-x")))
-    .toBeGreaterThan(atRest);
-});
-
-test("pressing the sheet brings the plates back into register", async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: "no-preference" });
-  await page.goto("/ar");
-  const box = (await page.locator("section.hero").boundingBox())!;
-  await page.mouse.move(box.x + box.width * 0.3, box.y + box.height * 0.5);
-  await expect.poll(async () => parseFloat(await inkVar(page, "--ink-x"))).not.toBe(0);
-  await page.mouse.down();
-  await expect.poll(async () => parseFloat(await inkVar(page, "--ink-x"))).toBe(0);
-  await page.mouse.up();
-  await expect.poll(async () => parseFloat(await inkVar(page, "--ink-x"))).not.toBe(0);
+  // The chips vanish on narrow viewports, so nothing may live only on them.
+  const numbers = await page.locator(".hero-chip b").allTextContents();
+  const stats = await page.locator(".stat b").allTextContents();
+  for (const value of ["٧"]) {
+    expect(numbers, "chip numbers").toContain(value);
+    expect(stats, "stat strip").toContain(value);
+  }
 });

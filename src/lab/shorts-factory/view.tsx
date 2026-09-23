@@ -26,7 +26,7 @@ export function ShortsFactoryView({ locale }: { locale: Locale }) {
               {station.code}
             </span>
             <div className="station-body">
-              <span className="station-index mono" aria-hidden="true">
+              <span className="station-index mono" dir="ltr" aria-hidden="true">
                 {String(index + 1).padStart(2, "0")}
               </span>
               <h2>{station.title}</h2>

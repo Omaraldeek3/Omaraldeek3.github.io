@@ -35,8 +35,22 @@ export const copy = {
     wordmarkLine: "برمجة · تصميم · أنظمة", nav: ["البرمجة", "التصميم", "الأنظمة", "Cut Studio"],
     free: "مجاني", discuss: "تواصل",
     heroEyebrow: "مبرمج · مصمّم · باني أنظمة أتمتة",
-    heroLines: ["أرسم الشكل.", "أكتب الكود.", "وأبني النظام الذي يُكمل العمل."],
-    heroLead: "عمر الديك، من فلسطين. أصمّم واجهات وقطعًا تُقصّ بالليزر، أبني مواقع وتطبيقات ويب، وأشغّل مصنعًا مؤتمتًا لمقاطع الشورتس بالعربية والإنجليزية.",
+    heroBadge: "استوديو شخص واحد · من فلسطين إلى كل مكان",
+    heroChips: [
+      { mark: "٧", text: "أدوات مجانية في متصفحك" },
+      { mark: "◆", text: "مصنع يعمل كل يوم" },
+      { mark: "↗", text: "قناتان: عربية وإنجليزية" },
+      { mark: "✦", text: "بلا حساب ولا رفع ملفات" },
+    ],
+    scrollCue: "مرّر",
+    stats: [
+      { value: "٧", label: "أدوات مجانية في المتصفح" },
+      { value: "٦", label: "محطات في خط الإنتاج" },
+      { value: "٢", label: "قناتان تنشران كل يوم" },
+      { value: "٣", label: "دراسات تصميم كاملة" },
+    ],
+    heroLines: ["أداة واحدة لا تكفي.", "أبني ما يُشغّلها."],
+    heroLead: "عمر الديك، من فلسطين. أصمّم واجهات وقطعًا تُقصّ بالليزر، أبني مواقع وتطبيقات ويب، وأربط الخدمات ببعضها حتى يُكمل النظام العمل وحده.",
     heroCtaTools: "جرّب Cut Studio مجانًا", heroCtaFactory: "كيف يعمل المصنع", heroScroll: "مرّر لتتبع الخط",
     layersLabel: "ثلاث طبقات، ملف واحد",
     layers: [
@@ -65,7 +79,8 @@ export const copy = {
     studiesIntro: "ثلاث تجارب أبني فيها اتجاهًا بصريًا كاملًا لنشاط متخيَّل، من الفكرة إلى واجهة تعمل.",
     principlesTitle: "أبني ما أستخدمه.",
     principles: ["أبدأ بالمشكلة، لا بالشكل.", "أجعل ما أبنيه يعمل على الهاتف وباللغتين.", "وأترك الأداة مفيدة لغيري أيضًا."],
-    contactTitle: "عندك فكرة تحتاج شكلًا، أو كودًا، أو نظامًا؟",
+    contactTitle: "عندك فكرة تحتاج شكلًا أو كودًا،\nأو نظامًا يُكملها؟",
+    processIntro: "ثلاث قواعد أعمل بها، لا شعارات. كل واحدة منها تركت أثرها في شيء موجود في المختبر.",
     whatsapp: "تواصل عبر واتساب", email: "أرسل بريدًا", pendingContact: "بيانات التواصل ستُضاف قريبًا. يمكنك الآن تجهيز موجز مشروعك والاحتفاظ به.",
     prepare: "جهّز موجز مشروعك", briefTitle: "لنرتّب فكرتك.", briefHelp: "هذا الموجز يُحفظ على جهازك فقط، ولا يُرسل إلى أي جهة.",
     nameLabel: "اسمك أو اسم المشروع", ideaLabel: "ماذا تريد أن نبني؟", briefSubmit: "حمّل موجز المشروع", briefError: "أدخل الاسم ووصفًا لا يقل عن 10 أحرف.",
@@ -77,7 +92,8 @@ export const copy = {
 
     // ——— الهيكل الجديد: مجالات خمسة، ومختبر يضم الأعمال الحقيقية ———
     nav2: { lab: "المختبر", process: "كيف أعمل", about: "عنّي", contact: "تواصل", switchTo: "English" },
-    fieldsLabel: "خمسة مجالات، يد واحدة",
+    fieldsLabel: "المجالات",
+    fieldsTitle: "خمسة مجالات،\nيد واحدة تبنيها.",
     fields: [
       { slug: "cut-studio", title: "برمجة المواقع", text: "مواقع وتطبيقات ويب بـ Next.js و React و TypeScript: سريعة، ثنائية اللغة، وتعمل على الهاتف أولاً." },
       { slug: "design-studies", title: "التصميم", text: "تصميم بصري وواجهات، وتصميم للتصنيع والقص بالليزر: من الفيكتور النظيف إلى قطعة تُركّب." },
@@ -93,7 +109,8 @@ export const copy = {
     labSoon: "قيد البناء",
     processLabel: "كيف أعمل",
     aboutLabel: "عنّي",
-    aboutTitle: "أهلاً، أنا عمر.",
+    aboutTitle: "أهلاً،\nأنا عمر.",
+    aboutText: "أعمل وحدي منذ بدأت. أتعلّم الأداة التي ينقصني إتقانها، ثم أبني بها، ثم أتركها مفتوحة لمن يحتاجها. أغلب ما تراه في هذا الموقع خرج من عمل احتجته أنا أولاً، لا من طلب عميل.",
     contactLabel: "تواصل",
     contactForm: {
       nameLabel: "اسمك",
@@ -124,8 +141,22 @@ export const copy = {
     wordmarkLine: "CODE · DESIGN · SYSTEMS", nav: ["Code", "Design", "Systems", "Cut Studio"],
     free: "Free", discuss: "Contact",
     heroEyebrow: "Developer · Designer · Automation builder",
-    heroLines: ["I draw the shape.", "I write the code.", "I build the system that carries it on."],
-    heroLead: "Omar Aldeek, from Palestine. I design interfaces and laser-cut parts, build web apps and sites, and run an automated factory for Arabic and English Shorts.",
+    heroBadge: "A one-person studio · from Palestine, everywhere",
+    heroChips: [
+      { mark: "7", text: "free tools in your browser" },
+      { mark: "◆", text: "a factory that runs every day" },
+      { mark: "↗", text: "two channels: Arabic and English" },
+      { mark: "✦", text: "no account, no uploads" },
+    ],
+    scrollCue: "Scroll",
+    stats: [
+      { value: "7", label: "free tools in the browser" },
+      { value: "6", label: "stations on the line" },
+      { value: "2", label: "channels publishing daily" },
+      { value: "3", label: "complete design studies" },
+    ],
+    heroLines: ["One tool is never enough.", "I build what runs it."],
+    heroLead: "Omar Aldeek, from Palestine. I design interfaces and laser-cut parts, build web apps and sites, and wire services together until the system finishes the work on its own.",
     heroCtaTools: "Try Cut Studio, free", heroCtaFactory: "See how the factory works", heroScroll: "Scroll to follow the line",
     layersLabel: "Three layers, one file",
     layers: [
@@ -154,7 +185,8 @@ export const copy = {
     studiesIntro: "Three exercises in building a full visual direction for an imagined business, from idea to a working interface.",
     principlesTitle: "I build what I use.",
     principles: ["Start from the problem, not the look.", "Make it work on a phone, in both languages.", "And leave the tool useful to others, too."],
-    contactTitle: "Have an idea that needs a shape, code, or a system?",
+    contactTitle: "Have an idea that needs a shape or code,\nor a system to finish it?",
+    processIntro: "Three rules I actually work by, not slogans. Each one left its mark on something sitting in the lab.",
     whatsapp: "Chat on WhatsApp", email: "Send an email", pendingContact: "Contact details will be added soon. For now, you can prepare a project brief and keep a copy.",
     prepare: "Prepare your project brief", briefTitle: "Let's shape your idea.", briefHelp: "This brief is saved on your device only. It isn't sent anywhere.",
     nameLabel: "Your name or project name", ideaLabel: "What would you like to build?", briefSubmit: "Download project brief", briefError: "Add a name and a description of at least 10 characters.",
@@ -166,7 +198,8 @@ export const copy = {
 
     // ——— The new structure: five fields, one lab holding the real work ———
     nav2: { lab: "Lab", process: "How I work", about: "About", contact: "Contact", switchTo: "العربية" },
-    fieldsLabel: "Five fields, one pair of hands",
+    fieldsLabel: "Fields",
+    fieldsTitle: "Five fields,\none pair of hands.",
     fields: [
       { slug: "cut-studio", title: "Web development", text: "Web apps and sites in Next.js, React and TypeScript: fast, bilingual, and built for the phone first." },
       { slug: "design-studies", title: "Design", text: "Visual and interface design, and design for fabrication and laser cutting: from clean vectors to parts that fit together." },
@@ -182,7 +215,8 @@ export const copy = {
     labSoon: "Being built",
     processLabel: "How I work",
     aboutLabel: "About",
-    aboutTitle: "Hi, I'm Omar.",
+    aboutTitle: "Hi,\nI'm Omar.",
+    aboutText: "I have worked alone since I started. I learn the tool I am missing, build with it, then leave it open to whoever needs it. Most of what you see on this site came out of work I needed first, not out of a client brief.",
     contactLabel: "Contact",
     contactForm: {
       nameLabel: "Your name",
