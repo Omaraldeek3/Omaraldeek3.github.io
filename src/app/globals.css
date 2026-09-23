@@ -1007,3 +1007,152 @@ html[lang="ar"] .contact-form textarea { font-family: var(--font-ar); }
   justify-content: space-between;
   gap: 1.5rem;
 }
+
+/* ——— Motion ———————————————————————————————————————————————————————————
+   Every effect below is CSS only and scroll-driven. Nothing here is a
+   JavaScript reveal, so a browser without scroll-timeline support simply
+   renders the finished state and nothing is ever left invisible waiting for a
+   script. The whole block sits behind a reduced-motion query, so a visitor
+   who asks for less motion is not served these rules at all. */
+
+@media (prefers-reduced-motion: no-preference) {
+
+  @keyframes rise-in {
+    from { opacity: 0; transform: translateY(1.75rem); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @keyframes lift-in {
+    from { opacity: 0; transform: translateY(1rem); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* ——— The hero arrives once, in reading order ——— */
+
+  .hero-badge { animation: lift-in 0.7s 0.04s both cubic-bezier(0.22, 0.61, 0.36, 1); }
+  .hero-headline span:nth-child(1) { animation: lift-in 0.8s 0.12s both cubic-bezier(0.22, 0.61, 0.36, 1); }
+  .hero-headline span:nth-child(2) { animation: lift-in 0.8s 0.24s both cubic-bezier(0.22, 0.61, 0.36, 1); }
+  .hero-lead { animation: lift-in 0.8s 0.36s both cubic-bezier(0.22, 0.61, 0.36, 1); }
+  .hero-actions { animation: lift-in 0.8s 0.46s both cubic-bezier(0.22, 0.61, 0.36, 1); }
+  .hero-scroll { animation: lift-in 0.8s 0.62s both cubic-bezier(0.22, 0.61, 0.36, 1); }
+  .hero-chip:nth-of-type(1) { animation: lift-in 0.9s 0.7s both cubic-bezier(0.22, 0.61, 0.36, 1); }
+  .hero-chip:nth-of-type(2) { animation: lift-in 0.9s 0.8s both cubic-bezier(0.22, 0.61, 0.36, 1); }
+  .hero-chip:nth-of-type(3) { animation: lift-in 0.9s 0.9s both cubic-bezier(0.22, 0.61, 0.36, 1); }
+  .hero-chip:nth-of-type(4) { animation: lift-in 0.9s 1s both cubic-bezier(0.22, 0.61, 0.36, 1); }
+
+  /* The one warm light breathes, slowly enough to read as a light rather
+     than as an animation. */
+  @keyframes breathe {
+    0%, 100% { opacity: 0.85; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.06); }
+  }
+
+  .hero-ground::after { animation: breathe 12s ease-in-out infinite; }
+
+  /* ——— Scroll-driven, where the browser can drive it ——— */
+
+  @supports (animation-timeline: view()) {
+
+    /* Section furniture and every card rise as they come into the viewport. */
+    .section-head,
+    .section-title,
+    .section-intro,
+    .about-text,
+    .contact-channels,
+    .contact-form,
+    .stat,
+    .field-card,
+    .lab-card,
+    .process-list li,
+    .station,
+    .study,
+    .oversight,
+    .system-scene {
+      animation: rise-in linear both;
+      animation-timeline: view();
+      animation-range: entry 6% cover 24%;
+    }
+
+    /* A card further along its row lands a moment later, so a row reads as a
+       sweep rather than as one block appearing at once. */
+    .stat:nth-child(2),
+    .fields-grid > :nth-child(2),
+    .lab-grid > :nth-child(2),
+    .studies-grid > :nth-child(2) { animation-range: entry 6% cover 30%; }
+
+    .stat:nth-child(3),
+    .fields-grid > :nth-child(3),
+    .lab-grid > :nth-child(3),
+    .studies-grid > :nth-child(3) { animation-range: entry 6% cover 36%; }
+
+    .stat:nth-child(4),
+    .fields-grid > :nth-child(4),
+    .lab-grid > :nth-child(4) { animation-range: entry 6% cover 42%; }
+
+    .fields-grid > :nth-child(5) { animation-range: entry 6% cover 48%; }
+
+    /* The hero's ground drifts as the hero leaves, so the type slides over a
+       backdrop that is moving more slowly than it is. */
+    @keyframes ground-drift {
+      to { opacity: 0.25; transform: translateY(14%); }
+    }
+
+    .hero-ground {
+      animation: ground-drift linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
+    }
+
+    /* The nav is bare over the hero and gathers its capsule as you leave it. */
+    @keyframes nav-condense {
+      from { background-color: rgba(20, 20, 22, 0); border-color: rgba(255, 255, 255, 0); }
+      to { background-color: rgba(20, 20, 22, 0.74); border-color: rgba(255, 255, 255, 0.07); }
+    }
+
+    .site-nav-inner {
+      animation: nav-condense linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 7rem;
+    }
+
+    /* A hairline that reports how far down the page you are. */
+    @keyframes progress-fill {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+
+    .scroll-progress {
+      animation: progress-fill linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+}
+
+/* The bar is inert on its own: without a scroll timeline it stays at zero
+   width, which is exactly what an unsupported browser should show. */
+.scroll-progress {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: 40;
+  block-size: 2px;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: linear-gradient(to right, var(--live-deep), var(--live-pale));
+  pointer-events: none;
+}
+
+html[dir="rtl"] .scroll-progress { transform-origin: 100% 50%; }
+
+/* ——— Hover ——— */
+
+.field-card,
+.lab-card,
+.study-frame {
+  transition: transform 0.18s ease-out, border-color 0.15s, background-color 0.15s;
+}
+
+.field-card:hover,
+.lab-card[data-status="live"]:hover { transform: translateY(-3px); }
+
+.study:hover .study-frame { transform: translateY(-3px); }

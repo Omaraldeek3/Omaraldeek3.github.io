@@ -114,3 +114,60 @@ test("every fact on a chip is also stated in a section below", async ({ page }) 
     expect(stats, "stat strip").toContain(value);
   }
 });
+
+// ——— Scroll-driven motion ———
+// Every effect is CSS. The rules that matter are the ones that guarantee no
+// content is ever left waiting for a script or stranded at zero opacity.
+
+test("the reveal is scroll-driven, not a script", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/ar");
+  const driven = await page.locator(".lab-card").first().evaluate(el => ({
+    name: getComputedStyle(el).animationName,
+    timeline: getComputedStyle(el).animationTimeline,
+  }));
+  expect(driven.name).toBe("rise-in");
+  expect(driven.timeline).toContain("view");
+});
+
+test("reduced motion declares no animation at all", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/ar");
+  for (const selector of [".lab-card", ".hero-headline span", ".hero-badge", ".stat"]) {
+    const name = await page.locator(selector).first().evaluate(el =>
+      getComputedStyle(el).animationName);
+    expect(name, selector).toBe("none");
+  }
+});
+
+test("a scrolled-past section is fully opaque, never stuck faded", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/ar");
+  await page.locator("#contact").scrollIntoViewIfNeeded();
+  await page.waitForTimeout(500);
+  await expect
+    .poll(() => page.locator(".contact-form").evaluate(el => Number(getComputedStyle(el).opacity)))
+    .toBeGreaterThan(0.95);
+});
+
+test("the progress bar is decoration and needs no script", async ({ page }) => {
+  await page.goto("/ar");
+  const bar = page.locator(".scroll-progress");
+  await expect(bar).toHaveAttribute("aria-hidden", "true");
+  const scripted = await bar.evaluate(el => el.getAttribute("style"));
+  expect(scripted, "nothing writes inline styles onto it").toBeNull();
+});
+
+test.describe("without javascript", () => {
+  test.use({ javaScriptEnabled: false });
+
+  test("a scrolled-to section still renders at full opacity", async ({ page }) => {
+    await page.goto("/ar");
+    await page.locator("#lab").scrollIntoViewIfNeeded();
+    await page.waitForTimeout(600);
+    await expect(page.locator("h1")).toBeVisible();
+    await expect
+      .poll(() => page.locator(".lab-card").first().evaluate(el => Number(getComputedStyle(el).opacity)))
+      .toBeGreaterThan(0.95);
+  });
+});

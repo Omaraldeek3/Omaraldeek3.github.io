@@ -86,6 +86,9 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
       className={`${arabic.variable} ${latin.variable} ${mono.variable}`}
     >
       <body>
+        {/* Driven entirely by a scroll timeline in CSS; with no such timeline
+            it stays at zero width, which is what it should show. */}
+        <div className="scroll-progress" aria-hidden="true" />
         <Nav locale={locale} />
         {children}
         <Footer locale={locale} />
