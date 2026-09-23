@@ -1,7 +1,78 @@
 @import "tailwindcss";
+/* The three design studies carry their own visual identity inside the preview
+   frames, so their stylesheet is kept as-is and is not part of the site theme. */
 @import "./previews.css";
-@import "./styles/base.css";
-@import "./styles/cinema.css";
-@import "./styles/pages.css";
-@import "./styles/responsive.css";
-@import "./styles/v2.css";
+
+:root {
+  --surface-0: #070b11;
+  --surface-1: #0d131c;
+  --surface-2: #141d29;
+  --text-primary: #eef4fb;
+  --text-secondary: #a8b8cb;
+  --text-muted: #8496ab;
+  --live: #3fd9b0;
+  --live-dim: #1d7f68;
+  --warn: #f0ad4f;
+  --border: #1e2a3a;
+  --border-strong: #2c3c51;
+  --font-ar: var(--font-ar-loaded), system-ui, sans-serif;
+  --font-en: var(--font-en-loaded), system-ui, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", "SFMono-Regular", monospace;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --surface-0: #f7f9fc;
+    --surface-1: #ffffff;
+    --surface-2: #eef2f8;
+    --text-primary: #0b131d;
+    --text-secondary: #3b4c61;
+    --text-muted: #55677e;
+    --live: #0a6e57;
+    --live-dim: #8fd8c6;
+    --warn: #8a5206;
+    --border: #d9e1ec;
+    --border-strong: #b9c6d8;
+    color-scheme: light;
+  }
+}
+
+html {
+  background: var(--surface-0);
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--surface-0);
+  color: var(--text-primary);
+  font-family: var(--font-en);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+html[lang="ar"] body { font-family: var(--font-ar); }
+
+code, kbd, samp, .mono { font-family: var(--font-mono); }
+
+a { color: var(--live); }
+
+:focus-visible {
+  outline: 2px solid var(--live);
+  outline-offset: 3px;
+}
+
+.shell {
+  inline-size: min(100% - 2rem, 76rem);
+  margin-inline: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

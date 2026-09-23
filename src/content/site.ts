@@ -1,6 +1,7 @@
-export type Locale = "ar" | "en";
-export const locales: Locale[] = ["ar", "en"];
-export const isLocale = (value: string): value is Locale => locales.includes(value as Locale);
+// Locale handling lives in ./locales so that proxy.ts can import it without
+// pulling in the whole copy deck. Re-exported here for existing importers.
+export type { Locale } from "./locales";
+export { locales, isLocale } from "./locales";
 
 // Edit personal details here. Use international digits only for WhatsApp.
 // Leave missing values empty: the UI never creates a fake contact link.
