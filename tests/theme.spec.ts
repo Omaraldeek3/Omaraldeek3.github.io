@@ -96,3 +96,14 @@ test("no horizontal overflow at phone width", async ({ page }) => {
   await page.goto("/ar");
   expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false);
 });
+
+test("Arabic sets display and text in two different faces", async ({ page }) => {
+  await page.goto("/ar");
+  const [display, text] = await page.evaluate(() => [
+    getComputedStyle(document.querySelector("h1")!).fontFamily,
+    getComputedStyle(document.body).fontFamily,
+  ]);
+  expect(display).not.toBe("");
+  expect(text).not.toBe("");
+  expect(display).not.toBe(text);
+});

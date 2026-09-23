@@ -7,11 +7,19 @@ import { Nav } from "@/ui/nav";
 import { Footer } from "@/ui/footer";
 import "../globals.css";
 
-// Both faces are served from node_modules, so a visit makes no font request
-// to any third party.
+// Every face is served from node_modules, so a visit makes no font request to
+// any third party. Arabic gets two of them, the way a printed page does: a
+// geometric Kufi cut for the display sizes and a humanist one for reading.
 const arabic = localFont({
-  src: "../../../node_modules/@fontsource-variable/noto-sans-arabic/files/noto-sans-arabic-arabic-wght-normal.woff2",
+  src: "../../../node_modules/@fontsource-variable/cairo/files/cairo-arabic-wght-normal.woff2",
   variable: "--font-ar-loaded",
+  weight: "200 1000",
+  display: "swap",
+});
+
+const arabicDisplay = localFont({
+  src: "../../../node_modules/@fontsource-variable/noto-kufi-arabic/files/noto-kufi-arabic-arabic-wght-normal.woff2",
+  variable: "--font-ar-display-loaded",
   weight: "100 900",
   display: "swap",
 });
@@ -70,7 +78,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
     <html
       lang={locale}
       dir={locale === "ar" ? "rtl" : "ltr"}
-      className={`${arabic.variable} ${latin.variable}`}
+      className={`${arabic.variable} ${arabicDisplay.variable} ${latin.variable}`}
     >
       <body>
         <Nav locale={locale} />

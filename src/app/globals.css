@@ -19,6 +19,7 @@
   --border: #d5cec0;
   --border-strong: #a89f8d;
   --font-ar: var(--font-ar-loaded), system-ui, sans-serif;
+  --font-ar-display: var(--font-ar-display-loaded), var(--font-ar);
   --font-en: var(--font-en-loaded), system-ui, sans-serif;
   --font-mono: ui-monospace, "Cascadia Mono", "SFMono-Regular", monospace;
   color-scheme: light;
@@ -70,6 +71,15 @@ body::after {
 html[lang="ar"] body { font-family: var(--font-ar); }
 
 code, kbd, samp, .mono { font-family: var(--font-mono); }
+
+/* Display sizes take the Kufi cut; everything read at text size stays in the
+   humanist one. Two faces, the way a printed page sets them. */
+html[lang="ar"] .hero-headline,
+html[lang="ar"] .hero-ink-ghost,
+html[lang="ar"] .section-title,
+html[lang="ar"] .lab-page-title {
+  font-family: var(--font-ar-display);
+}
 
 /* Arabic joins its letters, so tracking pulls a word apart instead of opening
    it up, and the mono stack has no Arabic face to fall back on. Small labels
@@ -167,13 +177,20 @@ a { color: var(--live); }
   background: var(--border-strong);
 }
 
-/* The headline is the page. Nothing sits behind it and nothing competes with
-   it, so it takes the width it needs at the size it wants. */
-.hero-headline {
+/* The headline is the page. Nothing sits behind it but its own red plate, so
+   it takes the width it needs at the size it wants. */
+.hero-plate {
+  position: relative;
+  isolation: isolate;
+  margin-block-end: clamp(2rem, 5vw, 3.5rem);
+}
+
+.hero-headline,
+.hero-ink-ghost {
   display: flex;
   flex-direction: column;
-  margin: 0 0 clamp(2rem, 5vw, 3.5rem);
-  font-size: clamp(2.3rem, 7.4vw, 5.8rem);
+  margin: 0;
+  font-size: clamp(2.2rem, 6.8vw, 5.2rem);
   font-weight: 800;
   line-height: 1.22;
   letter-spacing: -0.02em;
@@ -181,9 +198,41 @@ a { color: var(--live); }
 
 /* Arabic carries marks above and below the line and sets the default leading
    here; Latin can be tightened past it without the lines colliding. */
-html[lang="en"] .hero-headline { line-height: 1.0; letter-spacing: -0.04em; }
+html[lang="en"] .hero-headline,
+html[lang="en"] .hero-ink-ghost { line-height: 1.0; letter-spacing: -0.04em; }
+
+.hero-headline {
+  position: relative;
+  z-index: 1;
+}
 
 .hero-headline span:last-child { color: var(--live); }
+
+/* The second plate: the same words in red, printed a few pixels off. The
+   black plate stays on top and untouched, so the text a reader reads keeps
+   its full contrast whatever the red one is doing. */
+.hero-ink-ghost {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inline-size: 100%;
+  z-index: 0;
+  color: var(--live);
+  pointer-events: none;
+  opacity: var(--ink-opacity, 0.5);
+  transform: translate3d(var(--ink-x, 5px), var(--ink-y, 3px), 0);
+  transition: transform 0.12s ease-out, opacity 0.3s ease-out;
+  will-change: transform;
+}
+
+/* The plates swap on the line that is already red, so every line is printed
+   in the colour the other plate is not using. */
+.hero-ink-ghost span:last-child { color: var(--text-primary); }
+
+/* Reduced motion prints one plate. Nothing doubles, nothing drifts. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-ink-ghost { display: none; }
+}
 
 .hero-foot {
   display: grid;
