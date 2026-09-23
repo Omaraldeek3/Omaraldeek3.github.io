@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-const FACTORY = "/ar/lab/shorts-factory";
+const FACTORY = "/ar/lab/ai-automation";
 
 test("the hero carries type only, with nothing drawn behind it", async ({ page }) => {
   await page.goto("/ar");
@@ -109,7 +109,7 @@ test("every fact on a chip is also stated in a section below", async ({ page }) 
   // The chips vanish on narrow viewports, so nothing may live only on them.
   const numbers = await page.locator(".hero-chip b").allTextContents();
   const stats = await page.locator(".stat b").allTextContents();
-  for (const value of ["٧"]) {
+  for (const value of ["١٨"]) {
     expect(numbers, "chip numbers").toContain(value);
     expect(stats, "stat strip").toContain(value);
   }

@@ -13,7 +13,7 @@ test("each locale carries its own title and a description", async ({ page }) => 
 test("a lab page carries its own title", async ({ page }) => {
   await page.goto("/ar");
   const home = await page.title();
-  await page.goto("/ar/lab/shorts-factory");
+  await page.goto("/ar/lab/ai-automation");
   expect(await page.title()).not.toBe(home);
 });
 
@@ -27,9 +27,10 @@ test("sitemap and robots are served and list the real routes", async ({ request 
   const sitemap = await request.get("/sitemap.xml");
   expect(sitemap.status()).toBe(200);
   const body = await sitemap.text();
-  expect(body).toContain("/ar/lab/shorts-factory");
+  expect(body).toContain("/ar/lab/ai-automation");
   expect(body).toContain("/tools");
-  expect(body).not.toContain("saas-panel");
+  expect(body).toContain("/ar/lab/saas-panel");
+  expect(body).toContain("/ar/studies/nabd");
 
   const robots = await request.get("/robots.txt");
   expect(robots.status()).toBe(200);

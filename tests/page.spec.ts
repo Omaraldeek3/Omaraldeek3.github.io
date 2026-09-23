@@ -23,7 +23,7 @@ for (const locale of ["ar", "en"] as const) {
 
   test(`${locale}: the factory is presented as a real running system`, async ({ page }) => {
     await page.goto(`/${locale}`);
-    const factory = page.locator(".lab-card[data-slug='shorts-factory']");
+    const factory = page.locator(".lab-card[data-slug='ai-automation']");
     await expect(factory).toHaveAttribute("data-status", "live");
     await expect(factory).toContainText(copy[locale].labLive);
   });
@@ -43,12 +43,11 @@ for (const locale of ["ar", "en"] as const) {
   });
 }
 
-test("a work still being built says so instead of pretending", async ({ page }) => {
+test("every lab card is live and opens its work", async ({ page }) => {
   await page.goto("/ar");
-  const building = page.locator(".lab-card[data-status='building']");
-  await expect(building).toHaveCount(1);
-  await expect(building).toContainText(copy.ar.labSoon);
-  await expect(building.locator("a")).toHaveCount(0);
+  await expect(page.locator(".lab-card[data-status='building']")).toHaveCount(0);
+  for (const work of labWorks)
+    await expect(page.locator(`.lab-card[data-slug='${work.slug}'] a.lab-open`)).toHaveAttribute("href", `/ar/lab/${work.slug}`);
 });
 
 test("every field card links into the lab", async ({ page }) => {

@@ -27,11 +27,9 @@ test("every work is titled and described in both locales", () => {
     }
 });
 
-test("the three real works are live and only the saas panel is pending", () => {
-  expect(getLabWork("shorts-factory")?.status).toBe("live");
-  expect(getLabWork("cut-studio")?.status).toBe("live");
-  expect(getLabWork("design-studies")?.status).toBe("live");
-  expect(getLabWork("saas-panel")?.status).toBe("building");
+test("all four works are live", () => {
+  for (const slug of ["ai-automation", "cut-studio", "design-studies", "saas-panel"])
+    expect(getLabWork(slug)?.status, slug).toBe("live");
 });
 
 test("an unknown slug resolves to undefined", () => {

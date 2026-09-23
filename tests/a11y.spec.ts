@@ -15,13 +15,13 @@ test.describe("without javascript", () => {
   }
 
   test("the factory stations are readable without scripts", async ({ page }) => {
-    await page.goto("/ar/lab/shorts-factory");
+    await page.goto("/ar/lab/ai-automation");
     await expect(page.locator(".station")).toHaveCount(6);
   });
 
   test("the design studies are readable without scripts", async ({ page }) => {
     await page.goto("/ar/lab/design-studies");
-    await expect(page.locator(".study")).toHaveCount(3);
+    await expect(page.locator(".study")).toHaveCount(20);
   });
 
   test("the locale switch is a plain link", async ({ page }) => {
@@ -32,7 +32,7 @@ test.describe("without javascript", () => {
 });
 
 test("exactly one h1 and no skipped heading level", async ({ page }) => {
-  for (const path of ["/ar", "/en", "/ar/lab/shorts-factory"]) {
+  for (const path of ["/ar", "/en", "/ar/lab/ai-automation"]) {
     await page.goto(path);
     await expect(page.locator("h1"), path).toHaveCount(1);
     const levels = await page.evaluate(() =>
@@ -54,7 +54,7 @@ test("keyboard focus reaches the nav and the contact form", async ({ page }) => 
 });
 
 test("every image and canvas is labelled or explicitly decorative", async ({ page }) => {
-  for (const path of ["/ar", "/ar/lab/design-studies", "/ar/lab/shorts-factory"]) {
+  for (const path of ["/ar", "/ar/lab/design-studies", "/ar/lab/ai-automation"]) {
     await page.goto(path);
     const unlabelled = await page.evaluate(() =>
       [...document.querySelectorAll("img, canvas")].filter(
@@ -73,7 +73,7 @@ test("no console errors on the main routes", async ({ page }) => {
   page.on("console", msg => { if (msg.type() === "error") errors.push(msg.text()); });
   for (const path of [
     "/ar", "/en",
-    "/ar/lab/cut-studio", "/ar/lab/shorts-factory", "/ar/lab/design-studies",
+    "/ar/lab/cut-studio", "/ar/lab/ai-automation", "/ar/lab/design-studies",
     "/ar/work/finjan",
   ]) {
     await page.goto(path);

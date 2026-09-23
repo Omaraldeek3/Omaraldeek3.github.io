@@ -61,8 +61,8 @@ export function DesignStudiesView({ locale }: { locale: Locale }) {
               <h2>{study[locale].name}</h2>
               <p>{study[locale].type}</p>
               <span className="study-swatches" aria-hidden="true">
-                {[study.palette.bg, study.palette.ink, study.palette.accent, study.palette.accent2].map(color => (
-                  <i key={color} style={{ background: color }} />
+                {[study.palette.bg, study.palette.ink, study.palette.accent, study.palette.accent2].map((color, index) => (
+                  <i key={index} style={{ background: color }} />
                 ))}
               </span>
             </div>
