@@ -84,11 +84,15 @@ export function HeroScene({ labels, rtl }: { labels: string[]; rtl: boolean }) {
       draw(context, scene, rect.width, rect.height, rtl);
     };
 
+    // Before layout settles the box can measure zero. Sizing the buffer then
+    // would freeze it at a single pixel under reduced motion, where no later
+    // frame repaints it, so wait for a real box instead.
     const resize = () => {
-      const ratio = Math.min(window.devicePixelRatio || 1, 2);
       const rect = canvas.getBoundingClientRect();
-      canvas.width = Math.max(1, Math.round(rect.width * ratio));
-      canvas.height = Math.max(1, Math.round(rect.height * ratio));
+      if (rect.width < 1 || rect.height < 1) return;
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(rect.width * ratio);
+      canvas.height = Math.round(rect.height * ratio);
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
       paint();
     };

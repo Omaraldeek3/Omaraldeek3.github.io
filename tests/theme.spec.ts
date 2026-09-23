@@ -50,6 +50,47 @@ test("each language resolves to its own font stack", async ({ page }) => {
   expect(arabic).not.toBe(latin);
 });
 
+test("body text meets AA contrast on both surfaces in both schemes", async ({ page }) => {
+  for (const scheme of ["dark", "light"] as const) {
+    await page.emulateMedia({ colorScheme: scheme });
+    await page.goto("/ar");
+    const ratios = await page.evaluate(() => {
+      const value = (name: string) =>
+        getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+      const channel = (hex: string) => {
+        const n = hex.replace("#", "");
+        const full = n.length === 3 ? n.split("").map(c => c + c).join("") : n;
+        return [0, 2, 4].map(i => {
+          const c = parseInt(full.slice(i, i + 2), 16) / 255;
+          return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+        });
+      };
+      const luminance = (hex: string) => {
+        const [r, g, b] = channel(hex);
+        return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+      };
+      const ratio = (a: string, b: string) => {
+        const [x, y] = [luminance(a), luminance(b)].sort((p, q) => q - p);
+        return (x + 0.05) / (y + 0.05);
+      };
+      const pairs: [string, string][] = [
+        ["--text-primary", "--surface-0"],
+        ["--text-primary", "--surface-1"],
+        ["--text-secondary", "--surface-0"],
+        ["--text-secondary", "--surface-1"],
+        ["--text-muted", "--surface-0"],
+        ["--text-muted", "--surface-1"],
+        ["--live", "--surface-0"],
+        ["--live", "--surface-1"],
+        ["--warn", "--surface-0"],
+      ];
+      return pairs.map(([fg, bg]) => ({ pair: `${fg} on ${bg}`, ratio: ratio(value(fg), value(bg)) }));
+    });
+    for (const { pair, ratio } of ratios)
+      expect(ratio, `${pair} in ${scheme}`).toBeGreaterThanOrEqual(4.5);
+  }
+});
+
 test("no horizontal overflow at phone width", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 800 });
   await page.goto("/ar");

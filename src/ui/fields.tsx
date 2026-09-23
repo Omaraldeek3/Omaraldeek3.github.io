@@ -7,8 +7,8 @@ import type { Locale } from "@/content/locales";
 export function Fields({ locale }: { locale: Locale }) {
   const t = copy[locale];
   return (
-    <section className="shell" aria-label={t.fieldsLabel}>
-      <p className="section-label">{t.fieldsLabel}</p>
+    <section className="shell">
+      <h2 className="section-label">{t.fieldsLabel}</h2>
       <div className="fields-grid" style={{ marginBlockStart: "1.25rem" }}>
         {t.fields.map(field => (
           <Link

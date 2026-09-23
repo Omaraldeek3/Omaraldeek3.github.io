@@ -588,6 +588,7 @@ a { color: var(--live); }
   color: var(--live);
   font-family: var(--font-mono);
   font-size: 0.78rem;
+  font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
