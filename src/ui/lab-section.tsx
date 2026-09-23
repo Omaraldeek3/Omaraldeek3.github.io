@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Section } from "./section";
+import { LabArt } from "./lab-art";
 import { copy } from "@/content/site";
 import { labWorks } from "@/lab/registry";
 import type { Locale } from "@/content/locales";
@@ -10,13 +11,15 @@ export function LabSection({ locale }: { locale: Locale }) {
     <Section id="lab" index="02 / 05" label={t.labLabel} title={t.labTitle} intro={t.labIntro}>
       <div className="lab-grid">
         {labWorks.map(work => (
-          <article key={work.slug} className="lab-card" data-slug={work.slug} data-status={work.status}>
-            <div className="lab-shot">
+          <article key={work.slug} className="lab-card glow-card" data-slug={work.slug} data-status={work.status}>
+            <div className="lab-shot" data-tilt>
               <p className="lab-status">{work.status === "live" ? t.labLive : t.labSoon}</p>
               <span className="lab-kind" dir="ltr">
                 {work.kind}
               </span>
-              <span aria-hidden="true">{work.glyph}</span>
+              <span className="lab-glyph" aria-hidden="true">
+                <LabArt slug={work.slug} />
+              </span>
             </div>
             <div className="lab-body">
               <h3>

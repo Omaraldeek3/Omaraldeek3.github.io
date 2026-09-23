@@ -20,16 +20,16 @@ export type LabWork = {
  *  its own folder under src/lab; nothing else in the site needs to change. */
 export const labWorks: LabWork[] = [
   {
-    slug: "shorts-factory",
+    slug: "ai-automation",
     field: "systems",
     status: "live",
     glyph: "⚙",
-    kind: "AUTOMATION",
-    count: { ar: "٦ محطات", en: "6 stations" },
-    title: { ar: "مصنع الشورتس", en: "The Shorts factory" },
+    kind: "AI AUTOMATION",
+    count: { ar: "٩ أنظمة", en: "9 systems" },
+    title: { ar: "أنظمة الأتمتة بالذكاء الاصطناعي", en: "AI automation systems" },
     blurb: {
-      ar: "قناة شورتس عربية وأخرى إنجليزية يديرهما خط إنتاج بنيته من البداية للنهاية: جدولة، كتابة، فحص، صوت، مونتاج، نشر. يعمل كل يوم.",
-      en: "An Arabic Shorts channel and an English one, both run by a pipeline I built end to end: scheduling, writing, checking, voice, render, publish. It runs every day.",
+      ar: "مصنع شورتس عربي وإنجليزي يعمل كل يوم، وحوله ثمانية أنظمة بنيتها: تعلّم من الأرقام، ومواضيع بمصادر، ونشر على أربع منصات، وتحكّم من المحادثة، وحارس ليلي.",
+      en: "A Shorts factory for an Arabic and an English channel that runs every day, and eight systems I built around it: learning from the numbers, sourced topics, four-platform publishing, chat control and a night watch.",
     },
   },
   {
@@ -38,11 +38,11 @@ export const labWorks: LabWork[] = [
     status: "live",
     glyph: "✂",
     kind: "WEB TOOL",
-    count: { ar: "٧ أدوات", en: "7 tools" },
+    count: { ar: "١٨ أداة", en: "18 tools" },
     title: { ar: "Cut Studio", en: "Cut Studio" },
     blurb: {
-      ar: "سبع أدوات ليزر وتصميم تعمل كلها داخل متصفحك، بلا حساب وبلا رفع ملفات. صنعتها لعملي وتركتها مجانية.",
-      en: "Seven laser and design tools that run entirely in your browser, with no account and no uploads. I built them for my own work and left them free.",
+      ar: "ثماني عشرة أداة ليزر وتصميم تعمل كلها داخل متصفحك، بلا حساب وبلا رفع ملفات. صنعتها لعملي وتركتها مجانية.",
+      en: "Eighteen laser and design tools that run entirely in your browser, with no account and no uploads. I built them for my own work and left them free.",
     },
   },
   {
@@ -51,23 +51,24 @@ export const labWorks: LabWork[] = [
     status: "live",
     glyph: "◈",
     kind: "DESIGN",
-    count: { ar: "٣ دراسات", en: "3 studies" },
+    count: { ar: "٢٠ دراسة", en: "20 studies" },
     title: { ar: "دراسات التصميم", en: "Design studies" },
     blurb: {
-      ar: "ثلاث دراسات أبني فيها اتجاهاً بصرياً كاملاً لنشاط متخيَّل، من الفكرة إلى واجهة تعمل. دراسات لا مشاريع عملاء.",
-      en: "Three studies where I build a full visual direction for an imagined business, from idea to a working interface. Studies, not client projects.",
+      ar: "عشرون دراسة أبني فيها هوية بصرية كاملة لنشاط متخيَّل: ألوان وخطوط وواجهة تعمل. دراسات لا مشاريع عملاء.",
+      en: "Twenty studies where I build a full visual identity for an imagined business: colour, type and a working interface. Studies, not client projects.",
     },
   },
   {
     slug: "saas-panel",
     field: "saas",
-    status: "building",
+    status: "live",
     glyph: "▤",
     kind: "SAAS",
-    title: { ar: "لوحة SaaS", en: "SaaS panel" },
+    count: { ar: "٤ تطبيقات", en: "4 apps" },
+    title: { ar: "أنظمة SaaS", en: "SaaS systems" },
     blurb: {
-      ar: "واجهة منتج مصغّرة ببيانات حقيقية: أضف صفاً وسيبقى بعد أن تغادر.",
-      en: "A miniature product surface on real data: add a row and it is still there after you leave.",
+      ar: "أربعة تطبيقات أعمال في لوحة واحدة: علاقات العملاء، والفواتير، والحجوزات، والمخزون. أضف صفاً وسيبقى بعد أن تغادر.",
+      en: "Four business apps in one panel: a CRM, invoicing, bookings and inventory. Add a row and it is still there after you leave.",
     },
   },
 ];

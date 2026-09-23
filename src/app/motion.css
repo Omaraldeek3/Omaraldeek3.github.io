@@ -1,0 +1,272 @@
+/* ——— Interaction layer ————————————————————————————————————————————————
+   PointerFx (src/ui/pointer-fx.tsx) writes a handful of custom properties as
+   the pointer moves; everything visible about them is decided here. Every
+   variable has a resting fallback, so without the script, on touch, or with
+   reduced motion, each element simply sits in its finished state. */
+
+/* A soft spotlight that follows the pointer across a card. */
+.glow-card { position: relative; }
+
+.glow-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  background: radial-gradient(
+    26rem circle at var(--mx, 50%) var(--my, 0%),
+    rgba(245, 165, 36, 0.09),
+    transparent 62%
+  );
+  opacity: 0;
+  transition: opacity 0.35s;
+  pointer-events: none;
+}
+
+.glow-card:hover::before { opacity: 1; }
+
+/* The whole lab card is one target; the visible link stays the named one. */
+.lab-open::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.lab-open span { display: inline-block; transition: translate 0.25s; }
+.lab-card:hover .lab-open span { translate: 3px -3px; }
+
+/* ——— The plate leans toward the pointer and its drawing floats over it ——— */
+
+.lab-shot {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.lab-glyph {
+  display: grid;
+  place-items: center;
+  inline-size: min(62%, 13rem);
+  translate: var(--px, 0px) var(--py, 0px);
+  transition: translate 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.lab-art {
+  inline-size: 100%;
+  block-size: auto;
+  overflow: visible;
+}
+
+.art-stroke { fill: none; stroke: var(--live-pale); stroke-width: 2; stroke-linejoin: round; opacity: 0.85; }
+.art-ring { fill: none; stroke: rgba(245, 165, 36, 0.3); stroke-dasharray: 3 6; }
+.art-node { fill: var(--live); }
+.art-node.dim { opacity: 0.45; }
+.art-sheet { fill: rgba(255, 255, 255, 0.03); stroke: rgba(255, 255, 255, 0.16); }
+.art-rule { stroke: rgba(255, 255, 255, 0.12); }
+.art-cutline { fill: none; stroke: var(--live); stroke-width: 2; stroke-dasharray: 100; stroke-dashoffset: 0; }
+.art-beam { stroke: var(--live-pale); stroke-width: 1.5; opacity: 0; }
+.art-card { stroke: rgba(255, 255, 255, 0.2); transform-box: view-box; transform-origin: 80px 104px; transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1); }
+.art-card.c1 { fill: #1d1d21; transform: rotate(-14deg); }
+.art-card.c2 { fill: #2a2112; transform: rotate(-2deg); }
+.art-card.c3 { fill: #3b2a0e; stroke: rgba(245, 165, 36, 0.5); transform: rotate(10deg); }
+.art-diamond { fill: var(--live-pale); transform-box: fill-box; transform-origin: center; }
+.art-bar { fill: var(--live); transform-box: fill-box; transform-origin: 50% 100%; }
+.art-bar.b1 { transform: scaleY(0.45); opacity: 0.55; }
+.art-bar.b2 { transform: scaleY(0.7); opacity: 0.7; }
+.art-bar.b3 { transform: scaleY(0.55); opacity: 0.85; }
+.art-bar.b4 { transform: scaleY(1); }
+.art-gear, .art-orbit { transform-box: view-box; }
+.art-gear { transform-origin: 82px 60px; }
+.art-orbit { transform-origin: 80px 60px; }
+
+.lab-card:hover .art-card.c1 { transform: rotate(-24deg); }
+.lab-card:hover .art-card.c3 { transform: rotate(20deg); }
+
+/* ——— Magnetic buttons, with a sheen that crosses on hover ——— */
+
+.magnetic {
+  translate: var(--tx, 0px) var(--ty, 0px);
+  transition: translate 0.3s cubic-bezier(0.2, 0.7, 0.3, 1), filter 0.15s, border-color 0.15s, background-color 0.15s;
+}
+
+.button {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(115deg, transparent 32%, rgba(255, 255, 255, 0.28) 50%, transparent 68%);
+  translate: -120% 0;
+  transition: translate 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+  pointer-events: none;
+}
+
+.button:hover::after { translate: 120% 0; }
+
+/* ——— The hero's light drifts after the pointer ——— */
+
+.hero-ground::after {
+  inset-inline-start: auto;
+  left: var(--hx, 50%);
+  top: var(--hy, 38%);
+  transition: left 1.4s cubic-bezier(0.22, 0.61, 0.36, 1), top 1.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* The hero names the fields one after another. Without motion it rests on
+   the first, which is a complete sentence on its own. */
+.hero-rotator {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: clamp(1rem, 2.5vw, 1.4rem) 0 0;
+  font-size: clamp(1.05rem, 2.2vw, 1.45rem);
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.hero-rotator-window {
+  display: inline-block;
+  block-size: 1.6em;
+  line-height: 1.6em;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.hero-rotator-track {
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+}
+
+.hero-rotator-track span {
+  display: block;
+  white-space: nowrap;
+  color: var(--live-pale);
+}
+
+/* ——— The ribbon ——— */
+
+.ribbon {
+  display: flex;
+  overflow: hidden;
+  border-block-end: 1px solid var(--border);
+  background: var(--surface-0);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+.ribbon-track {
+  display: flex;
+  flex-shrink: 0;
+  gap: 2.8rem;
+  min-inline-size: 100%;
+  margin: 0;
+  padding: 1.05rem 0;
+  padding-inline-end: 2.8rem;
+  list-style: none;
+}
+
+.ribbon-track li {
+  display: inline-flex;
+  align-items: center;
+  gap: 2.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.ribbon-track li::after {
+  content: "";
+  inline-size: 0.35rem;
+  block-size: 0.35rem;
+  background: var(--live-dim);
+  transform: rotate(45deg);
+}
+
+.ribbon:hover .ribbon-track li { color: var(--text-secondary); }
+
+/* ——— Small responses ——— */
+
+.stat b { transition: text-shadow 0.3s, scale 0.3s; }
+.stat:hover b { text-shadow: 0 0 28px rgba(245, 165, 36, 0.55); scale: 1.06; }
+
+.field-index { transition: letter-spacing 0.3s, color 0.3s; }
+.field-card:hover .field-index { letter-spacing: 0.3em; color: var(--live-pale); }
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes spin-back { to { transform: rotate(-360deg); } }
+  @keyframes draw {
+    0% { stroke-dashoffset: 100; }
+    55%, 100% { stroke-dashoffset: 0; }
+  }
+  @keyframes beam {
+    0% { transform: translateX(0); opacity: 0; }
+    8% { opacity: 1; }
+    55% { transform: translateX(100px); opacity: 1; }
+    62%, 100% { transform: translateX(100px); opacity: 0; }
+  }
+  @keyframes fan {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 0 -3px; }
+  }
+  @keyframes bars {
+    0%, 100% { scale: 1 1; }
+    50% { scale: 1 0.7; }
+  }
+  @keyframes pulse-diamond {
+    0%, 100% { scale: 1; }
+    50% { scale: 1.18; }
+  }
+  @keyframes rotate-words {
+    0%, 15% { transform: translateY(0); }
+    20%, 35% { transform: translateY(-16.6667%); }
+    40%, 55% { transform: translateY(-33.3333%); }
+    60%, 75% { transform: translateY(-50%); }
+    80%, 95% { transform: translateY(-66.6667%); }
+    100% { transform: translateY(-83.3333%); }
+  }
+  @keyframes marquee { to { transform: translateX(-100%); } }
+  @keyframes shimmer {
+    from { background-position: 0% 50%; }
+    to { background-position: 100% 50%; }
+  }
+
+  .art-gear { animation: spin 16s linear infinite; }
+  .art-orbit { animation: spin-back 26s linear infinite; }
+  .lab-card:hover .art-gear { animation-duration: 4s; }
+  .art-cutline { animation: draw 4.5s ease-in-out infinite; }
+  .art-beam { animation: beam 4.5s ease-in-out infinite; }
+  .art-card { animation: fan 5s ease-in-out infinite; }
+  .art-card.c2 { animation-delay: 0.3s; }
+  .art-card.c3 { animation-delay: 0.6s; }
+  .art-diamond { animation: pulse-diamond 3s ease-in-out infinite; }
+  .art-bar { animation: bars 2.6s ease-in-out infinite; }
+  .art-bar.b2 { animation-delay: 0.3s; }
+  .art-bar.b3 { animation-delay: 0.6s; }
+  .art-bar.b4 { animation-delay: 0.9s; }
+
+  .hero-rotator { animation: lift-in 0.8s 0.3s both cubic-bezier(0.22, 0.61, 0.36, 1); }
+  .hero-rotator-track { animation: rotate-words 12.5s cubic-bezier(0.7, 0, 0.3, 1) 1.4s infinite; }
+
+  .ribbon-track { animation: marquee 48s linear infinite; }
+  .ribbon:hover .ribbon-track { animation-play-state: paused; }
+
+  .section-title em,
+  .hero-headline span:last-child {
+    background-size: 220% 100%;
+    animation: shimmer 7s ease-in-out infinite alternate;
+  }
+
+  .hero-headline span:last-child {
+    animation: lift-in 0.8s 0.24s both cubic-bezier(0.22, 0.61, 0.36, 1), shimmer 7s 1.2s ease-in-out infinite alternate;
+  }
+}

@@ -14,7 +14,7 @@ export function Fields({ locale }: { locale: Locale }) {
         {t.fields.map((field, index) => (
           <Link
             key={field.title}
-            className="field-card"
+            className="field-card glow-card"
             href={`/${locale}/lab/${field.slug}`}
           >
             <span className="field-index mono" dir="ltr" aria-hidden="true">

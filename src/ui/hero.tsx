@@ -23,12 +23,22 @@ export function Hero({ locale }: { locale: Locale }) {
           <span key={line}>{line}</span>
         ))}
       </h1>
+      <p className="hero-rotator" aria-hidden="true">
+        <span>{t.heroRotatorLead}</span>
+        <span className="hero-rotator-window">
+          <span className="hero-rotator-track">
+            {[...t.heroRotator, t.heroRotator[0]].map((item, index) => (
+              <span key={index}>{item}</span>
+            ))}
+          </span>
+        </span>
+      </p>
       <p className="hero-lead">{t.heroLead}</p>
       <div className="hero-actions">
-        <a className="button button-live" href="#lab">
+        <a className="button button-live magnetic" href="#lab">
           {t.labLabel}
         </a>
-        <a className="button button-quiet" href="#contact">
+        <a className="button button-quiet magnetic" href="#contact">
           {t.discuss}
         </a>
       </div>

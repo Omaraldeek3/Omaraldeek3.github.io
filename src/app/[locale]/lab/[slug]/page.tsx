@@ -4,9 +4,10 @@ import { notFound } from "next/navigation";
 import { copy } from "@/content/site";
 import { isLocale, locales } from "@/content/locales";
 import { getLabWork, labWorks } from "@/lab/registry";
-import { ShortsFactoryView } from "@/lab/shorts-factory/view";
+import { AiAutomationView } from "@/lab/ai-automation/view";
 import { CutStudioView } from "@/lab/cut-studio/view";
 import { DesignStudiesView } from "@/lab/design-studies/view";
+import { SaasPanelView } from "@/lab/saas-panel/view";
 
 export function generateStaticParams() {
   return locales.flatMap(locale =>
@@ -35,7 +36,7 @@ export default async function LabPage({ params }: PageProps<"/[locale]/lab/[slug
   const t = copy[locale];
 
   return (
-    <main id="main" className="lab-page">
+    <main id="main" className="lab-page" data-work={work.slug}>
       <div className="shell">
         <Link className="back-link" href={`/${locale}#lab`}>
           ← {t.labLabel}
@@ -43,9 +44,10 @@ export default async function LabPage({ params }: PageProps<"/[locale]/lab/[slug
         <p className="section-label">{t.labLive}</p>
         <h1 className="lab-page-title">{work.title[locale]}</h1>
         <p className="lab-page-blurb">{work.blurb[locale]}</p>
-        {work.slug === "shorts-factory" && <ShortsFactoryView locale={locale} />}
+        {work.slug === "ai-automation" && <AiAutomationView locale={locale} />}
         {work.slug === "cut-studio" && <CutStudioView locale={locale} />}
         {work.slug === "design-studies" && <DesignStudiesView locale={locale} />}
+        {work.slug === "saas-panel" && <SaasPanelView locale={locale} />}
       </div>
     </main>
   );

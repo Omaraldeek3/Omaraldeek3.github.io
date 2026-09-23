@@ -10,6 +10,8 @@ const config: NextConfig = {
   async redirects() {
     return [
       { source: "/cut-studio", destination: "/ar/lab/cut-studio", permanent: true },
+      // The factory grew into a set of systems and took a name that says so.
+      { source: "/:locale(ar|en)/lab/shorts-factory", destination: "/:locale/lab/ai-automation", permanent: true },
     ];
   },
 };

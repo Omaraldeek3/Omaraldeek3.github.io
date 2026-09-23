@@ -5,7 +5,12 @@ import { copy, profile } from "@/content/site";
 import { isLocale, locales } from "@/content/locales";
 import { Nav } from "@/ui/nav";
 import { Footer } from "@/ui/footer";
+import { PointerFx } from "@/ui/pointer-fx";
 import "../globals.css";
+// After the base sheet, so these rules win ties with it.
+import "../lab.css";
+import "../motion.css";
+import "../saas.css";
 
 // Every face is served from node_modules, so a visit makes no font request to
 // any third party. Tajawal is the Arabic counterpart to the Latin grotesk:
@@ -92,6 +97,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
         <Nav locale={locale} />
         {children}
         <Footer locale={locale} />
+        <PointerFx />
       </body>
     </html>
   );
