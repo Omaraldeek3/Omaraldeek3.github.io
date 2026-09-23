@@ -1,149 +1,93 @@
-# خطة تنفيذ: أساس البورتفوليو والموقع القابل للإطلاق
+# خطة تنفيذ: إعادة تصميم البورتفوليو
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** إعادة بناء طبقة العرض بالكامل لتقديم عمر الديك كصانع مستقل، مع موقع ثنائي اللغة يعمل ويُختبر ويُنشر على Vercel، و Cut Studio بداخله كأول أعمال المختبر.
+**Goal:** إعادة بناء الطبقة البصرية بالكامل بهوية «النظام الحي»، وإعادة ترتيب الموقع حول عمر، ونقل Cut Studio ومصنع الشورتس ودراسات التصميم إلى قسم أعمال واحد اسمه المختبر، مع نشر على Vercel ونموذج تواصل يعمل.
 
-**Architecture:** تُحذف طبقة العرض القديمة بالكامل ويُعاد بناؤها فوق App Router بمسار `[locale]` واحد وملف `proxy.ts` لكشف اللغة. المحتوى يُعزل في `src/content` كقواميس، والعرض في `src/ui`، والمنطق المشترك في `src/lib`. يُحتفظ بـ `src/toolkit` كما هو ويُعاد تغليفه داخل `src/app/[locale]/lab/cut-studio`.
+**Architecture:** يبقى المحتوى الحقيقي في `src/content/site.ts` ويبقى `src/toolkit` ومسارات المعاينات كما هي؛ تُحذف الطبقة البصرية وحدها ويُعاد بناؤها في `src/ui`. اللغة تُكشف في `proxy.ts`، والأعمال تُسجَّل في `src/lab/registry.ts` كنقطة تمديد وحيدة.
 
-**Tech Stack:** Next.js 16 (App Router)، React 19، Tailwind CSS 4، `motion`، TypeScript، Playwright، خطوط `@fontsource` محلية، Canvas 2D لمشهد البطل.
+**Tech Stack:** Next.js 16 (App Router)، React 19، Tailwind 4، `motion`، TypeScript، Playwright، خطوط `@fontsource` محلية، Canvas 2D.
 
-**Spec:** [docs/superpowers/specs/2026-09-23-portfolio-redesign-design.md](../specs/2026-09-23-portfolio-redesign-design.md)
-
-**نطاق هذه الخطة:** المراحل ١، ٢، ٣، ٤، ٨، ٩ من المواصفة. تنتهي بموقع كامل قابل للإطلاق.
-
-**خارج نطاق هذه الخطة:** محرك الأتمتة، وملعب API، ولوحة SaaS (المراحل ٥، ٦، ٧). لكل منها خطته المستقلة، وتُضاف إلى سجل المختبر الذي تبنيه المهمة ٨ هنا دون تعديل أي شيء آخر.
+**Spec:** [docs/superpowers/specs/2026-09-23-portfolio-redesign-design.md](../specs/2026-09-23-portfolio-redesign-design.md) — القسم ١٦ يَسبق ما يخالفه في الأقسام ٥ و ٦ و ٧ و ١٤.
 
 ## Global Constraints
 
-- العربية هي اللغة الافتراضية. الجذر `/` يحوّل إلى `/ar`.
-- الاتجاه يُبنى بخصائص CSS المنطقية (`inline-start` / `inline-end`)، لا `left` / `right`.
-- اللون يعني حالة لا زينة: العنصر غير الحي يبقى رمادياً.
-- `prefers-reduced-motion` يوقف كل حركة ويترك الحالة النهائية مقروءة كاملة. شرط قبول لا تحسين.
-- الموقع يعمل ويُقرأ كاملاً بلا JavaScript.
-- كل نص يحقق تباين AA في الوضعين الداكن والفاتح.
-- الخطوط والصور محلية. لا طلب شبكي خارجي عند الزيارة.
-- لا بيانات وهمية بديلة عند أي فشل. الفشل يُعلن.
-- كل مسار تحت `/api/` محدود المعدل بحسب عنوان IP.
-- أي قيمة تواصل غائبة تعني إخفاء زرها، لا اختلاق بديل.
-- قبل كتابة أي كود في أي مهمة: اقرأ الدليل المعني في `node_modules/next/dist/docs/`. هذا الإصدار يخالف الاصطلاحات المألوفة — `middleware.ts` صار `proxy.ts`، و`params` صارت `Promise` تُنتظر.
-- الاختبارات كلها Playwright، وهو أداة الاختبار الوحيدة في المشروع. الدوال الخالصة تُختبر باستيرادها مباشرة في ملف `.spec.ts`، كما في `tests/toolkit-geometry.spec.ts`.
-- الأمر `npm test` يشغّل Playwright، و`npm run typecheck` و`npm run lint` يجب أن يمرّا قبل كل كوميت.
+- العربية افتراضية. الجذر `/` يحوّل إلى `/ar`.
+- الاتجاه بخصائص CSS المنطقية (`inline-start` / `inline-end`) لا `left` / `right`.
+- اللون يعني حالة لا زينة. غير الحي يبقى رمادياً.
+- `prefers-reduced-motion` يوقف كل حركة ويترك حالة نهائية مقروءة. شرط قبول.
+- الموقع يُقرأ كاملاً بلا JavaScript.
+- تباين AA في الوضعين.
+- الخطوط والصور محلية. لا طلب خارجي عند الزيارة.
+- لا بيانات وهمية عند الفشل. الفشل يُعلن.
+- قيمة تواصل غائبة تعني إخفاء زرها.
+- قبل الكود في أي مهمة: اقرأ الدليل المعني في `node_modules/next/dist/docs/`. `middleware.ts` صار `proxy.ts`، و`params` صارت `Promise`.
+- الاختبارات كلها Playwright. الدوال الخالصة تُختبر باستيرادها في `.spec.ts`.
+- `npm run typecheck` و `npm run lint` يمرّان قبل كل كوميت.
+- اختبارات `tests/toolkit-*.spec.ts` العشرة القائمة تبقى خضراء طوال العمل. كسرها يعني أنك عدّلت منطقاً بدل أن تغلّفه.
 
 ---
 
 ## هيكل الملفات
 
-### تُحذف
+### يُحذف — الطبقة البصرية وحدها
 
-| المسار | السبب |
-|---|---|
-| `src/components/` | طبقة عرض قديمة بالكامل |
-| `src/content/site.ts`, `previews.ts`, `demo.ts` | محتوى قديم مرتبط بهيكل ملغى |
-| `src/app/globals.css`, `editorial.css`, `previews.css`, `styles/` | نظام تصميم قديم |
-| `src/app/[locale]/` | كل صفحات اللغة القديمة والمعاينات |
-| `src/app/tools/` | يُستبدل بتحويل و بصفحة داخل المختبر |
-| `tests/portfolio.spec.ts` | يختبر هيكلاً ملغى |
-| `.github/workflows/pages.yml` | النشر انتقل إلى Vercel |
-| `public/images/coffee.jpg`, `interior.jpg` | صور معاينات ملغاة |
-| ملفات `*preview*.log` في الجذر | مخلفات تشغيل |
+`src/app/styles/`، `src/app/previews.css`، `src/components/cut-line.tsx`، `src/components/factory.tsx`، `src/components/box-flat.tsx`، `src/components/sections.tsx`، `src/components/interactions.tsx`، `src/components/motion-features.ts`، `src/app/tools/`، `tests/portfolio.spec.ts`، `.github/workflows/pages.yml`، ملفات `*preview*.log` في الجذر.
 
-### تبقى دون تعديل منطقي
+### يبقى — عمل حقيقي
 
 | المسار | ملاحظة |
 |---|---|
-| `src/toolkit/` | عشرون ملفاً تعمل. يُعاد تغليفها فقط |
+| `src/toolkit/` | عشرون ملفاً تعمل. تُغلَّف فقط |
 | `src/app/api/tools/cdr/route.ts` | يعمل فعلياً بعد ترك الاستضافة الثابتة |
-| `tests/toolkit-*.spec.ts` | تسع ملفات اختبار قائمة، تبقى كما هي |
+| `src/content/site.ts` | نصوص حقيقية: المصنع، المحطات، Cut Studio، الدراسات |
+| `src/content/previews.ts`, `demo.ts` | محتوى الدراسات الثلاث |
+| `src/components/preview.tsx` | مكوّن المعاينة، يُعاد تغليفه |
+| `src/app/[locale]/work/[slug]/` | صفحات الدراسات ومعايناتها |
+| `tests/toolkit-*.spec.ts` | عشرة ملفات اختبار |
 
-### تُنشأ
+### يُنشأ
 
-| المسار | المسؤولية |
-|---|---|
-| `proxy.ts` | كشف اللغة وتحويل المسارات بلا بادئة لغة |
-| `src/content/locales.ts` | تعريف اللغات واختيار اللغة من ترويسة الطلب |
-| `src/content/profile.ts` | بيانات عمر الشخصية ووسائل تواصله |
-| `src/content/dictionary.ts` | نوع القاموس ودالة جلبه |
-| `src/content/ar.ts`, `src/content/en.ts` | نصوص كل لغة |
-| `src/lib/rate-limit.ts` | تحديد معدل بحسب مفتاح، في الذاكرة |
-| `src/lib/client-ip.ts` | استخراج عنوان IP من الطلب |
-| `src/lib/validate.ts` | التحقق من مدخلات نموذج التواصل |
-| `src/lib/scene.ts` | منطق مشهد النظام الحي، خالص وقابل للاختبار |
-| `src/lab/registry.ts` | سجل أعمال المختبر |
-| `src/ui/section.tsx` | غلاف قسم موحد |
-| `src/ui/nav.tsx` | شريط التنقل ومبدّل اللغة |
-| `src/ui/footer.tsx` | التذييل |
-| `src/ui/hero.tsx` | قسم البطل |
-| `src/ui/hero-scene.tsx` | لوحة Canvas الحية، مكوّن عميل |
-| `src/ui/fields.tsx` | قسم المجالات الأربعة |
-| `src/ui/lab-section.tsx` | قسم المختبر وبطاقاته |
-| `src/ui/process.tsx` | قسم كيف أعمل |
-| `src/ui/about.tsx` | قسم عنّي |
-| `src/ui/contact.tsx` | قسم التواصل والنموذج |
-| `src/app/layout.tsx` | جذر بلا لغة، يمرر الأبناء فقط |
-| `src/app/[locale]/layout.tsx` | `html` و `dir` و `lang` والخطوط والتنقل والتذييل |
-| `src/app/[locale]/page.tsx` | الصفحة الرئيسية |
-| `src/app/[locale]/lab/[slug]/page.tsx` | صفحة كل عمل |
-| `src/app/api/contact/route.ts` | استقبال نموذج التواصل |
-| `src/app/globals.css` | رموز التصميم وأساس الأنماط |
-| `.env.example` | توثيق متغيرات البيئة |
-| `tests/locale.spec.ts` … `tests/a11y.spec.ts` | اختبارات جديدة، ملف لكل مهمة |
+`src/content/locales.ts` · `src/lab/registry.ts` · `src/lib/{rate-limit,client-ip,validate,scene}.ts` · `src/ui/{section,nav,footer,hero,hero-scene,fields,lab-section,process,about,contact}.tsx` · `proxy.ts` · `src/app/[locale]/lab/[slug]/page.tsx` · `src/app/api/contact/route.ts` · `src/app/{sitemap,robots}.ts` · `.env.example`
 
 ---
 
 ## المهام
 
-### المهمة ١: تهيئة النشر وتنظيف الإرث
+### المهمة ١: تهيئة النشر وتقليم الطبقة البصرية
 
-تُزيل ما يربط المشروع بالاستضافة الثابتة، وتُسقط `three`، وتترك المشروع يبني بنجاح على حالة فارغة مؤقتة.
+**Files:** Modify `next.config.ts`, `package.json`; Delete ما ورد أعلاه; Create `.env.example`; Test `tests/config.spec.ts`
 
-**Files:**
-- Modify: `next.config.ts`
-- Modify: `package.json`
-- Modify: `src/app/layout.tsx`
-- Create: `.env.example`
-- Delete: `.github/workflows/pages.yml`, `src/components/`, `src/content/`, `src/app/[locale]/`, `src/app/tools/`, `src/app/globals.css`, `src/app/editorial.css`, `src/app/previews.css`, `src/app/styles/`, `tests/portfolio.spec.ts`, `public/images/coffee.jpg`, `public/images/interior.jpg`, `*preview*.log`
-- Test: `tests/config.spec.ts`
+**Interfaces:** Produces — `next.config.ts` بلا `output: export`، وبتحويل دائم من `/tools` إلى `/ar/lab/cut-studio`.
 
-**Interfaces:**
-- Consumes: لا شيء. هذه أول مهمة.
-- Produces: `next.config.ts` بلا فرع `GITHUB_PAGES`، وبتحويل دائم من `/tools` إلى `/ar/lab/cut-studio`.
-
-- [ ] **Step 1: اقرأ دليل التحويلات في هذا الإصدار**
+- [ ] **Step 1: اقرأ دليل التحويلات**
 
 ```bash
-sed -n '1,80p' node_modules/next/dist/docs/01-app/03-api-reference/05-config/01-next-config-js/redirects.md
+sed -n '1,60p' node_modules/next/dist/docs/01-app/03-api-reference/05-config/01-next-config-js/redirects.md
 ```
 
-- [ ] **Step 2: اكتب الاختبار الفاشل**
-
-أنشئ `tests/config.spec.ts`:
+- [ ] **Step 2: اكتب الاختبار الفاشل** — `tests/config.spec.ts`
 
 ```ts
 import { test, expect } from "@playwright/test";
 import config from "../next.config";
 
-test("config has no static export branch and no GitHub Pages env", () => {
+test("no static export branch remains", () => {
   expect(config).not.toHaveProperty("output");
   expect(config).not.toHaveProperty("trailingSlash");
-  expect(config.env?.NEXT_PUBLIC_STATIC_SITE).toBeUndefined();
 });
 
-test("the old /tools path permanently redirects into the lab", async () => {
+test("the old tools path redirects into the lab", async () => {
   const redirects = await config.redirects!();
   const tools = redirects.find(r => r.source === "/tools");
-  expect(tools).toBeDefined();
-  expect(tools!.destination).toBe("/ar/lab/cut-studio");
-  expect(tools!.permanent).toBe(true);
+  expect(tools?.destination).toBe("/ar/lab/cut-studio");
+  expect(tools?.permanent).toBe(true);
 });
 ```
 
-- [ ] **Step 3: شغّل الاختبار وتأكد أنه يفشل**
+- [ ] **Step 3: شغّله** — `npx playwright test tests/config.spec.ts` → FAIL
 
-Run: `npx playwright test tests/config.spec.ts`
-Expected: FAIL — `config.redirects` غير معرّفة، و`output` موجودة عند ضبط `GITHUB_PAGES`.
-
-- [ ] **Step 4: اكتب `next.config.ts` الجديد**
+- [ ] **Step 4: اكتب `next.config.ts`**
 
 ```ts
 import type { NextConfig } from "next";
@@ -162,123 +106,71 @@ const config: NextConfig = {
 export default config;
 ```
 
-- [ ] **Step 5: شغّل الاختبار وتأكد أنه ينجح**
+- [ ] **Step 5: شغّله** — PASS
 
-Run: `npx playwright test tests/config.spec.ts`
-Expected: PASS
-
-- [ ] **Step 6: احذف الإرث**
+- [ ] **Step 6: احذف الطبقة البصرية وأسقط `three`**
 
 ```bash
-git rm -r --quiet .github/workflows/pages.yml src/components src/content "src/app/[locale]" src/app/tools src/app/globals.css src/app/editorial.css src/app/previews.css src/app/styles tests/portfolio.spec.ts public/images/coffee.jpg public/images/interior.jpg
+git rm -r --quiet src/app/styles src/app/previews.css src/components/cut-line.tsx src/components/factory.tsx src/components/box-flat.tsx src/components/sections.tsx src/components/interactions.tsx src/components/motion-features.ts src/app/tools tests/portfolio.spec.ts .github/workflows/pages.yml
 rm -f ./*preview*.log
-```
-
-- [ ] **Step 7: أسقط `three` من الاعتماديات**
-
-```bash
 npm uninstall three @types/three
 ```
 
-- [ ] **Step 8: اجعل الجذر صفحة انتقالية مؤقتة**
-
-استبدل `src/app/layout.tsx` بالكامل:
-
-```tsx
-export const metadata = { title: "Omar Aldeek" };
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="ar" dir="rtl">
-      <body>{children}</body>
-    </html>
-  );
-}
-```
-
-واحذف `src/app/page.tsx` إن كان يستورد محتوى محذوفاً، وأنشئ بديلاً مؤقتاً:
-
-```tsx
-import { redirect } from "next/navigation";
-
-export default function Page() {
-  redirect("/ar");
-}
-```
-
-- [ ] **Step 9: وثّق متغيرات البيئة**
-
-أنشئ `.env.example`:
+- [ ] **Step 7: أنشئ `.env.example`**
 
 ```sh
-# نطاق الإنتاج الفعلي بلا شرطة أخيرة، مثل https://omaraldeek.com
-# يفعّل canonical وروابط hreflang. بدونه تُحذف هذه الوسوم بدل اختلاق نطاق.
+# نطاق الإنتاج بلا شرطة أخيرة. بدونه تُحذف canonical و hreflang بدل اختلاق نطاق.
 NEXT_PUBLIC_SITE_URL=
 
-# وجهة نموذج التواصل. بدونها يعرض النموذج حالة "غير مفعّل" ولا يقبل إرسالاً.
+# وجهة نموذج التواصل. بدونها يعيد المسار 503 وتعرض الواجهة حالة "غير مفعّل".
 CONTACT_TO_EMAIL=
 CONTACT_FROM_EMAIL=
 CONTACT_API_KEY=
 ```
 
-- [ ] **Step 10: تحقق أن المشروع يبني ويمرّ الفحص**
-
-Run: `npm run typecheck && npm run lint && npm run build`
-Expected: الثلاثة تنجح. أي خطأ استيراد يشير إلى ملف محذوف نسيت إزالة مرجعه.
-
-- [ ] **Step 11: كوميت**
+- [ ] **Step 8: كوميت** — الصفحات مكسورة الآن عمداً؛ تُصلَح في المهام التالية.
 
 ```bash
-git add -A
-git commit -m "chore: drop static export setup, three.js and the legacy presentation layer"
+git add -A && git commit -m "chore: drop the static export setup, three.js and the old visual layer"
 ```
 
 ---
 
-### المهمة ٢: طبقة اللغة
+### المهمة ٢: طبقة اللغة والتوجيه
 
-**Files:**
-- Create: `src/content/locales.ts`
-- Test: `tests/locale.spec.ts`
+**Files:** Create `src/content/locales.ts`, `proxy.ts`; Modify `src/content/site.ts`, `src/app/layout.tsx`, `src/app/[locale]/layout.tsx`; Delete `src/app/page.tsx`; Test `tests/locale.spec.ts`, `tests/routing.spec.ts`
 
-**Interfaces:**
-- Consumes: لا شيء.
-- Produces:
-  - `export type Locale = "ar" | "en"`
-  - `export const locales: readonly Locale[]`
-  - `export const defaultLocale: Locale` — قيمتها `"ar"`
-  - `export function isLocale(value: string): value is Locale`
-  - `export function pickLocale(acceptLanguage: string | null): Locale`
-  - `export function oppositeLocale(locale: Locale): Locale`
+**Interfaces:** Produces — `Locale`, `locales`, `defaultLocale`, `isLocale`, `pickLocale`, `oppositeLocale`. يُعاد تصدير `Locale`, `locales`, `isLocale` من `site.ts` حفاظاً على مستورديها.
 
-- [ ] **Step 1: اكتب الاختبار الفاشل**
+- [ ] **Step 1: اقرأ دليل proxy**
 
-أنشئ `tests/locale.spec.ts`:
+```bash
+sed -n '1,90p' node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/proxy.md
+```
+
+- [ ] **Step 2: اكتب `tests/locale.spec.ts`**
 
 ```ts
 import { test, expect } from "@playwright/test";
 import { isLocale, pickLocale, oppositeLocale, defaultLocale, locales } from "../src/content/locales";
 
-test("locale list and default", () => {
-  expect(locales).toEqual(["ar", "en"]);
+test("list and default", () => {
+  expect([...locales]).toEqual(["ar", "en"]);
   expect(defaultLocale).toBe("ar");
 });
 
 test("isLocale accepts only supported values", () => {
   expect(isLocale("ar")).toBe(true);
-  expect(isLocale("en")).toBe(true);
   expect(isLocale("fr")).toBe(false);
-  expect(isLocale("")).toBe(false);
   expect(isLocale("AR")).toBe(false);
+  expect(isLocale("")).toBe(false);
 });
 
-test("pickLocale reads the accept-language header and falls back to Arabic", () => {
+test("pickLocale reads accept-language and falls back to Arabic", () => {
   expect(pickLocale("en-US,en;q=0.9")).toBe("en");
-  expect(pickLocale("ar-JO,ar;q=0.9,en;q=0.8")).toBe("ar");
   expect(pickLocale("en;q=0.4,ar;q=0.9")).toBe("ar");
-  expect(pickLocale("fr-FR,fr;q=0.9")).toBe("ar");
+  expect(pickLocale("fr-FR")).toBe("ar");
   expect(pickLocale(null)).toBe("ar");
-  expect(pickLocale("")).toBe("ar");
 });
 
 test("oppositeLocale flips the pair", () => {
@@ -287,14 +179,9 @@ test("oppositeLocale flips the pair", () => {
 });
 ```
 
-- [ ] **Step 2: شغّل الاختبار وتأكد أنه يفشل**
+- [ ] **Step 3: شغّله** → FAIL
 
-Run: `npx playwright test tests/locale.spec.ts`
-Expected: FAIL — `Cannot find module '../src/content/locales'`
-
-- [ ] **Step 3: اكتب التنفيذ الأدنى**
-
-أنشئ `src/content/locales.ts`:
+- [ ] **Step 4: اكتب `src/content/locales.ts`**
 
 ```ts
 export type Locale = "ar" | "en";
@@ -322,7 +209,6 @@ export function pickLocale(acceptLanguage: string | null): Locale {
     })
     .filter(entry => entry.tag.length > 0)
     .sort((a, b) => b.quality - a.quality);
-
   for (const entry of ranked) {
     const base = entry.tag.split("-")[0];
     if (isLocale(base)) return base;
@@ -331,44 +217,16 @@ export function pickLocale(acceptLanguage: string | null): Locale {
 }
 ```
 
-- [ ] **Step 4: شغّل الاختبار وتأكد أنه ينجح**
+في `src/content/site.ts` استبدل التعريفات الثلاثة في أعلى الملف بإعادة تصدير:
 
-Run: `npx playwright test tests/locale.spec.ts`
-Expected: PASS — أربعة اختبارات
-
-- [ ] **Step 5: كوميت**
-
-```bash
-git add src/content/locales.ts tests/locale.spec.ts
-git commit -m "feat: add locale detection with Arabic as the default"
+```ts
+export type { Locale } from "./locales";
+export { locales, isLocale } from "./locales";
 ```
 
----
+- [ ] **Step 5: شغّله** — PASS
 
-### المهمة ٣: توجيه اللغة عبر proxy
-
-**Files:**
-- Create: `proxy.ts`
-- Create: `src/app/[locale]/layout.tsx`
-- Create: `src/app/[locale]/page.tsx`
-- Delete: `src/app/page.tsx`
-- Test: `tests/routing.spec.ts`
-
-**Interfaces:**
-- Consumes: `pickLocale`, `isLocale`, `locales`, `type Locale` من `src/content/locales`.
-- Produces: مسار `/[locale]` يعمل، و`generateStaticParams` يولّد `ar` و `en`.
-
-- [ ] **Step 1: اقرأ دليل proxy في هذا الإصدار**
-
-```bash
-sed -n '1,120p' node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/proxy.md
-```
-
-لاحظ: `middleware.ts` لم يعد موجوداً في هذا الإصدار. الملف اسمه `proxy.ts` ويوضع في جذر المشروع، والدالة تُصدَّر باسم `proxy` أو كتصدير افتراضي.
-
-- [ ] **Step 2: اكتب الاختبار الفاشل**
-
-أنشئ `tests/routing.spec.ts`:
+- [ ] **Step 6: اكتب `tests/routing.spec.ts`**
 
 ```ts
 import { test, expect } from "@playwright/test";
@@ -378,38 +236,32 @@ test("the root redirects to Arabic", async ({ page }) => {
   await expect(page).toHaveURL(/\/ar$/);
 });
 
-test("a path without a locale prefix gains one", async ({ page }) => {
+test("a path without a locale gains one", async ({ page }) => {
   await page.goto("/lab");
   await expect(page).toHaveURL(/\/ar\/lab$/);
 });
 
-test("each locale sets the matching lang and dir", async ({ page }) => {
+test("each locale sets lang and dir", async ({ page }) => {
   await page.goto("/ar");
   await expect(page.locator("html")).toHaveAttribute("lang", "ar");
   await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
   await page.goto("/en");
-  await expect(page.locator("html")).toHaveAttribute("lang", "en");
   await expect(page.locator("html")).toHaveAttribute("dir", "ltr");
 });
 
-test("an unknown locale is not served", async ({ page }) => {
-  const response = await page.goto("/fr");
-  expect(response?.status()).toBe(404);
+test("an unknown locale is a 404", async ({ page }) => {
+  expect((await page.goto("/fr"))?.status()).toBe(404);
 });
 
-test("api routes are not rewritten by the locale proxy", async ({ request }) => {
-  const response = await request.get("/api/tools/cdr");
-  expect(response.status()).not.toBe(307);
-  expect(response.status()).not.toBe(308);
+test("api routes are not rewritten", async ({ request }) => {
+  const status = (await request.get("/api/tools/cdr")).status();
+  expect([307, 308]).not.toContain(status);
 });
 ```
 
-- [ ] **Step 3: شغّل الاختبار وتأكد أنه يفشل**
+- [ ] **Step 7: شغّله** → FAIL
 
-Run: `npx playwright test tests/routing.spec.ts`
-Expected: FAIL — لا يوجد مسار `/ar`
-
-- [ ] **Step 4: اكتب `proxy.ts`**
+- [ ] **Step 8: اكتب `proxy.ts`**
 
 ```ts
 import { NextResponse } from "next/server";
@@ -422,7 +274,6 @@ export function proxy(request: NextRequest) {
     locale => pathname === `/${locale}` || pathname.startsWith(`/${locale}/`),
   );
   if (hasLocale) return;
-
   const locale = pickLocale(request.headers.get("accept-language"));
   const url = request.nextUrl.clone();
   url.pathname = pathname === "/" ? `/${locale}` : `/${locale}${pathname}`;
@@ -434,37 +285,9 @@ export const config = {
 };
 ```
 
-- [ ] **Step 5: اكتب تخطيط اللغة**
+- [ ] **Step 9: بسّط الجذر واحذف `src/app/page.tsx`**
 
-أنشئ `src/app/[locale]/layout.tsx`:
-
-```tsx
-import { notFound } from "next/navigation";
-import { isLocale, locales } from "../../content/locales";
-import "../globals.css";
-
-export function generateStaticParams() {
-  return locales.map(locale => ({ locale }));
-}
-
-export default async function LocaleLayout({
-  children,
-  params,
-}: LayoutProps<"/[locale]">) {
-  const { locale } = await params;
-  if (!isLocale(locale)) notFound();
-
-  return (
-    <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}>
-      <body>{children}</body>
-    </html>
-  );
-}
-```
-
-- [ ] **Step 6: اجعل الجذر يمرر الأبناء فقط**
-
-استبدل `src/app/layout.tsx`:
+`src/app/layout.tsx` يصير:
 
 ```tsx
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -472,101 +295,59 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-واحذف `src/app/page.tsx`. التحويل من `/` يتكفل به `proxy.ts`.
+- [ ] **Step 10: حدّث `src/app/[locale]/layout.tsx`** ليحمل `html` و `dir` و `lang` و `generateStaticParams` ويستورد `../globals.css` فقط، بلا أي استيراد من الملفات المحذوفة.
 
-- [ ] **Step 7: أنشئ صفحة مؤقتة**
+- [ ] **Step 11: شغّل** — `npx playwright test tests/routing.spec.ts tests/locale.spec.ts` → PASS
 
-أنشئ `src/app/[locale]/page.tsx`:
-
-```tsx
-export default async function Page({ params }: PageProps<"/[locale]">) {
-  const { locale } = await params;
-  return <h1>{locale}</h1>;
-}
-```
-
-- [ ] **Step 8: أنشئ ملف أنماط فارغاً مؤقتاً**
-
-أنشئ `src/app/globals.css` بسطر واحد حتى لا ينكسر الاستيراد:
-
-```css
-@import "tailwindcss";
-```
-
-- [ ] **Step 9: شغّل الاختبار وتأكد أنه ينجح**
-
-Run: `npx playwright test tests/routing.spec.ts`
-Expected: PASS — خمسة اختبارات
-
-- [ ] **Step 10: كوميت**
+- [ ] **Step 12: كوميت**
 
 ```bash
-git add proxy.ts "src/app/[locale]" src/app/layout.tsx src/app/globals.css tests/routing.spec.ts
-git rm --quiet src/app/page.tsx
-git commit -m "feat: route locales through proxy with Arabic as the default"
+git add -A && git commit -m "feat: route locales through proxy with Arabic as the default"
 ```
 
 ---
 
-### المهمة ٤: نظام التصميم والخطوط
+### المهمة ٣: رموز التصميم
 
-**Files:**
-- Modify: `src/app/globals.css`
-- Modify: `src/app/[locale]/layout.tsx`
-- Test: `tests/theme.spec.ts`
+**Files:** Modify `src/app/globals.css`; Test `tests/theme.spec.ts`
 
-**Interfaces:**
-- Consumes: تخطيط اللغة من المهمة ٣.
-- Produces: رموز CSS التالية متاحة عالمياً — `--surface-0`، `--surface-1`، `--surface-2`، `--text-primary`، `--text-secondary`، `--text-muted`، `--live`، `--live-dim`، `--warn`، `--border`، `--font-ar`، `--font-en`، `--font-mono`.
+**Interfaces:** Produces — `--surface-0..2`, `--text-primary|secondary|muted`, `--live`, `--live-dim`, `--warn`, `--border`, `--border-strong`, `--font-ar|en|mono`, والصنف `.shell`.
 
-- [ ] **Step 1: اكتب الاختبار الفاشل**
-
-أنشئ `tests/theme.spec.ts`:
+- [ ] **Step 1: اكتب `tests/theme.spec.ts`**
 
 ```ts
 import { test, expect } from "@playwright/test";
 
-const readVar = (name: string) =>
-  getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+const NAMES = ["--surface-0", "--surface-1", "--text-primary", "--text-secondary", "--live", "--warn", "--border"];
 
-test("design tokens resolve in both colour schemes", async ({ page }) => {
+test("tokens resolve in both colour schemes", async ({ page }) => {
   for (const scheme of ["dark", "light"] as const) {
     await page.emulateMedia({ colorScheme: scheme });
     await page.goto("/ar");
-    const tokens = await page.evaluate(names => names.map(n =>
-      getComputedStyle(document.documentElement).getPropertyValue(n).trim()), [
-      "--surface-0", "--surface-1", "--text-primary", "--text-secondary", "--live", "--warn", "--border",
-    ]);
-    for (const value of tokens) expect(value).not.toBe("");
-    expect(tokens[0]).not.toBe(tokens[2]);
+    const values = await page.evaluate(names =>
+      names.map(n => getComputedStyle(document.documentElement).getPropertyValue(n).trim()), NAMES);
+    for (const value of values) expect(value).not.toBe("");
+    expect(values[0]).not.toBe(values[2]);
   }
 });
 
-test("Arabic and English use their own font stacks", async ({ page }) => {
+test("each language gets its own font stack", async ({ page }) => {
   await page.goto("/ar");
-  const ar = await page.evaluate(() => getComputedStyle(document.body).fontFamily);
-  expect(ar).toContain("Noto Sans Arabic");
+  expect(await page.evaluate(() => getComputedStyle(document.body).fontFamily)).toContain("Noto Sans Arabic");
   await page.goto("/en");
-  const en = await page.evaluate(() => getComputedStyle(document.body).fontFamily);
-  expect(en).toContain("Manrope");
+  expect(await page.evaluate(() => getComputedStyle(document.body).fontFamily)).toContain("Manrope");
 });
 
 test("no horizontal overflow at phone width", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 800 });
   await page.goto("/ar");
-  const overflows = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
-  expect(overflows).toBe(false);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false);
 });
 ```
 
-- [ ] **Step 2: شغّل الاختبار وتأكد أنه يفشل**
+- [ ] **Step 2: شغّله** → FAIL
 
-Run: `npx playwright test tests/theme.spec.ts`
-Expected: FAIL — الرموز تعود فارغة
-
-- [ ] **Step 3: اكتب رموز التصميم**
-
-استبدل `src/app/globals.css`:
+- [ ] **Step 3: اكتب `src/app/globals.css`**
 
 ```css
 @import "tailwindcss";
@@ -578,16 +359,16 @@ Expected: FAIL — الرموز تعود فارغة
   --surface-1: #0d131c;
   --surface-2: #141d29;
   --text-primary: #eef4fb;
-  --text-secondary: #9fb0c4;
-  --text-muted: #6b7c92;
+  --text-secondary: #a8b8cb;
+  --text-muted: #7e8fa5;
   --live: #3fd9b0;
   --live-dim: #1d7f68;
-  --warn: #e8a13c;
+  --warn: #f0ad4f;
   --border: #1e2a3a;
   --border-strong: #2c3c51;
   --font-ar: "Noto Sans Arabic Variable", system-ui, sans-serif;
   --font-en: "Manrope Variable", system-ui, sans-serif;
-  --font-mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", monospace;
+  --font-mono: ui-monospace, "Cascadia Mono", "SFMono-Regular", monospace;
   color-scheme: dark;
 }
 
@@ -597,11 +378,11 @@ Expected: FAIL — الرموز تعود فارغة
     --surface-1: #ffffff;
     --surface-2: #eef2f8;
     --text-primary: #0b131d;
-    --text-secondary: #3f5065;
-    --text-muted: #667a92;
-    --live: #0c7d63;
+    --text-secondary: #3b4c61;
+    --text-muted: #5b6d84;
+    --live: #0a6e57;
     --live-dim: #8fd8c6;
-    --warn: #9a5c07;
+    --warn: #8a5206;
     --border: #d9e1ec;
     --border-strong: #b9c6d8;
     color-scheme: light;
@@ -620,20 +401,10 @@ body {
 }
 
 html[lang="ar"] body { font-family: var(--font-ar); }
-
 code, kbd, samp, .mono { font-family: var(--font-mono); }
-
 a { color: var(--live); }
-
-:focus-visible {
-  outline: 2px solid var(--live);
-  outline-offset: 3px;
-}
-
-.shell {
-  inline-size: min(100% - 2rem, 76rem);
-  margin-inline: auto;
-}
+:focus-visible { outline: 2px solid var(--live); outline-offset: 3px; }
+.shell { inline-size: min(100% - 2rem, 76rem); margin-inline: auto; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -644,297 +415,40 @@ a { color: var(--live); }
 }
 ```
 
-- [ ] **Step 4: شغّل الاختبار وتأكد أنه ينجح**
+- [ ] **Step 4: شغّله** — PASS
 
-Run: `npx playwright test tests/theme.spec.ts`
-Expected: PASS — ثلاثة اختبارات
-
-- [ ] **Step 5: كوميت**
-
-```bash
-git add src/app/globals.css tests/theme.spec.ts
-git commit -m "feat: add the living-system design tokens and local font stacks"
-```
+- [ ] **Step 5: كوميت** — `git add -A && git commit -m "feat: add the living-system design tokens"`
 
 ---
 
-### المهمة ٥: طبقة المحتوى
+### المهمة ٤: سجل المختبر ونصوص القسم الجديدة
 
-تفصل كل نص عن كل مكوّن عرض. أي تعديل لاحق على الكلمات يقع في ملف واحد لكل لغة.
+**Files:** Create `src/lab/registry.ts`; Modify `src/content/site.ts`; Test `tests/lab-registry.spec.ts`
 
-**Files:**
-- Create: `src/content/profile.ts`
-- Create: `src/content/dictionary.ts`
-- Create: `src/content/ar.ts`
-- Create: `src/content/en.ts`
-- Test: `tests/content.spec.ts`
+**Interfaces:** Produces —
 
-**Interfaces:**
-- Consumes: `type Locale` من `src/content/locales`.
-- Produces:
-  - `export type Profile = { name: Record<Locale, string>; whatsapp: string; email: string; siteUrl: string; location: Record<Locale, string>; links: { label: string; href: string }[] }`
-  - `export const profile: Profile`
-  - `export type Dictionary` — النوع الكامل لنصوص صفحة واحدة
-  - `export function getDictionary(locale: Locale): Dictionary`
+- `export type LabStatus = "live" | "building"`
+- `export type LabWork = { slug: string; field: string; status: LabStatus; title: Record<Locale, string>; blurb: Record<Locale, string> }`
+- `export const labWorks: LabWork[]` — أربعة: `shorts-factory`، `cut-studio`، `design-studies`، `saas-panel`
+- `export function getLabWork(slug: string): LabWork | undefined`
+- في `copy[locale]` مفاتيح جديدة: `nav2` (المختبر/كيف أعمل/عنّي/تواصل/تبديل اللغة)، `labLabel`، `labTitle`، `labIntro`، `labOpen`، `labLive`، `labSoon`، `fields` (خمسة: `{ slug, title, text }`)، و`contactForm` (`nameLabel`, `emailLabel`, `messageLabel`, `submit`, `sending`, `sent`, `errorValidation`, `errorRate`, `errorServer`, `errorDisabled`, `needsJs`).
 
-- [ ] **Step 1: اكتب الاختبار الفاشل**
-
-أنشئ `tests/content.spec.ts`:
-
-```ts
-import { test, expect } from "@playwright/test";
-import { getDictionary } from "../src/content/dictionary";
-import { profile } from "../src/content/profile";
-import { locales } from "../src/content/locales";
-
-test("both dictionaries expose exactly the same keys", () => {
-  const ar = Object.keys(getDictionary("ar")).sort();
-  const en = Object.keys(getDictionary("en")).sort();
-  expect(ar).toEqual(en);
-});
-
-test("no dictionary string is empty", () => {
-  for (const locale of locales) {
-    const walk = (value: unknown, path: string) => {
-      if (typeof value === "string") expect(value.trim(), path).not.toBe("");
-      else if (Array.isArray(value)) value.forEach((v, i) => walk(v, `${path}[${i}]`));
-      else if (value && typeof value === "object")
-        for (const [k, v] of Object.entries(value)) walk(v, `${path}.${k}`);
-    };
-    walk(getDictionary(locale), locale);
-  }
-});
-
-test("whatsapp is digits only when present", () => {
-  if (profile.whatsapp) expect(profile.whatsapp).toMatch(/^\d+$/);
-});
-
-test("siteUrl has no trailing slash when present", () => {
-  if (profile.siteUrl) expect(profile.siteUrl.endsWith("/")).toBe(false);
-});
-
-test("the four fields each name their lab slug", () => {
-  for (const locale of locales) {
-    const fields = getDictionary(locale).fields;
-    expect(fields).toHaveLength(4);
-    for (const field of fields) expect(field.slug.length).toBeGreaterThan(0);
-  }
-});
-```
-
-- [ ] **Step 2: شغّل الاختبار وتأكد أنه يفشل**
-
-Run: `npx playwright test tests/content.spec.ts`
-Expected: FAIL — الوحدات غير موجودة
-
-- [ ] **Step 3: اكتب الملف الشخصي**
-
-أنشئ `src/content/profile.ts`:
-
-```ts
-import type { Locale } from "./locales";
-
-export type Profile = {
-  name: Record<Locale, string>;
-  whatsapp: string;
-  email: string;
-  siteUrl: string;
-  location: Record<Locale, string>;
-  links: { label: string; href: string }[];
-};
-
-// القيم الفارغة مقصودة: الواجهة تخفي أي وسيلة تواصل غير متوفرة ولا تختلق بديلاً.
-export const profile: Profile = {
-  name: { ar: "عمر الديك", en: "Omar Aldeek" },
-  whatsapp: "",
-  email: "",
-  siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "",
-  location: { ar: "من فلسطين، إلى كل مكان", en: "From Palestine, to everywhere" },
-  links: [],
-};
-```
-
-- [ ] **Step 4: اكتب نوع القاموس ودالة الجلب**
-
-أنشئ `src/content/dictionary.ts`:
-
-```ts
-import type { Locale } from "./locales";
-import { ar } from "./ar";
-import { en } from "./en";
-
-export type Dictionary = {
-  meta: { title: string; description: string };
-  nav: { lab: string; process: string; about: string; contact: string; switchTo: string; menu: string; skip: string };
-  hero: { role: string; headline: string; lead: string; cta: string; secondary: string };
-  fields: { slug: string; title: string; text: string }[];
-  lab: { label: string; title: string; intro: string; open: string; live: string; soon: string };
-  process: { label: string; title: string; steps: { title: string; text: string }[] };
-  about: { label: string; title: string; text: string };
-  contact: {
-    label: string; title: string; text: string;
-    whatsapp: string; email: string; unavailable: string;
-    nameLabel: string; emailLabel: string; messageLabel: string;
-    submit: string; sending: string; sent: string;
-    errorValidation: string; errorRate: string; errorServer: string; errorDisabled: string;
-    needsJs: string;
-  };
-  faq: { q: string; a: string }[];
-  footer: { rights: string; note: string; backTop: string };
-};
-
-const dictionaries: Record<Locale, Dictionary> = { ar, en };
-
-export function getDictionary(locale: Locale): Dictionary {
-  return dictionaries[locale];
-}
-```
-
-- [ ] **Step 5: اكتب النص العربي**
-
-أنشئ `src/content/ar.ts`. اكتب المحتوى بصوت شخصي يقدّم عمر لا الأدوات، والتزم بنوع `Dictionary` حرفياً:
-
-```ts
-import type { Dictionary } from "./dictionary";
-
-export const ar: Dictionary = {
-  meta: {
-    title: "عمر الديك — أبني أنظمة تعمل وحدها",
-    description: "عمر الديك، صانع مستقل من فلسطين. أبني مواقع وتكاملات API وأنظمة أتمتة ومنتجات SaaS، وأصمّمها بنفسي.",
-  },
-  nav: { lab: "المختبر", process: "كيف أعمل", about: "عنّي", contact: "تواصل", switchTo: "English", menu: "القائمة", skip: "انتقل إلى المحتوى" },
-  hero: {
-    role: "صانع مستقل — من فلسطين",
-    headline: "أبني أنظمة تعمل وحدها.",
-    lead: "مواقع، وتكاملات API، وأنظمة أتمتة، ومنتجات SaaS. أصمّمها وأبنيها بنفسي، وكل ما تراه هنا يعمل فعلاً.",
-    cta: "شاهد المختبر",
-    secondary: "تحدّث معي",
-  },
-  fields: [
-    { slug: "cut-studio", title: "برمجة المواقع", text: "واجهات سريعة ومتجاوبة تُبنى من الصفر، لا من قالب جاهز." },
-    { slug: "api-playground", title: "تكاملات API", text: "ربط الخدمات ببعضها: مفاتيح آمنة، وحدود معدل، وتخزين مؤقت، وفشل معلن لا صامت." },
-    { slug: "automation-engine", title: "أنظمة الأتمتة", text: "تحويل العمل اليدوي المتكرر إلى سير عمل ينفّذ نفسه ويترك أثراً يمكن تتبّعه." },
-    { slug: "saas-panel", title: "منتجات SaaS", text: "لوحات تحكم ومنتجات بحالة حقيقية: بيانات تُقرأ وتُكتب وتبقى." },
-  ],
-  lab: {
-    label: "المختبر",
-    title: "لا أصف ما أعرفه. أشغّله أمامك.",
-    intro: "كل عمل هنا يعمل فعلاً في متصفحك الآن. لا لقطات شاشة ولا وعود.",
-    open: "افتح العمل",
-    live: "يعمل الآن",
-    soon: "قيد البناء",
-  },
-  process: {
-    label: "كيف أعمل",
-    title: "أربع خطوات، بلا مفاجآت.",
-    steps: [
-      { title: "نفهم", text: "نتحدث عن المشكلة الفعلية وما تريد أن يتغيّر، ونحدّد النطاق بوضوح." },
-      { title: "نرسم", text: "أضع بنية الحل والواجهة قبل كتابة سطر واحد، وتراها وتوافق عليها." },
-      { title: "نبني", text: "أبني على مراحل، كل مرحلة تسلّم شيئاً يعمل وتراه بنفسك." },
-      { title: "نسلّم", text: "أختبر وأوثّق وأسلّم، ونتفق على المتابعة إن احتجتها." },
-    ],
-  },
-  about: {
-    label: "عنّي",
-    title: "أهلاً، أنا عمر.",
-    text: "صانع مستقل من فلسطين. أحب المشاكل التي لها حل هندسي واضح، وأكره الواجهات التي تبدو جميلة وتعمل بشكل سيئ. أعمل معك مباشرة، بلا وسطاء ولا فرق، وأبني ما تحتاجه فعلاً لا ما يبدو مبهراً في العرض.",
-  },
-  contact: {
-    label: "تواصل",
-    title: "عندك نظام يحتاج أن يُبنى؟",
-    text: "اكتب لي بما تريد إنجازه، وسأرد بما أراه ممكناً وكيف أبدأ.",
-    whatsapp: "واتساب",
-    email: "البريد",
-    unavailable: "وسائل التواصل المباشرة ستُضاف قريباً. استخدم النموذج في الأسفل.",
-    nameLabel: "اسمك",
-    emailLabel: "بريدك",
-    messageLabel: "ما الذي تريد بناءه؟",
-    submit: "أرسل",
-    sending: "جارٍ الإرسال",
-    sent: "وصلت رسالتك. سأرد قريباً.",
-    errorValidation: "أكمل الحقول: اسم، وبريد صحيح، ورسالة لا تقل عن عشرين حرفاً.",
-    errorRate: "أرسلت عدة رسائل خلال وقت قصير. انتظر قليلاً ثم أعد المحاولة.",
-    errorServer: "تعذّر الإرسال الآن. أعد المحاولة، أو راسلني مباشرة.",
-    errorDisabled: "نموذج الإرسال غير مفعّل بعد على هذا النطاق.",
-    needsJs: "إرسال النموذج يحتاج تشغيل JavaScript. يمكنك مراسلتي مباشرة بدلاً من ذلك.",
-  },
-  faq: [
-    { q: "ما الذي أحتاجه قبل أن نبدأ؟", a: "وصف للمشكلة وما تريد أن يتغيّر. لا تحتاج مواصفة تقنية؛ هذا عملي أنا." },
-    { q: "كم يستغرق العمل؟", a: "يعتمد على النطاق. بعد أول محادثة أعطيك جدولاً واقعياً وأوضّح أثر أي تغيير عليه." },
-    { q: "هل تعمل على أنظمة قائمة؟", a: "نعم. إصلاح وتوسعة وربط أنظمة موجودة جزء أساسي من عملي، وأحياناً أوفر من البناء من الصفر." },
-  ],
-  footer: { rights: "جميع الحقوق محفوظة", note: "هذا الموقع نفسه مبني بالأدوات التي أعمل بها.", backTop: "إلى الأعلى" },
-};
-```
-
-- [ ] **Step 6: اكتب النص الإنجليزي**
-
-أنشئ `src/content/en.ts` بنفس المفاتيح تماماً، بترجمة تحمل النبرة ذاتها لا ترجمة حرفية. مثال على أول مفتاحين، وأكمل البقية على المنوال نفسه:
-
-```ts
-import type { Dictionary } from "./dictionary";
-
-export const en: Dictionary = {
-  meta: {
-    title: "Omar Aldeek — I build systems that run themselves",
-    description: "Omar Aldeek, an independent maker from Palestine. I build websites, API integrations, automation systems and SaaS products, and I design them myself.",
-  },
-  nav: { lab: "Lab", process: "How I work", about: "About", contact: "Contact", switchTo: "العربية", menu: "Menu", skip: "Skip to content" },
-  hero: {
-    role: "Independent maker — from Palestine",
-    headline: "I build systems that run themselves.",
-    lead: "Websites, API integrations, automation systems and SaaS products. I design and build them myself, and everything on this page actually runs.",
-    cta: "See the lab",
-    secondary: "Talk to me",
-  },
-  // أكمل: fields, lab, process, about, contact, faq, footer — بنفس مفاتيح ar.ts حرفياً
-};
-```
-
-- [ ] **Step 7: شغّل الاختبار وتأكد أنه ينجح**
-
-Run: `npx playwright test tests/content.spec.ts`
-Expected: PASS — خمسة اختبارات. اختبار تطابق المفاتيح هو ما يكشف أي مفتاح نسيته في `en.ts`.
-
-- [ ] **Step 8: كوميت**
-
-```bash
-git add src/content tests/content.spec.ts
-git commit -m "feat: add the bilingual content layer keyed to a shared dictionary type"
-```
-
----
-
-### المهمة ٦: سجل المختبر
-
-**Files:**
-- Create: `src/lab/registry.ts`
-- Test: `tests/lab-registry.spec.ts`
-
-**Interfaces:**
-- Consumes: `type Locale` من `src/content/locales`.
-- Produces:
-  - `export type LabStatus = "live" | "building"`
-  - `export type LabWork = { slug: string; field: string; status: LabStatus; title: Record<Locale, string>; blurb: Record<Locale, string> }`
-  - `export const labWorks: LabWork[]`
-  - `export function getLabWork(slug: string): LabWork | undefined`
-
-هذا السجل هو نقطة التمديد الوحيدة: كل خطة عرض حي لاحقة تضيف مدخلاً واحداً هنا وتبني مجلدها، ولا تلمس شيئاً آخر.
-
-- [ ] **Step 1: اكتب الاختبار الفاشل**
-
-أنشئ `tests/lab-registry.spec.ts`:
+- [ ] **Step 1: اكتب `tests/lab-registry.spec.ts`**
 
 ```ts
 import { test, expect } from "@playwright/test";
 import { labWorks, getLabWork } from "../src/lab/registry";
-import { getDictionary } from "../src/content/dictionary";
+import { copy } from "../src/content/site";
 import { locales } from "../src/content/locales";
 
-test("every field in the dictionary points at a registered lab work", () => {
+test("every field points at a registered work", () => {
   for (const locale of locales)
-    for (const field of getDictionary(locale).fields)
+    for (const field of copy[locale].fields)
       expect(getLabWork(field.slug), field.slug).toBeDefined();
+});
+
+test("five fields in each locale", () => {
+  for (const locale of locales) expect(copy[locale].fields).toHaveLength(5);
 });
 
 test("slugs are unique and url safe", () => {
@@ -946,28 +460,27 @@ test("slugs are unique and url safe", () => {
 test("every work is titled in both locales", () => {
   for (const work of labWorks)
     for (const locale of locales) {
-      expect(work.title[locale].trim(), `${work.slug}.title.${locale}`).not.toBe("");
-      expect(work.blurb[locale].trim(), `${work.slug}.blurb.${locale}`).not.toBe("");
+      expect(work.title[locale].trim(), `${work.slug}.${locale}`).not.toBe("");
+      expect(work.blurb[locale].trim(), `${work.slug}.${locale}`).not.toBe("");
     }
 });
 
-test("cut-studio is registered and live", () => {
+test("the three real works are live and only the saas panel is pending", () => {
+  expect(getLabWork("shorts-factory")?.status).toBe("live");
   expect(getLabWork("cut-studio")?.status).toBe("live");
+  expect(getLabWork("design-studies")?.status).toBe("live");
+  expect(getLabWork("saas-panel")?.status).toBe("building");
 });
 
-test("an unknown slug resolves to undefined", () => {
-  expect(getLabWork("nope")).toBeUndefined();
+test("both locales expose the same copy keys", () => {
+  const keys = (l: "ar" | "en") => Object.keys(copy[l]).sort();
+  expect(keys("ar")).toEqual(keys("en"));
 });
 ```
 
-- [ ] **Step 2: شغّل الاختبار وتأكد أنه يفشل**
+- [ ] **Step 2: شغّله** → FAIL
 
-Run: `npx playwright test tests/lab-registry.spec.ts`
-Expected: FAIL — الوحدة غير موجودة
-
-- [ ] **Step 3: اكتب السجل**
-
-أنشئ `src/lab/registry.ts`. الأعمال الثلاثة غير المبنية بعد تُسجَّل بحالة `building`، فتُعرض بصدق كقيد البناء بدل إخفائها أو ادعاء جاهزيتها:
+- [ ] **Step 3: اكتب `src/lab/registry.ts`** — النصوص مأخوذة من الواقع، لا مخترعة:
 
 ```ts
 import type { Locale } from "../content/locales";
@@ -984,33 +497,33 @@ export type LabWork = {
 
 export const labWorks: LabWork[] = [
   {
+    slug: "shorts-factory",
+    field: "systems",
+    status: "live",
+    title: { ar: "مصنع الشورتس", en: "The Shorts factory" },
+    blurb: {
+      ar: "قناة شورتس عربية وأخرى إنجليزية يديرهما خط إنتاج بنيته من البداية للنهاية: جدولة، كتابة، فحص، صوت، مونتاج، نشر. يعمل كل يوم.",
+      en: "An Arabic Shorts channel and an English one, both run by a pipeline I built end to end: scheduling, writing, checking, voice, render, publish. It runs every day.",
+    },
+  },
+  {
     slug: "cut-studio",
-    field: "web",
+    field: "code",
     status: "live",
     title: { ar: "Cut Studio", en: "Cut Studio" },
     blurb: {
-      ar: "سبع أدوات ليزر وتصميم تعمل كلها داخل متصفحك: ترتيب قطع، تحويل صور إلى فيكتور، حساب تكلفة خامة وغيرها. منتج كامل بنيته من الصفر.",
-      en: "Seven laser and design tools that all run inside your browser: part nesting, image tracing, material costing and more. A complete product I built from scratch.",
+      ar: "سبع أدوات ليزر وتصميم تعمل كلها داخل متصفحك، بلا حساب وبلا رفع ملفات. صنعتها لعملي وتركتها مجانية.",
+      en: "Seven laser and design tools that run entirely in your browser, with no account and no uploads. I built them for my own work and left them free.",
     },
   },
   {
-    slug: "automation-engine",
-    field: "automation",
-    status: "building",
-    title: { ar: "محرك الأتمتة", en: "Automation engine" },
+    slug: "design-studies",
+    field: "design",
+    status: "live",
+    title: { ar: "دراسات التصميم", en: "Design studies" },
     blurb: {
-      ar: "ابنِ سير عمل من عقد، ثم شغّله وشاهد التنفيذ يمر خطوة بخطوة مع سجل حقيقي.",
-      en: "Build a workflow out of nodes, run it, and watch execution walk through them with a real log.",
-    },
-  },
-  {
-    slug: "api-playground",
-    field: "api",
-    status: "building",
-    title: { ar: "ملعب API", en: "API playground" },
-    blurb: {
-      ar: "ثلاثة تكاملات حقيقية تستدعيها بنفسك، وترى الاستجابة والزمن وحد المعدل كما هي.",
-      en: "Three real integrations you call yourself, with the response, timing and rate limit shown as they are.",
+      ar: "ثلاث دراسات أبني فيها اتجاهاً بصرياً كاملاً لنشاط متخيَّل، من الفكرة إلى واجهة تعمل. دراسات لا مشاريع عملاء.",
+      en: "Three studies where I build a full visual direction for an imagined business, from idea to a working interface. Studies, not client projects.",
     },
   },
   {
@@ -1019,7 +532,7 @@ export const labWorks: LabWork[] = [
     status: "building",
     title: { ar: "لوحة SaaS", en: "SaaS panel" },
     blurb: {
-      ar: "واجهة منتج مصغّرة ببيانات حقيقية: أضف صفاً وسيبقى موجوداً بعد أن تغادر.",
+      ar: "واجهة منتج مصغّرة ببيانات حقيقية: أضف صفاً وسيبقى بعد أن تغادر.",
       en: "A miniature product surface on real data: add a row and it is still there after you leave.",
     },
   },
@@ -1030,85 +543,46 @@ export function getLabWork(slug: string): LabWork | undefined {
 }
 ```
 
-- [ ] **Step 4: شغّل الاختبار وتأكد أنه ينجح**
+- [ ] **Step 4: أضف المفاتيح الجديدة إلى `copy.ar` و `copy.en` في `src/content/site.ts`**
 
-Run: `npx playwright test tests/lab-registry.spec.ts`
-Expected: PASS — خمسة اختبارات
+المجالات الخمسة في `copy.ar.fields`:
 
-- [ ] **Step 5: كوميت**
-
-```bash
-git add src/lab/registry.ts tests/lab-registry.spec.ts
-git commit -m "feat: add the lab registry as the single extension point for demos"
+```ts
+fields: [
+  { slug: "cut-studio", title: "برمجة المواقع", text: "مواقع وتطبيقات ويب بـ Next.js و React و TypeScript: سريعة، ثنائية اللغة، وتعمل على الهاتف أولاً." },
+  { slug: "design-studies", title: "التصميم", text: "تصميم بصري وواجهات، وتصميم للتصنيع والقص بالليزر: من الفيكتور النظيف إلى قطعة تُركّب." },
+  { slug: "shorts-factory", title: "أنظمة الأتمتة", text: "أنظمة تربط الأدوات ببعضها وتعمل على جدول، وتُكمل العمل دون أن أقف فوقها." },
+  { slug: "shorts-factory", title: "تكاملات API", text: "ربط الخدمات ببعضها: مفاتيح آمنة، ومسار بديل عند التعثّر، وفشل معلن لا صامت." },
+  { slug: "saas-panel", title: "منتجات SaaS", text: "لوحات تحكم ومنتجات بحالة حقيقية: بيانات تُقرأ وتُكتب وتبقى." },
+],
 ```
+
+واكتب مقابلها الإنجليزي، وبقية المفاتيح المذكورة في Interfaces، بنفس التهجئة في اللغتين.
+
+- [ ] **Step 5: شغّله** — PASS
+
+- [ ] **Step 6: كوميت** — `git add -A && git commit -m "feat: register the lab works and add the new section copy"`
 
 ---
 
-### المهمة ٧: هيكل الصفحة والأقسام الساكنة
+### المهمة ٥: الهيكل — التنقل والتذييل وغلاف القسم
 
-تبني الصفحة الرئيسية كاملة بمحتوى حقيقي. بطاقات المختبر ساكنة في هذه المهمة، ومشهد البطل ساكن كذلك — تأتي الحياة في المهمة ٩.
+**Files:** Create `src/ui/section.tsx`, `src/ui/nav.tsx`, `src/ui/footer.tsx`; Modify `src/app/[locale]/layout.tsx`; Test `tests/shell.spec.ts`
 
-**Files:**
-- Create: `src/ui/section.tsx`, `src/ui/nav.tsx`, `src/ui/footer.tsx`, `src/ui/hero.tsx`, `src/ui/fields.tsx`, `src/ui/lab-section.tsx`, `src/ui/process.tsx`, `src/ui/about.tsx`
-- Modify: `src/app/[locale]/page.tsx`, `src/app/[locale]/layout.tsx`
-- Test: `tests/page.spec.ts`
+**Interfaces:** Produces — `Section({ id, label, title, children })`، `Nav({ locale })`، `Footer({ locale })`. أصناف يعتمدها الاختبار: `.locale-switch`. التنقل روابط لا أزرار، فيعمل بلا JavaScript.
 
-**Interfaces:**
-- Consumes: `getDictionary`, `profile`, `labWorks`, `oppositeLocale`, `type Locale`.
-- Produces:
-  - `export function Section(props: { id: string; label: string; title: string; children: React.ReactNode }): JSX.Element`
-  - `export function Nav(props: { locale: Locale }): JSX.Element`
-  - `export function Footer(props: { locale: Locale }): JSX.Element`
-  - `export function Hero(props: { locale: Locale }): JSX.Element`
-  - `export function Fields(props: { locale: Locale }): JSX.Element`
-  - `export function LabSection(props: { locale: Locale }): JSX.Element`
-  - `export function Process(props: { locale: Locale }): JSX.Element`
-  - `export function About(props: { locale: Locale }): JSX.Element`
-  - معرّفات الأقسام في DOM: `#lab`, `#process`, `#about`, `#contact`
-  - أصناف يعتمد عليها الاختبار: `.lab-card`, `.field-card`, `.locale-switch`
-
-- [ ] **Step 1: اكتب الاختبار الفاشل**
-
-أنشئ `tests/page.spec.ts`:
+- [ ] **Step 1: اكتب `tests/shell.spec.ts`**
 
 ```ts
 import { test, expect } from "@playwright/test";
-import { getDictionary } from "../src/content/dictionary";
-import { labWorks } from "../src/lab/registry";
 
-for (const locale of ["ar", "en"] as const) {
-  test(`${locale}: the page leads with Omar, not with a tool`, async ({ page }) => {
-    const dict = getDictionary(locale);
-    await page.goto(`/${locale}`);
-    await expect(page.locator("h1")).toHaveText(dict.hero.headline);
-    await expect(page.locator("h1")).toBeVisible();
-  });
-
-  test(`${locale}: all four fields and all lab works render`, async ({ page }) => {
-    await page.goto(`/${locale}`);
-    await expect(page.locator(".field-card")).toHaveCount(4);
-    await expect(page.locator(".lab-card")).toHaveCount(labWorks.length);
-  });
-
-  test(`${locale}: Cut Studio sits inside the lab and not in the nav`, async ({ page }) => {
-    await page.goto(`/${locale}`);
-    const nav = page.locator("nav");
-    await expect(nav).not.toContainText("Cut Studio");
-    await expect(page.locator("#lab .lab-card").first()).toContainText("Cut Studio");
-  });
-
-  test(`${locale}: every section is reachable with no horizontal overflow`, async ({ page }) => {
-    for (const width of [360, 768, 1440]) {
-      await page.setViewportSize({ width, height: 900 });
-      await page.goto(`/${locale}`);
-      for (const id of ["lab", "process", "about", "contact"]) {
-        await page.locator(`#${id}`).scrollIntoViewIfNeeded();
-        const overflows = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
-        expect(overflows, `${id} at ${width}`).toBe(false);
-      }
-    }
-  });
-}
+test("the nav holds four links and no Cut Studio entry", async ({ page }) => {
+  await page.goto("/ar");
+  const nav = page.locator("nav");
+  await expect(nav).not.toContainText("Cut Studio");
+  for (const id of ["#lab", "#process", "#about", "#contact"])
+    await expect(nav.locator(`a[href='${id}']`)).toHaveCount(1);
+});
 
 test("the locale switch keeps you on the same page", async ({ page }) => {
   await page.goto("/ar");
@@ -1118,349 +592,378 @@ test("the locale switch keeps you on the same page", async ({ page }) => {
   await expect(page).toHaveURL(/\/ar$/);
 });
 
-test("works still being built say so instead of pretending", async ({ page }) => {
+test("a skip link comes first in tab order", async ({ page }) => {
   await page.goto("/ar");
-  const building = page.locator(".lab-card[data-status='building']");
-  await expect(building.first()).toContainText(getDictionary("ar").lab.soon);
+  await page.keyboard.press("Tab");
+  expect(await page.evaluate(() => document.activeElement?.getAttribute("href"))).toBe("#main");
 });
 ```
 
-- [ ] **Step 2: شغّل الاختبار وتأكد أنه يفشل**
+- [ ] **Step 2: شغّله** → FAIL
 
-Run: `npx playwright test tests/page.spec.ts`
-Expected: FAIL — الصفحة ما زالت تعرض اسم اللغة فقط
+- [ ] **Step 3: اكتب المكوّنات الثلاثة** — `Section` بغلاف `.shell` وعنوان فرعي بلون `--live` وخط مونوسبيس؛ `Nav` لاصق أعلى الصفحة بروابط المرساة الأربع ومبدّل اللغة كرابط `Link` إلى `/${oppositeLocale(locale)}`؛ `Footer` باسم عمر والسنة وملاحظة التذييل. كل الألوان من الرموز، وكل الحواف بخصائص منطقية.
 
-- [ ] **Step 3: اكتب غلاف القسم**
+- [ ] **Step 4: ركّبها في `src/app/[locale]/layout.tsx`** داخل `<body>` حول `{children}`، وأضف `generateMetadata` تقرأ `copy[locale].title` و `description`.
 
-أنشئ `src/ui/section.tsx`:
+- [ ] **Step 5: شغّله** — PASS
 
-```tsx
-export function Section({
-  id, label, title, children,
-}: { id: string; label: string; title: string; children: React.ReactNode }) {
-  return (
-    <section id={id} className="shell" style={{ paddingBlock: "clamp(4rem, 10vw, 8rem)" }}>
-      <p className="mono" style={{ color: "var(--live)", fontSize: "0.8rem", letterSpacing: "0.12em", margin: 0 }}>
-        {label}
-      </p>
-      <h2 style={{ fontSize: "clamp(1.9rem, 5vw, 3.2rem)", lineHeight: 1.15, margin: "0.5rem 0 2rem", maxInlineSize: "22ch" }}>
-        {title}
-      </h2>
-      {children}
-    </section>
-  );
-}
-```
-
-- [ ] **Step 4: اكتب التنقل ومبدّل اللغة**
-
-أنشئ `src/ui/nav.tsx`. يعمل بلا JavaScript لأنه روابط لا أزرار:
-
-```tsx
-import Link from "next/link";
-import { getDictionary } from "../content/dictionary";
-import { oppositeLocale, type Locale } from "../content/locales";
-
-export function Nav({ locale }: { locale: Locale }) {
-  const dict = getDictionary(locale);
-  const other = oppositeLocale(locale);
-  return (
-    <header style={{ position: "sticky", insetBlockStart: 0, zIndex: 10, background: "color-mix(in srgb, var(--surface-0) 88%, transparent)", borderBlockEnd: "1px solid var(--border)", backdropFilter: "blur(8px)" }}>
-      <a href="#main" className="shell" style={{ position: "absolute", insetInlineStart: "-9999px" }}>{dict.nav.skip}</a>
-      <nav className="shell" aria-label={dict.nav.menu} style={{ display: "flex", alignItems: "center", gap: "1.25rem", blockSize: "4rem" }}>
-        <Link href={`/${locale}`} style={{ color: "var(--text-primary)", fontWeight: 600, textDecoration: "none", marginInlineEnd: "auto" }}>
-          {getDictionary(locale).meta.title.split("—")[0].trim()}
-        </Link>
-        <a href="#lab">{dict.nav.lab}</a>
-        <a href="#process">{dict.nav.process}</a>
-        <a href="#about">{dict.nav.about}</a>
-        <a href="#contact">{dict.nav.contact}</a>
-        <Link href={`/${other}`} className="locale-switch mono" style={{ fontSize: "0.85rem" }}>
-          {dict.nav.switchTo}
-        </Link>
-      </nav>
-    </header>
-  );
-}
-```
-
-- [ ] **Step 5: اكتب البطل ساكناً**
-
-أنشئ `src/ui/hero.tsx`. مكان المشهد محجوز الآن ويُملأ في المهمة ٩:
-
-```tsx
-import { getDictionary } from "../content/dictionary";
-import type { Locale } from "../content/locales";
-
-export function Hero({ locale }: { locale: Locale }) {
-  const dict = getDictionary(locale);
-  return (
-    <section className="shell" style={{ paddingBlock: "clamp(4rem, 12vw, 9rem)", position: "relative" }}>
-      <p className="mono" style={{ color: "var(--live)", fontSize: "0.85rem", margin: 0 }}>{dict.hero.role}</p>
-      <h1 style={{ fontSize: "clamp(2.5rem, 9vw, 5.5rem)", lineHeight: 1.05, margin: "1rem 0", maxInlineSize: "16ch" }}>
-        {dict.hero.headline}
-      </h1>
-      <p style={{ color: "var(--text-secondary)", fontSize: "clamp(1rem, 2.4vw, 1.3rem)", maxInlineSize: "52ch", margin: "0 0 2rem" }}>
-        {dict.hero.lead}
-      </p>
-      <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-        <a href="#lab" style={{ background: "var(--live)", color: "var(--surface-0)", padding: "0.75rem 1.5rem", borderRadius: "0.5rem", textDecoration: "none", fontWeight: 600 }}>
-          {dict.hero.cta}
-        </a>
-        <a href="#contact" style={{ border: "1px solid var(--border-strong)", color: "var(--text-primary)", padding: "0.75rem 1.5rem", borderRadius: "0.5rem", textDecoration: "none" }}>
-          {dict.hero.secondary}
-        </a>
-      </div>
-    </section>
-  );
-}
-```
-
-- [ ] **Step 6: اكتب المجالات**
-
-أنشئ `src/ui/fields.tsx`:
-
-```tsx
-import Link from "next/link";
-import { getDictionary } from "../content/dictionary";
-import type { Locale } from "../content/locales";
-
-export function Fields({ locale }: { locale: Locale }) {
-  const dict = getDictionary(locale);
-  return (
-    <div className="shell" style={{ display: "grid", gap: "1rem", gridTemplateColumns: "repeat(auto-fit, minmax(15rem, 1fr))", paddingBlockEnd: "2rem" }}>
-      {dict.fields.map(field => (
-        <Link
-          key={field.slug}
-          href={`/${locale}/lab/${field.slug}`}
-          className="field-card"
-          style={{ background: "var(--surface-1)", border: "1px solid var(--border)", borderRadius: "0.75rem", padding: "1.25rem", textDecoration: "none", color: "var(--text-primary)", display: "block" }}
-        >
-          <h3 style={{ margin: "0 0 0.5rem", fontSize: "1.1rem" }}>{field.title}</h3>
-          <p style={{ margin: 0, color: "var(--text-secondary)", fontSize: "0.95rem" }}>{field.text}</p>
-        </Link>
-      ))}
-    </div>
-  );
-}
-```
-
-- [ ] **Step 7: اكتب قسم المختبر**
-
-أنشئ `src/ui/lab-section.tsx`:
-
-```tsx
-import Link from "next/link";
-import { Section } from "./section";
-import { getDictionary } from "../content/dictionary";
-import { labWorks } from "../lab/registry";
-import type { Locale } from "../content/locales";
-
-export function LabSection({ locale }: { locale: Locale }) {
-  const dict = getDictionary(locale);
-  return (
-    <Section id="lab" label={dict.lab.label} title={dict.lab.title}>
-      <p style={{ color: "var(--text-secondary)", maxInlineSize: "52ch", marginBlockEnd: "2rem" }}>{dict.lab.intro}</p>
-      <div style={{ display: "grid", gap: "1rem", gridTemplateColumns: "repeat(auto-fit, minmax(18rem, 1fr))" }}>
-        {labWorks.map(work => (
-          <article
-            key={work.slug}
-            className="lab-card"
-            data-status={work.status}
-            style={{ background: "var(--surface-1)", border: "1px solid var(--border)", borderRadius: "0.75rem", padding: "1.5rem" }}
-          >
-            <p className="mono" style={{ margin: 0, fontSize: "0.75rem", color: work.status === "live" ? "var(--live)" : "var(--text-muted)" }}>
-              {work.status === "live" ? dict.lab.live : dict.lab.soon}
-            </p>
-            <h3 style={{ margin: "0.5rem 0", fontSize: "1.35rem" }}>{work.title[locale]}</h3>
-            <p style={{ margin: "0 0 1rem", color: "var(--text-secondary)" }}>{work.blurb[locale]}</p>
-            {work.status === "live" && <Link href={`/${locale}/lab/${work.slug}`}>{dict.lab.open}</Link>}
-          </article>
-        ))}
-      </div>
-    </Section>
-  );
-}
-```
-
-- [ ] **Step 8: اكتب قسمي العملية والنبذة والتذييل**
-
-أنشئ `src/ui/process.tsx`:
-
-```tsx
-import { Section } from "./section";
-import { getDictionary } from "../content/dictionary";
-import type { Locale } from "../content/locales";
-
-export function Process({ locale }: { locale: Locale }) {
-  const dict = getDictionary(locale);
-  return (
-    <Section id="process" label={dict.process.label} title={dict.process.title}>
-      <ol style={{ display: "grid", gap: "1rem", gridTemplateColumns: "repeat(auto-fit, minmax(14rem, 1fr))", listStyle: "none", padding: 0, margin: 0, counterReset: "step" }}>
-        {dict.process.steps.map((step, index) => (
-          <li key={step.title} style={{ borderBlockStart: "2px solid var(--border-strong)", paddingBlockStart: "1rem" }}>
-            <span className="mono" style={{ color: "var(--live)", fontSize: "0.8rem" }}>{String(index + 1).padStart(2, "0")}</span>
-            <h3 style={{ margin: "0.5rem 0", fontSize: "1.1rem" }}>{step.title}</h3>
-            <p style={{ margin: 0, color: "var(--text-secondary)", fontSize: "0.95rem" }}>{step.text}</p>
-          </li>
-        ))}
-      </ol>
-    </Section>
-  );
-}
-```
-
-أنشئ `src/ui/about.tsx`:
-
-```tsx
-import { Section } from "./section";
-import { getDictionary } from "../content/dictionary";
-import { profile } from "../content/profile";
-import type { Locale } from "../content/locales";
-
-export function About({ locale }: { locale: Locale }) {
-  const dict = getDictionary(locale);
-  return (
-    <Section id="about" label={dict.about.label} title={dict.about.title}>
-      <p style={{ color: "var(--text-secondary)", maxInlineSize: "58ch", fontSize: "1.1rem" }}>{dict.about.text}</p>
-      <p className="mono" style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>{profile.location[locale]}</p>
-    </Section>
-  );
-}
-```
-
-أنشئ `src/ui/footer.tsx`:
-
-```tsx
-import { getDictionary } from "../content/dictionary";
-import { profile } from "../content/profile";
-import type { Locale } from "../content/locales";
-
-export function Footer({ locale }: { locale: Locale }) {
-  const dict = getDictionary(locale);
-  return (
-    <footer style={{ borderBlockStart: "1px solid var(--border)", paddingBlock: "2rem" }}>
-      <div className="shell" style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "center", color: "var(--text-muted)", fontSize: "0.9rem" }}>
-        <span>© {new Date().getFullYear()} {profile.name[locale]} — {dict.footer.rights}</span>
-        <span style={{ marginInlineStart: "auto" }}>{dict.footer.note}</span>
-      </div>
-    </footer>
-  );
-}
-```
-
-- [ ] **Step 9: ركّب الصفحة والتخطيط**
-
-استبدل `src/app/[locale]/page.tsx`:
-
-```tsx
-import { notFound } from "next/navigation";
-import { isLocale } from "../../content/locales";
-import { Hero } from "../../ui/hero";
-import { Fields } from "../../ui/fields";
-import { LabSection } from "../../ui/lab-section";
-import { Process } from "../../ui/process";
-import { About } from "../../ui/about";
-
-export default async function Page({ params }: PageProps<"/[locale]">) {
-  const { locale } = await params;
-  if (!isLocale(locale)) notFound();
-  return (
-    <main id="main">
-      <Hero locale={locale} />
-      <Fields locale={locale} />
-      <LabSection locale={locale} />
-      <Process locale={locale} />
-      <About locale={locale} />
-    </main>
-  );
-}
-```
-
-أضف `Nav` و `Footer` إلى `src/app/[locale]/layout.tsx` داخل `<body>`، وأضف `generateMetadata` تقرأ `dict.meta`:
-
-```tsx
-import { notFound } from "next/navigation";
-import { getDictionary } from "../../content/dictionary";
-import { isLocale, locales } from "../../content/locales";
-import { Nav } from "../../ui/nav";
-import { Footer } from "../../ui/footer";
-import "../globals.css";
-
-export function generateStaticParams() {
-  return locales.map(locale => ({ locale }));
-}
-
-export async function generateMetadata({ params }: LayoutProps<"/[locale]">) {
-  const { locale } = await params;
-  if (!isLocale(locale)) return {};
-  const { meta } = getDictionary(locale);
-  return { title: meta.title, description: meta.description };
-}
-
-export default async function LocaleLayout({ children, params }: LayoutProps<"/[locale]">) {
-  const { locale } = await params;
-  if (!isLocale(locale)) notFound();
-  return (
-    <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}>
-      <body>
-        <Nav locale={locale} />
-        {children}
-        <Footer locale={locale} />
-      </body>
-    </html>
-  );
-}
-```
-
-- [ ] **Step 10: أضف قسم تواصل نائباً مؤقتاً**
-
-حتى يمر اختبار `#contact` في هذه المهمة، أضف في `page.tsx` بعد `About`:
-
-```tsx
-<section id="contact" className="shell" style={{ paddingBlock: "4rem" }} />
-```
-
-يُستبدل بالكامل في المهمة ٨.
-
-- [ ] **Step 11: شغّل الاختبارات كلها**
-
-Run: `npx playwright test tests/page.spec.ts && npm run typecheck && npm run lint`
-Expected: PASS في الثلاثة
-
-- [ ] **Step 12: كوميت**
-
-```bash
-git add src/ui "src/app/[locale]" tests/page.spec.ts
-git commit -m "feat: build the home page around Omar with the lab holding Cut Studio"
-```
+- [ ] **Step 6: كوميت** — `git add -A && git commit -m "feat: add the site shell with four nav links and a locale switch"`
 
 ---
 
-### المهمة ٨: التواصل — تحديد المعدل والتحقق والمسار
+### المهمة ٦: مشهد النظام الحي
 
-**Files:**
-- Create: `src/lib/rate-limit.ts`, `src/lib/client-ip.ts`, `src/lib/validate.ts`
-- Create: `src/app/api/contact/route.ts`
-- Create: `src/ui/contact.tsx`
-- Modify: `src/app/[locale]/page.tsx`
-- Test: `tests/rate-limit.spec.ts`, `tests/validate.spec.ts`, `tests/contact.spec.ts`
+**Files:** Create `src/lib/scene.ts`, `src/ui/hero-scene.tsx`, `src/ui/hero.tsx`; Modify `src/app/[locale]/page.tsx`; Test `tests/scene.spec.ts`, `tests/motion.spec.ts`
 
-**Interfaces:**
-- Consumes: `getDictionary`, `profile`.
-- Produces:
-  - `export type RateLimitResult = { ok: boolean; remaining: number; retryAfterSeconds: number }`
-  - `export function rateLimit(key: string, options: { limit: number; windowMs: number }, now?: number): RateLimitResult`
-  - `export function resetRateLimit(): void` — للاختبار فقط
-  - `export function clientIp(request: Request): string`
-  - `export type ContactInput = { name: string; email: string; message: string }`
-  - `export type ValidationResult = { ok: true; value: ContactInput } | { ok: false; error: string }`
-  - `export function validateContact(raw: unknown): ValidationResult`
-  - `export function Contact(props: { locale: Locale }): JSX.Element`
+**Interfaces:** Produces — `SceneNode`, `SceneEdge`, `Pulse`, `Scene`, `createScene(labels: string[]): Scene`, `stepScene(scene, deltaMs): Scene`, `HeroScene({ labels })`, `Hero({ locale })`.
 
-- [ ] **Step 1: اكتب اختبار تحديد المعدل**
+العقد هي محطات المصنع الست الحقيقية من `copy[locale].stations`، والحواف تصل كل محطة بالتي تليها بترتيب خط الإنتاج — لا رسم تجريدي.
 
-أنشئ `tests/rate-limit.spec.ts`:
+- [ ] **Step 1: اكتب `tests/scene.spec.ts`**
+
+```ts
+import { test, expect } from "@playwright/test";
+import { createScene, stepScene } from "../src/lib/scene";
+
+const labels = ["PLAN", "WRITE", "CHECK", "VOICE", "RENDER", "PUBLISH"];
+
+test("a node per station, chained in production order", () => {
+  const scene = createScene(labels);
+  expect(scene.nodes).toHaveLength(6);
+  expect(scene.nodes.map(n => n.label)).toEqual(labels);
+  expect(scene.edges).toHaveLength(5);
+  scene.edges.forEach((edge, index) => {
+    expect(edge.from).toBe(scene.nodes[index].id);
+    expect(edge.to).toBe(scene.nodes[index + 1].id);
+  });
+});
+
+test("coordinates stay inside the unit square", () => {
+  for (const node of createScene(labels).nodes) {
+    expect(node.x).toBeGreaterThanOrEqual(0);
+    expect(node.x).toBeLessThanOrEqual(1);
+    expect(node.y).toBeGreaterThanOrEqual(0);
+    expect(node.y).toBeLessThanOrEqual(1);
+  }
+});
+
+test("stepping advances pulses and wraps without losing any", () => {
+  let scene = createScene(labels);
+  const count = scene.pulses.length;
+  expect(count).toBeGreaterThan(0);
+  const before = scene.pulses[0].progress;
+  scene = stepScene(scene, 100);
+  expect(scene.pulses).toHaveLength(count);
+  expect(scene.pulses[0].progress).not.toBe(before);
+  for (let i = 0; i < 300; i++) scene = stepScene(scene, 100);
+  expect(scene.pulses).toHaveLength(count);
+  for (const pulse of scene.pulses) {
+    expect(pulse.progress).toBeGreaterThanOrEqual(0);
+    expect(pulse.progress).toBeLessThanOrEqual(1);
+    expect(pulse.edge).toBeGreaterThanOrEqual(0);
+    expect(pulse.edge).toBeLessThan(scene.edges.length);
+  }
+});
+
+test("stepping is pure", () => {
+  const scene = createScene(labels);
+  const snapshot = JSON.stringify(scene);
+  stepScene(scene, 250);
+  expect(JSON.stringify(scene)).toBe(snapshot);
+});
+
+test("a single label produces no edges and does not throw", () => {
+  const scene = createScene(["ONLY"]);
+  expect(scene.edges).toHaveLength(0);
+  expect(() => stepScene(scene, 100)).not.toThrow();
+});
+```
+
+- [ ] **Step 2: شغّله** → FAIL
+
+- [ ] **Step 3: اكتب `src/lib/scene.ts`**
+
+```ts
+export type SceneNode = { id: string; x: number; y: number; label: string };
+export type SceneEdge = { from: string; to: string };
+export type Pulse = { edge: number; progress: number };
+export type Scene = { nodes: SceneNode[]; edges: SceneEdge[]; pulses: Pulse[] };
+
+const PULSE_PER_SECOND = 0.32;
+
+export function createScene(labels: string[]): Scene {
+  const nodes: SceneNode[] = labels.map((label, index) => {
+    const t = labels.length === 1 ? 0.5 : index / (labels.length - 1);
+    return {
+      id: `n${index}`,
+      label,
+      x: 0.08 + t * 0.84,
+      y: 0.5 + Math.sin(t * Math.PI * 2) * 0.22,
+    };
+  });
+
+  const edges: SceneEdge[] = [];
+  for (let i = 0; i < nodes.length - 1; i++)
+    edges.push({ from: nodes[i].id, to: nodes[i + 1].id });
+
+  const pulses: Pulse[] = edges.map((_, index) => ({
+    edge: index,
+    progress: edges.length === 0 ? 0 : (index / edges.length) % 1,
+  }));
+
+  return { nodes, edges, pulses };
+}
+
+export function stepScene(scene: Scene, deltaMs: number): Scene {
+  if (scene.edges.length === 0) return { ...scene, pulses: [...scene.pulses] };
+  const advance = (deltaMs / 1000) * PULSE_PER_SECOND;
+  return {
+    nodes: scene.nodes,
+    edges: scene.edges,
+    pulses: scene.pulses.map(pulse => {
+      const next = pulse.progress + advance;
+      return next <= 1
+        ? { edge: pulse.edge, progress: next }
+        : { edge: (pulse.edge + 1) % scene.edges.length, progress: next % 1 };
+    }),
+  };
+}
+```
+
+- [ ] **Step 4: شغّله** — PASS
+
+- [ ] **Step 5: اكتب `tests/motion.spec.ts`**
+
+```ts
+import { test, expect } from "@playwright/test";
+
+test("the hero renders a canvas", async ({ page }) => {
+  await page.goto("/ar");
+  await expect(page.locator("canvas.hero-scene")).toBeVisible();
+});
+
+test("reduced motion leaves a still frame", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/ar");
+  const canvas = page.locator("canvas.hero-scene");
+  await expect(canvas).toBeVisible();
+  const first = await canvas.screenshot();
+  await page.waitForTimeout(700);
+  expect(Buffer.compare(first, await canvas.screenshot())).toBe(0);
+});
+
+test("the headline stays readable over the scene", async ({ page }) => {
+  await page.goto("/ar");
+  await expect(page.locator("h1")).toBeVisible();
+});
+
+test("the scene does not throw on any viewport", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("pageerror", e => errors.push(e.message));
+  for (const width of [360, 768, 1440]) {
+    await page.setViewportSize({ width, height: 800 });
+    await page.goto("/ar");
+    await page.waitForTimeout(300);
+  }
+  expect(errors).toEqual([]);
+});
+```
+
+- [ ] **Step 6: شغّله** → FAIL
+
+- [ ] **Step 7: اكتب `src/ui/hero-scene.tsx`** — مكوّن عميل، `aria-hidden="true"`، يقرأ الألوان من الرموز عبر `getComputedStyle`، يرسم الحواف ثم النبضات ثم العقد وتسمياتها، يتعامل مع `devicePixelRatio` و `ResizeObserver`، ولا يبدأ حلقة `requestAnimationFrame` إطلاقاً عند `prefers-reduced-motion: reduce` فتبقى الإطارة الأولى ساكنة ومقروءة. ينظّف الحلقة والمراقب في دالة الإرجاع.
+
+- [ ] **Step 8: اكتب `src/ui/hero.tsx`** — حاوية `position: relative` تضم المشهد خلف نص في `z-index: 1`. النص من `copy[locale]`: `heroEyebrow` و `heroLines` كـ `h1` و `heroLead`، وزرّان إلى `#lab` و `#contact`. التسميات المُمرَّرة للمشهد هي `copy[locale].stations.map(s => s.code)`.
+
+- [ ] **Step 9: اربطه في `src/app/[locale]/page.tsx`** كأول عنصر في `<main id="main">`.
+
+- [ ] **Step 10: شغّل** — `npx playwright test tests/scene.spec.ts tests/motion.spec.ts` → PASS
+
+- [ ] **Step 11: كوميت** — `git add -A && git commit -m "feat: add the hero scene driven by the real factory pipeline"`
+
+---
+
+### المهمة ٧: المجالات والمختبر وبقية الأقسام
+
+**Files:** Create `src/ui/fields.tsx`, `src/ui/lab-section.tsx`, `src/ui/process.tsx`, `src/ui/about.tsx`; Modify `src/app/[locale]/page.tsx`; Test `tests/page.spec.ts`
+
+**Interfaces:** Produces — `Fields({ locale })`، `LabSection({ locale })`، `Process({ locale })`، `About({ locale })`. أصناف: `.field-card`، `.lab-card` مع `data-status` و `data-slug`. معرّفات: `#lab`، `#process`، `#about`.
+
+- [ ] **Step 1: اكتب `tests/page.spec.ts`**
+
+```ts
+import { test, expect } from "@playwright/test";
+import { copy } from "../src/content/site";
+import { labWorks } from "../src/lab/registry";
+
+for (const locale of ["ar", "en"] as const) {
+  test(`${locale}: the page leads with Omar`, async ({ page }) => {
+    await page.goto(`/${locale}`);
+    await expect(page.locator("h1")).toBeVisible();
+    await expect(page.locator("h1")).toContainText(copy[locale].heroLines[0]);
+  });
+
+  test(`${locale}: five fields and every lab work render`, async ({ page }) => {
+    await page.goto(`/${locale}`);
+    await expect(page.locator(".field-card")).toHaveCount(5);
+    await expect(page.locator(".lab-card")).toHaveCount(labWorks.length);
+  });
+
+  test(`${locale}: Cut Studio sits inside the lab`, async ({ page }) => {
+    await page.goto(`/${locale}`);
+    await expect(page.locator("#lab")).toContainText("Cut Studio");
+  });
+
+  test(`${locale}: the factory is presented as a real running system`, async ({ page }) => {
+    await page.goto(`/${locale}`);
+    await expect(page.locator(".lab-card[data-slug='shorts-factory']")).toHaveAttribute("data-status", "live");
+  });
+
+  test(`${locale}: no horizontal overflow at any width`, async ({ page }) => {
+    for (const width of [360, 768, 1440]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(`/${locale}`);
+      for (const id of ["lab", "process", "about", "contact"]) {
+        await page.locator(`#${id}`).scrollIntoViewIfNeeded();
+        expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth), `${id} ${width}`).toBe(false);
+      }
+    }
+  });
+}
+
+test("a work still being built says so", async ({ page }) => {
+  await page.goto("/ar");
+  await expect(page.locator(".lab-card[data-status='building']").first()).toContainText(copy.ar.labSoon);
+});
+```
+
+- [ ] **Step 2: شغّله** → FAIL
+
+- [ ] **Step 3: اكتب الأقسام الأربعة** — `Fields` شبكة بطاقات من `copy[locale].fields`، كل بطاقة رابط إلى `/${locale}/lab/${field.slug}`. `LabSection` داخل `Section` ببطاقات من `labWorks` تحمل `data-slug` و `data-status`، وشارة `labLive` بلون `--live` أو `labSoon` بلون `--text-muted`، ورابط «افتح العمل» للأعمال الحية فقط. `Process` من `copy[locale].principles` و`About` من `heroLead` و`profile.location`. أضف قسم `#contact` فارغاً مؤقتاً يُستبدل في المهمة ٩.
+
+- [ ] **Step 4: ركّبها في `page.tsx`** بالترتيب: Hero، Fields، LabSection، Process، About، Contact.
+
+- [ ] **Step 5: شغّل** — `npx playwright test tests/page.spec.ts && npm run typecheck && npm run lint` → PASS
+
+- [ ] **Step 6: كوميت** — `git add -A && git commit -m "feat: build the home page around Omar with the lab holding the real work"`
+
+---
+
+### المهمة ٨: صفحات المختبر
+
+**Files:** Create `src/app/[locale]/lab/[slug]/page.tsx`, `src/lab/shorts-factory/view.tsx`, `src/lab/cut-studio/view.tsx`, `src/lab/design-studies/view.tsx`; Modify `src/app/[locale]/work/[slug]/page.tsx` — الروابط فقط; Test `tests/lab.spec.ts`
+
+**Interfaces:** Consumes — `getLabWork`, `labWorks`, `copy`, `projects` من `site.ts`، `SitePreview` من `src/components/preview.tsx`، ومكوّن الأدوات المصدَّر من `src/toolkit/toolkit.tsx`.
+
+- [ ] **Step 1: اعرف نقطة دخول الأدوات ومكوّن المعاينة**
+
+```bash
+grep -n "^export" src/toolkit/toolkit.tsx src/components/preview.tsx | head
+```
+
+- [ ] **Step 2: اكتب `tests/lab.spec.ts`**
+
+```ts
+import { test, expect } from "@playwright/test";
+
+test("the old tools path redirects into the lab", async ({ page }) => {
+  await page.goto("/tools");
+  await expect(page).toHaveURL(/\/ar\/lab\/cut-studio$/);
+});
+
+for (const slug of ["shorts-factory", "cut-studio", "design-studies"]) {
+  test(`${slug} opens in both locales with no page error`, async ({ page }) => {
+    for (const locale of ["ar", "en"] as const) {
+      const errors: string[] = [];
+      page.on("pageerror", e => errors.push(e.message));
+      await page.goto(`/${locale}/lab/${slug}`);
+      await expect(page.locator("h1")).toBeVisible();
+      expect(errors, `${slug} ${locale}`).toEqual([]);
+    }
+  });
+}
+
+test("the factory page lists all six real stations", async ({ page }) => {
+  await page.goto("/ar/lab/shorts-factory");
+  await expect(page.locator(".station")).toHaveCount(6);
+  for (const code of ["PLAN", "WRITE", "CHECK", "VOICE", "RENDER", "PUBLISH"])
+    await expect(page.locator(".station")).toContainText(code);
+});
+
+test("the design studies page links every study", async ({ page }) => {
+  await page.goto("/ar/lab/design-studies");
+  await expect(page.locator(".study")).toHaveCount(3);
+});
+
+test("a work still being built is not served as a page", async ({ page }) => {
+  expect((await page.goto("/ar/lab/saas-panel"))?.status()).toBe(404);
+});
+
+test("an unknown slug is a 404", async ({ page }) => {
+  expect((await page.goto("/ar/lab/nope"))?.status()).toBe(404);
+});
+
+test("the CDR route exists on this runtime", async ({ request }) => {
+  expect((await request.post("/api/tools/cdr", { data: {} })).status()).not.toBe(404);
+});
+```
+
+- [ ] **Step 3: شغّله** → FAIL
+
+- [ ] **Step 4: اكتب العروض الثلاثة**
+
+`shorts-factory/view.tsx` — يصيَّر على الخادم: المحطات الست من `copy[locale].stations` بترتيبها، كل واحدة بصنف `.station` ورمزها وعنوانها ونصها ووسومها، ثم جانب المراجعة من `oversightTitle` و `oversightText` و `oversightTags`، ورابط القناة فقط إن كان `profile.links.youtube` رابط https صالحاً.
+
+`cut-studio/view.tsx` — مكوّن عميل يغلّف مكوّن الأدوات القائم ويمرر اللغة كما يستقبلها. لا تعديل داخل `src/toolkit`.
+
+`design-studies/view.tsx` — شبكة من `projects` تستخدم `SitePreview` القائم، وكل بطاقة `.study` ترتبط بـ `/${locale}/work/${project.slug}`، مع تنبيه صريح أنها دراسات لا مشاريع عملاء من `copy[locale].concept`.
+
+- [ ] **Step 5: اكتب `src/app/[locale]/lab/[slug]/page.tsx`**
+
+```tsx
+import { notFound } from "next/navigation";
+import { getLabWork, labWorks } from "../../../../lab/registry";
+import { isLocale, locales } from "../../../../content/locales";
+
+export function generateStaticParams() {
+  return locales.flatMap(locale =>
+    labWorks.filter(work => work.status === "live").map(work => ({ locale, slug: work.slug })),
+  );
+}
+
+export async function generateMetadata({ params }: PageProps<"/[locale]/lab/[slug]">) {
+  const { locale, slug } = await params;
+  const work = getLabWork(slug);
+  if (!work || !isLocale(locale)) return {};
+  return { title: work.title[locale], description: work.blurb[locale] };
+}
+
+export default async function LabPage({ params }: PageProps<"/[locale]/lab/[slug]">) {
+  const { locale, slug } = await params;
+  if (!isLocale(locale)) notFound();
+  const work = getLabWork(slug);
+  if (!work || work.status !== "live") notFound();
+  // اختر العرض بحسب work.slug
+}
+```
+
+شرط `status !== "live"` هو ما يجعل لوحة SaaS تعطي 404 بدل صفحة فارغة.
+
+- [ ] **Step 6: حدّث روابط العودة في `work/[slug]`** لتشير إلى `/${locale}/lab/design-studies` بدل قسم الأعمال القديم.
+
+- [ ] **Step 7: شغّل** — `npx playwright test tests/lab.spec.ts tests/toolkit-ui.spec.ts tests/toolkit-lang.spec.ts` → PASS
+
+- [ ] **Step 8: كوميت** — `git add -A && git commit -m "feat: give every real work its own lab page"`
+
+---
+
+### المهمة ٩: التواصل
+
+**Files:** Create `src/lib/rate-limit.ts`, `src/lib/client-ip.ts`, `src/lib/validate.ts`, `src/app/api/contact/route.ts`, `src/ui/contact.tsx`; Modify `src/app/[locale]/page.tsx`; Test `tests/rate-limit.spec.ts`, `tests/validate.spec.ts`, `tests/contact.spec.ts`
+
+**Interfaces:** Produces — `RateLimitResult`, `rateLimit(key, { limit, windowMs }, now?)`, `resetRateLimit()`, `clientIp(request)`, `ContactInput`, `ValidationResult`, `validateContact(raw)`, `Contact({ locale })`.
+
+- [ ] **Step 1: اكتب `tests/rate-limit.spec.ts`**
 
 ```ts
 import { test, expect } from "@playwright/test";
@@ -1468,89 +971,39 @@ import { rateLimit, resetRateLimit } from "../src/lib/rate-limit";
 
 test.beforeEach(() => resetRateLimit());
 
-test("requests under the limit are allowed and count down", () => {
-  const options = { limit: 3, windowMs: 60_000 };
-  expect(rateLimit("a", options, 0)).toMatchObject({ ok: true, remaining: 2 });
-  expect(rateLimit("a", options, 1)).toMatchObject({ ok: true, remaining: 1 });
-  expect(rateLimit("a", options, 2)).toMatchObject({ ok: true, remaining: 0 });
+test("requests under the limit count down", () => {
+  const o = { limit: 3, windowMs: 60_000 };
+  expect(rateLimit("a", o, 0)).toMatchObject({ ok: true, remaining: 2 });
+  expect(rateLimit("a", o, 1)).toMatchObject({ ok: true, remaining: 1 });
+  expect(rateLimit("a", o, 2)).toMatchObject({ ok: true, remaining: 0 });
 });
 
-test("the request over the limit is refused with a retry delay", () => {
-  const options = { limit: 2, windowMs: 60_000 };
-  rateLimit("b", options, 0);
-  rateLimit("b", options, 0);
-  const blocked = rateLimit("b", options, 10_000);
+test("the request over the limit is refused with a delay", () => {
+  const o = { limit: 2, windowMs: 60_000 };
+  rateLimit("b", o, 0); rateLimit("b", o, 0);
+  const blocked = rateLimit("b", o, 10_000);
   expect(blocked.ok).toBe(false);
   expect(blocked.retryAfterSeconds).toBe(50);
 });
 
-test("keys do not interfere with each other", () => {
-  const options = { limit: 1, windowMs: 60_000 };
-  expect(rateLimit("c", options, 0).ok).toBe(true);
-  expect(rateLimit("d", options, 0).ok).toBe(true);
-  expect(rateLimit("c", options, 0).ok).toBe(false);
+test("keys are independent", () => {
+  const o = { limit: 1, windowMs: 60_000 };
+  expect(rateLimit("c", o, 0).ok).toBe(true);
+  expect(rateLimit("d", o, 0).ok).toBe(true);
+  expect(rateLimit("c", o, 0).ok).toBe(false);
 });
 
 test("the window rolls over", () => {
-  const options = { limit: 1, windowMs: 1_000 };
-  expect(rateLimit("e", options, 0).ok).toBe(true);
-  expect(rateLimit("e", options, 500).ok).toBe(false);
-  expect(rateLimit("e", options, 1_001).ok).toBe(true);
+  const o = { limit: 1, windowMs: 1_000 };
+  expect(rateLimit("e", o, 0).ok).toBe(true);
+  expect(rateLimit("e", o, 500).ok).toBe(false);
+  expect(rateLimit("e", o, 1_001).ok).toBe(true);
 });
 ```
 
-- [ ] **Step 2: شغّله وتأكد أنه يفشل**
+- [ ] **Step 2: شغّله** → FAIL، ثم اكتب `src/lib/rate-limit.ts` بنافذة في الذاكرة عبر `Map`، مع تعليق يوضّح أن الحد لكل نسخة تشغيل لا عالمي، وأن ذلك كافٍ لنموذج تواصل. شغّله → PASS
 
-Run: `npx playwright test tests/rate-limit.spec.ts`
-Expected: FAIL — الوحدة غير موجودة
-
-- [ ] **Step 3: اكتب تحديد المعدل**
-
-أنشئ `src/lib/rate-limit.ts`:
-
-```ts
-export type RateLimitResult = { ok: boolean; remaining: number; retryAfterSeconds: number };
-
-type Window = { count: number; startedAt: number };
-const windows = new Map<string, Window>();
-
-export function resetRateLimit(): void {
-  windows.clear();
-}
-
-export function rateLimit(
-  key: string,
-  options: { limit: number; windowMs: number },
-  now: number = Date.now(),
-): RateLimitResult {
-  const existing = windows.get(key);
-  if (!existing || now - existing.startedAt >= options.windowMs) {
-    windows.set(key, { count: 1, startedAt: now });
-    return { ok: true, remaining: options.limit - 1, retryAfterSeconds: 0 };
-  }
-  if (existing.count >= options.limit) {
-    const elapsed = now - existing.startedAt;
-    return {
-      ok: false,
-      remaining: 0,
-      retryAfterSeconds: Math.ceil((options.windowMs - elapsed) / 1000),
-    };
-  }
-  existing.count += 1;
-  return { ok: true, remaining: options.limit - existing.count, retryAfterSeconds: 0 };
-}
-```
-
-> هذا التخزين في ذاكرة العملية. على Vercel يعني حداً لكل نسخة تشغيل لا حداً عالمياً — وهو كافٍ لنموذج تواصل وللعروض الحية، ويُوثَّق بتعليق في أعلى الملف حتى لا يُساء فهمه لاحقاً.
-
-- [ ] **Step 4: شغّله وتأكد أنه ينجح**
-
-Run: `npx playwright test tests/rate-limit.spec.ts`
-Expected: PASS — أربعة اختبارات
-
-- [ ] **Step 5: اكتب اختبار التحقق**
-
-أنشئ `tests/validate.spec.ts`:
+- [ ] **Step 3: اكتب `tests/validate.spec.ts`**
 
 ```ts
 import { test, expect } from "@playwright/test";
@@ -1573,79 +1026,38 @@ test("missing or malformed fields are refused", () => {
   expect(validateContact({ ...good, name: 42 }).ok).toBe(false);
 });
 
-test("oversized fields are refused rather than truncated", () => {
+test("oversized fields are refused, not truncated", () => {
   expect(validateContact({ ...good, message: "x".repeat(5001) }).ok).toBe(false);
   expect(validateContact({ ...good, name: "x".repeat(201) }).ok).toBe(false);
 });
 ```
 
-- [ ] **Step 6: شغّله وتأكد أنه يفشل، ثم اكتب التحقق**
+- [ ] **Step 4: شغّله** → FAIL، ثم اكتب `validate.ts` و `client-ip.ts`. شغّله → PASS
 
-Run: `npx playwright test tests/validate.spec.ts` → FAIL
-
-أنشئ `src/lib/validate.ts`:
-
-```ts
-export type ContactInput = { name: string; email: string; message: string };
-export type ValidationResult = { ok: true; value: ContactInput } | { ok: false; error: string };
-
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-export function validateContact(raw: unknown): ValidationResult {
-  if (!raw || typeof raw !== "object") return { ok: false, error: "invalid-body" };
-  const body = raw as Record<string, unknown>;
-  const name = typeof body.name === "string" ? body.name.trim() : "";
-  const email = typeof body.email === "string" ? body.email.trim() : "";
-  const message = typeof body.message === "string" ? body.message.trim() : "";
-
-  if (name.length < 1 || name.length > 200) return { ok: false, error: "invalid-name" };
-  if (!EMAIL.test(email) || email.length > 320) return { ok: false, error: "invalid-email" };
-  if (message.length < 20 || message.length > 5000) return { ok: false, error: "invalid-message" };
-
-  return { ok: true, value: { name, email, message } };
-}
-```
-
-أنشئ `src/lib/client-ip.ts`:
-
-```ts
-export function clientIp(request: Request): string {
-  const forwarded = request.headers.get("x-forwarded-for");
-  if (forwarded) return forwarded.split(",")[0].trim();
-  return request.headers.get("x-real-ip") ?? "unknown";
-}
-```
-
-Run: `npx playwright test tests/validate.spec.ts`
-Expected: PASS — ثلاثة اختبارات
-
-- [ ] **Step 7: اكتب اختبار المسار والنموذج**
-
-أنشئ `tests/contact.spec.ts`:
+- [ ] **Step 5: اكتب `tests/contact.spec.ts`**
 
 ```ts
 import { test, expect } from "@playwright/test";
 
 test("a malformed submission is refused with 400", async ({ request }) => {
-  const response = await request.post("/api/contact", { data: { name: "", email: "x", message: "" } });
-  expect(response.status()).toBe(400);
+  expect((await request.post("/api/contact", { data: { name: "", email: "x", message: "" } })).status()).toBe(400);
 });
 
-test("a flood of submissions is rate limited with 429 and a retry header", async ({ request }) => {
+test("a flood is rate limited with 429 and a retry header", async ({ request }) => {
   const payload = { name: "Flood", email: "f@b.co", message: "This is a long enough message body." };
-  let sawTooMany = false;
+  let limited = false;
   for (let i = 0; i < 12; i++) {
     const response = await request.post("/api/contact", { data: payload });
     if (response.status() === 429) {
       expect(response.headers()["retry-after"]).toBeDefined();
-      sawTooMany = true;
+      limited = true;
       break;
     }
   }
-  expect(sawTooMany).toBe(true);
+  expect(limited).toBe(true);
 });
 
-test("the contact section renders both locales and hides unset channels", async ({ page }) => {
+test("the contact form renders in both locales", async ({ page }) => {
   for (const locale of ["ar", "en"] as const) {
     await page.goto(`/${locale}#contact`);
     await expect(page.locator("#contact form")).toBeVisible();
@@ -1653,659 +1065,51 @@ test("the contact section renders both locales and hides unset channels", async 
   }
 });
 
-test("submitting an empty form shows a validation message, not a success", async ({ page }) => {
+test("an empty submission shows a message, never a false success", async ({ page }) => {
   await page.goto("/ar#contact");
   await page.locator("#contact button[type='submit']").click();
-  await expect(page.locator("#contact [role='alert']")).toBeVisible();
+  const alert = page.locator("#contact [role='alert']");
+  await expect(alert).toBeVisible();
+  await expect(alert).not.toContainText(/وصلت|sent/i);
 });
 ```
 
-- [ ] **Step 8: شغّله وتأكد أنه يفشل**
+- [ ] **Step 6: شغّله** → FAIL
 
-Run: `npx playwright test tests/contact.spec.ts`
-Expected: FAIL — لا يوجد مسار ولا نموذج
+- [ ] **Step 7: اكتب المسار** — يفحص الحد أولاً (خمس رسائل لكل عشر دقائق) فيعيد 429 مع `retry-after`، ثم يحلّل الجسم فيعيد 400 عند الفشل، ثم يتحقق فيعيد 400 عند الفشل، ثم يعيد 503 صراحة ما لم تُضبط `CONTACT_TO_EMAIL` و `CONTACT_API_KEY`. لا رسالة نجاح قبل إرسال فعلي.
 
-- [ ] **Step 9: اكتب المسار**
+- [ ] **Step 8: اكتب `src/ui/contact.tsx`** — مكوّن عميل. يعرض واتساب والبريد فقط عند توفّرهما، وإلا رسالة `pendingContact`. النموذج يرسل عبر `fetch` ويترجم 400 و 429 و 503 إلى رسائلها من `contactForm`، و`<noscript>` يعرض `needsJs`. الزر يُعطَّل أثناء الإرسال فقط. الأسئلة في `<details>` أسفل النموذج.
 
-أنشئ `src/app/api/contact/route.ts`:
+- [ ] **Step 9: استبدل قسم `#contact` النائب** في `page.tsx` بالمكوّن.
 
-```ts
-import { clientIp } from "../../../lib/client-ip";
-import { rateLimit } from "../../../lib/rate-limit";
-import { validateContact } from "../../../lib/validate";
+- [ ] **Step 10: شغّل** — الملفات الثلاثة → PASS
 
-export async function POST(request: Request) {
-  const limit = rateLimit(`contact:${clientIp(request)}`, { limit: 5, windowMs: 10 * 60 * 1000 });
-  if (!limit.ok)
-    return Response.json(
-      { error: "rate-limited" },
-      { status: 429, headers: { "retry-after": String(limit.retryAfterSeconds) } },
-    );
-
-  let body: unknown;
-  try {
-    body = await request.json();
-  } catch {
-    return Response.json({ error: "invalid-body" }, { status: 400 });
-  }
-
-  const parsed = validateContact(body);
-  if (!parsed.ok) return Response.json({ error: parsed.error }, { status: 400 });
-
-  const to = process.env.CONTACT_TO_EMAIL;
-  const apiKey = process.env.CONTACT_API_KEY;
-  if (!to || !apiKey) return Response.json({ error: "not-configured" }, { status: 503 });
-
-  // TODO عند المرحلة ٨ من المواصفة: استبدل هذا بنداء خدمة الإرسال المختارة.
-  // حتى ذلك الحين يفشل المسار بوضوح بدل ادعاء نجاح لم يحدث.
-  return Response.json({ error: "not-configured" }, { status: 503 });
-}
-```
-
-> المسار يعيد `503` صراحة قبل ضبط المفاتيح. هذا مقصود: الواجهة تعرض `errorDisabled` بدل رسالة نجاح كاذبة.
-
-- [ ] **Step 10: اكتب قسم التواصل**
-
-أنشئ `src/ui/contact.tsx` كمكوّن عميل. النموذج يعمل بلا JavaScript كنموذج HTML عادي يعرض `needsJs`، ومع JavaScript يرسل عبر `fetch`:
-
-```tsx
-"use client";
-
-import { useState } from "react";
-import { Section } from "./section";
-import { getDictionary } from "../content/dictionary";
-import { profile } from "../content/profile";
-import type { Locale } from "../content/locales";
-
-type State = { status: "idle" | "sending" | "sent" | "error"; message: string };
-
-export function Contact({ locale }: { locale: Locale }) {
-  const dict = getDictionary(locale);
-  const [state, setState] = useState<State>({ status: "idle", message: "" });
-
-  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const data = Object.fromEntries(new FormData(event.currentTarget));
-    setState({ status: "sending", message: dict.contact.sending });
-    let response: Response;
-    try {
-      response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(data),
-      });
-    } catch {
-      setState({ status: "error", message: dict.contact.errorServer });
-      return;
-    }
-    if (response.ok) { setState({ status: "sent", message: dict.contact.sent }); return; }
-    const message =
-      response.status === 400 ? dict.contact.errorValidation
-      : response.status === 429 ? dict.contact.errorRate
-      : response.status === 503 ? dict.contact.errorDisabled
-      : dict.contact.errorServer;
-    setState({ status: "error", message });
-  }
-
-  const field = { background: "var(--surface-2)", border: "1px solid var(--border)", borderRadius: "0.5rem", padding: "0.7rem", color: "var(--text-primary)", inlineSize: "100%" } as const;
-
-  return (
-    <Section id="contact" label={dict.contact.label} title={dict.contact.title}>
-      <p style={{ color: "var(--text-secondary)", maxInlineSize: "52ch" }}>{dict.contact.text}</p>
-
-      <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginBlockEnd: "2rem" }}>
-        {profile.whatsapp && <a href={`https://wa.me/${profile.whatsapp}`}>{dict.contact.whatsapp}</a>}
-        {profile.email && <a href={`mailto:${profile.email}`}>{dict.contact.email}</a>}
-        {!profile.whatsapp && !profile.email && (
-          <p className="mono" style={{ color: "var(--text-muted)", fontSize: "0.9rem", margin: 0 }}>{dict.contact.unavailable}</p>
-        )}
-      </div>
-
-      <form onSubmit={onSubmit} noValidate style={{ display: "grid", gap: "0.75rem", maxInlineSize: "34rem" }}>
-        <noscript><p className="mono" style={{ color: "var(--warn)" }}>{dict.contact.needsJs}</p></noscript>
-        <label>{dict.contact.nameLabel}<input name="name" style={field} /></label>
-        <label>{dict.contact.emailLabel}<input name="email" type="email" style={field} /></label>
-        <label>{dict.contact.messageLabel}<textarea name="message" rows={5} style={field} /></label>
-        <button type="submit" disabled={state.status === "sending"} style={{ background: "var(--live)", color: "var(--surface-0)", border: 0, borderRadius: "0.5rem", padding: "0.75rem 1.5rem", fontWeight: 600, justifySelf: "start" }}>
-          {state.status === "sending" ? dict.contact.sending : dict.contact.submit}
-        </button>
-        {state.message && (
-          <p role="alert" style={{ color: state.status === "sent" ? "var(--live)" : "var(--warn)", margin: 0 }}>{state.message}</p>
-        )}
-      </form>
-
-      <details style={{ marginBlockStart: "3rem" }}>
-        <summary style={{ cursor: "pointer", color: "var(--text-secondary)" }}>{dict.faq[0].q}</summary>
-        {dict.faq.map(item => (
-          <div key={item.q} style={{ paddingBlock: "0.75rem" }}>
-            <h3 style={{ fontSize: "1rem", margin: "0 0 0.25rem" }}>{item.q}</h3>
-            <p style={{ margin: 0, color: "var(--text-secondary)" }}>{item.a}</p>
-          </div>
-        ))}
-      </details>
-    </Section>
-  );
-}
-```
-
-> الزر يُعطَّل فقط أثناء الإرسال الفعلي. النموذج الفارغ يُرسَل ويعود بـ `400`، فتظهر رسالة التحقق — وهذا ما يفحصه الاختبار الأخير.
-
-- [ ] **Step 11: استبدل النائب في الصفحة**
-
-في `src/app/[locale]/page.tsx` احذف `<section id="contact" … />` واستورد `Contact` وضعه مكانه.
-
-- [ ] **Step 12: شغّل كل شيء**
-
-Run: `npx playwright test tests/rate-limit.spec.ts tests/validate.spec.ts tests/contact.spec.ts && npm run typecheck && npm run lint`
-Expected: PASS
-
-- [ ] **Step 13: كوميت**
-
-```bash
-git add src/lib src/app/api/contact src/ui/contact.tsx "src/app/[locale]/page.tsx" tests/rate-limit.spec.ts tests/validate.spec.ts tests/contact.spec.ts
-git commit -m "feat: add the contact section with server validation and rate limiting"
-```
+- [ ] **Step 11: كوميت** — `git add -A && git commit -m "feat: add the contact section with server validation and rate limiting"`
 
 ---
 
-### المهمة ٩: مشهد النظام الحي
+### المهمة ١٠: البيانات الوصفية وخريطة الموقع
 
-**Files:**
-- Create: `src/lib/scene.ts`
-- Create: `src/ui/hero-scene.tsx`
-- Modify: `src/ui/hero.tsx`
-- Test: `tests/scene.spec.ts`, `tests/motion.spec.ts`
+**Files:** Create `src/app/sitemap.ts`, `src/app/robots.ts`; Modify `src/app/[locale]/layout.tsx`; Test `tests/seo.spec.ts`
 
-**Interfaces:**
-- Consumes: `getDictionary` لأسماء العقد الأربع.
-- Produces:
-  - `export type SceneNode = { id: string; x: number; y: number; label: string }`
-  - `export type SceneEdge = { from: string; to: string }`
-  - `export type Pulse = { edge: number; progress: number }`
-  - `export type Scene = { nodes: SceneNode[]; edges: SceneEdge[]; pulses: Pulse[] }`
-  - `export function createScene(labels: string[]): Scene`
-  - `export function stepScene(scene: Scene, deltaMs: number): Scene`
-  - `export function HeroScene(props: { labels: string[] }): JSX.Element`
-
-المنطق كله في `src/lib/scene.ts` خالصاً وقابلاً للاختبار بلا متصفح؛ المكوّن يرسم فقط.
-
-- [ ] **Step 1: اكتب اختبار المنطق**
-
-أنشئ `tests/scene.spec.ts`:
+- [ ] **Step 1: اكتب `tests/seo.spec.ts`**
 
 ```ts
 import { test, expect } from "@playwright/test";
-import { createScene, stepScene } from "../src/lib/scene";
+import { profile } from "../src/content/site";
 
-const labels = ["web", "api", "automation", "saas"];
-
-test("the scene has a node per label and edges between them", () => {
-  const scene = createScene(labels);
-  expect(scene.nodes).toHaveLength(4);
-  expect(scene.nodes.map(n => n.label)).toEqual(labels);
-  expect(scene.edges.length).toBeGreaterThan(0);
-  for (const edge of scene.edges) {
-    expect(scene.nodes.some(n => n.id === edge.from)).toBe(true);
-    expect(scene.nodes.some(n => n.id === edge.to)).toBe(true);
-    expect(edge.from).not.toBe(edge.to);
-  }
-});
-
-test("node coordinates stay inside the unit square", () => {
-  for (const node of createScene(labels).nodes) {
-    expect(node.x).toBeGreaterThanOrEqual(0);
-    expect(node.x).toBeLessThanOrEqual(1);
-    expect(node.y).toBeGreaterThanOrEqual(0);
-    expect(node.y).toBeLessThanOrEqual(1);
-  }
-});
-
-test("stepping advances pulses and wraps them without losing any", () => {
-  let scene = createScene(labels);
-  const count = scene.pulses.length;
-  expect(count).toBeGreaterThan(0);
-  const before = scene.pulses[0].progress;
-  scene = stepScene(scene, 100);
-  expect(scene.pulses).toHaveLength(count);
-  expect(scene.pulses[0].progress).not.toBe(before);
-  for (let i = 0; i < 200; i++) scene = stepScene(scene, 100);
-  expect(scene.pulses).toHaveLength(count);
-  for (const pulse of scene.pulses) {
-    expect(pulse.progress).toBeGreaterThanOrEqual(0);
-    expect(pulse.progress).toBeLessThanOrEqual(1);
-    expect(pulse.edge).toBeGreaterThanOrEqual(0);
-    expect(pulse.edge).toBeLessThan(scene.edges.length);
-  }
-});
-
-test("stepping is pure and does not mutate its input", () => {
-  const scene = createScene(labels);
-  const snapshot = JSON.stringify(scene);
-  stepScene(scene, 250);
-  expect(JSON.stringify(scene)).toBe(snapshot);
-});
-```
-
-- [ ] **Step 2: شغّله وتأكد أنه يفشل**
-
-Run: `npx playwright test tests/scene.spec.ts`
-Expected: FAIL — الوحدة غير موجودة
-
-- [ ] **Step 3: اكتب منطق المشهد**
-
-أنشئ `src/lib/scene.ts`:
-
-```ts
-export type SceneNode = { id: string; x: number; y: number; label: string };
-export type SceneEdge = { from: string; to: string };
-export type Pulse = { edge: number; progress: number };
-export type Scene = { nodes: SceneNode[]; edges: SceneEdge[]; pulses: Pulse[] };
-
-const PULSE_PER_SECOND = 0.28;
-
-export function createScene(labels: string[]): Scene {
-  const nodes: SceneNode[] = labels.map((label, index) => {
-    const angle = (index / labels.length) * Math.PI * 2 - Math.PI / 2;
-    return {
-      id: `n${index}`,
-      label,
-      x: 0.5 + Math.cos(angle) * 0.34,
-      y: 0.5 + Math.sin(angle) * 0.34,
-    };
-  });
-
-  const edges: SceneEdge[] = [];
-  for (let i = 0; i < nodes.length; i++)
-    for (let j = i + 1; j < nodes.length; j++)
-      edges.push({ from: nodes[i].id, to: nodes[j].id });
-
-  const pulses: Pulse[] = edges.map((_, index) => ({
-    edge: index,
-    progress: (index / edges.length) % 1,
-  }));
-
-  return { nodes, edges, pulses };
-}
-
-export function stepScene(scene: Scene, deltaMs: number): Scene {
-  const advance = (deltaMs / 1000) * PULSE_PER_SECOND;
-  return {
-    nodes: scene.nodes,
-    edges: scene.edges,
-    pulses: scene.pulses.map(pulse => {
-      const next = pulse.progress + advance;
-      return next <= 1
-        ? { edge: pulse.edge, progress: next }
-        : { edge: (pulse.edge + 1) % scene.edges.length, progress: next % 1 };
-    }),
-  };
-}
-```
-
-- [ ] **Step 4: شغّله وتأكد أنه ينجح**
-
-Run: `npx playwright test tests/scene.spec.ts`
-Expected: PASS — أربعة اختبارات
-
-- [ ] **Step 5: اكتب اختبار الحركة في المتصفح**
-
-أنشئ `tests/motion.spec.ts`:
-
-```ts
-import { test, expect } from "@playwright/test";
-
-test("the hero scene renders a canvas", async ({ page }) => {
-  await page.goto("/ar");
-  await expect(page.locator("canvas.hero-scene")).toBeVisible();
-});
-
-test("reduced motion leaves a readable still frame and stops animating", async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/ar");
-  const canvas = page.locator("canvas.hero-scene");
-  await expect(canvas).toBeVisible();
-  const first = await canvas.screenshot();
-  await page.waitForTimeout(700);
-  const second = await canvas.screenshot();
-  expect(Buffer.compare(first, second)).toBe(0);
-});
-
-test("the headline stays readable over the scene", async ({ page }) => {
-  await page.goto("/ar");
-  await expect(page.locator("h1")).toBeVisible();
-  const box = await page.locator("h1").boundingBox();
-  expect(box!.width).toBeGreaterThan(0);
-});
-
-test("the scene does not throw on any viewport", async ({ page }) => {
-  const errors: string[] = [];
-  page.on("pageerror", e => errors.push(e.message));
-  for (const width of [360, 768, 1440]) {
-    await page.setViewportSize({ width, height: 800 });
-    await page.goto("/ar");
-    await page.waitForTimeout(300);
-  }
-  expect(errors).toEqual([]);
-});
-```
-
-- [ ] **Step 6: شغّله وتأكد أنه يفشل**
-
-Run: `npx playwright test tests/motion.spec.ts`
-Expected: FAIL — لا توجد لوحة Canvas
-
-- [ ] **Step 7: اكتب المكوّن**
-
-أنشئ `src/ui/hero-scene.tsx`:
-
-```tsx
-"use client";
-
-import { useEffect, useRef } from "react";
-import { createScene, stepScene, type Scene } from "../lib/scene";
-
-function draw(context: CanvasRenderingContext2D, scene: Scene, width: number, height: number) {
-  const styles = getComputedStyle(document.documentElement);
-  const live = styles.getPropertyValue("--live").trim();
-  const border = styles.getPropertyValue("--border-strong").trim();
-  const muted = styles.getPropertyValue("--text-muted").trim();
-  const at = (id: string) => {
-    const node = scene.nodes.find(n => n.id === id)!;
-    return { x: node.x * width, y: node.y * height };
-  };
-
-  context.clearRect(0, 0, width, height);
-
-  context.strokeStyle = border;
-  context.lineWidth = 1;
-  for (const edge of scene.edges) {
-    const a = at(edge.from);
-    const b = at(edge.to);
-    context.beginPath();
-    context.moveTo(a.x, a.y);
-    context.lineTo(b.x, b.y);
-    context.stroke();
-  }
-
-  context.fillStyle = live;
-  for (const pulse of scene.pulses) {
-    const edge = scene.edges[pulse.edge];
-    const a = at(edge.from);
-    const b = at(edge.to);
-    const x = a.x + (b.x - a.x) * pulse.progress;
-    const y = a.y + (b.y - a.y) * pulse.progress;
-    context.beginPath();
-    context.arc(x, y, 3, 0, Math.PI * 2);
-    context.fill();
-  }
-
-  for (const node of scene.nodes) {
-    const point = at(node.id);
-    context.fillStyle = live;
-    context.beginPath();
-    context.arc(point.x, point.y, 5, 0, Math.PI * 2);
-    context.fill();
-    context.fillStyle = muted;
-    context.font = "12px ui-monospace, monospace";
-    context.textAlign = "center";
-    context.fillText(node.label, point.x, point.y - 12);
-  }
-}
-
-export function HeroScene({ labels }: { labels: string[] }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const context = canvas.getContext("2d");
-    if (!context) return;
-
-    let scene = createScene(labels);
-    let frame = 0;
-    let last = performance.now();
-
-    const resize = () => {
-      const ratio = Math.min(window.devicePixelRatio || 1, 2);
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = Math.max(1, Math.round(rect.width * ratio));
-      canvas.height = Math.max(1, Math.round(rect.height * ratio));
-      context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      draw(context, scene, rect.width, rect.height);
-    };
-
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const observer = new ResizeObserver(resize);
-    observer.observe(canvas);
-    resize();
-
-    if (!reduced.matches) {
-      const loop = (now: number) => {
-        scene = stepScene(scene, now - last);
-        last = now;
-        const rect = canvas.getBoundingClientRect();
-        draw(context, scene, rect.width, rect.height);
-        frame = requestAnimationFrame(loop);
-      };
-      frame = requestAnimationFrame(loop);
-    }
-
-    return () => {
-      cancelAnimationFrame(frame);
-      observer.disconnect();
-    };
-  }, [labels]);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      className="hero-scene"
-      aria-hidden="true"
-      style={{ position: "absolute", inset: 0, inlineSize: "100%", blockSize: "100%", opacity: 0.55, pointerEvents: "none" }}
-    />
-  );
-}
-```
-
-> عند `prefers-reduced-motion` لا تبدأ حلقة الرسم أصلاً، فتبقى الإطارة الأولى الساكنة معروضة كاملة ومقروءة — وهو ما يفحصه اختبار تطابق اللقطتين.
-
-- [ ] **Step 8: ركّب المشهد في البطل**
-
-في `src/ui/hero.tsx` غلّف محتوى القسم بحاوية `position: relative`، وضع قبل النص:
-
-```tsx
-import { HeroScene } from "./hero-scene";
-// …
-<HeroScene labels={dict.fields.map(field => field.title)} />
-```
-
-وتأكد أن النص في طبقة أعلى بإعطائه `position: relative; z-index: 1`.
-
-- [ ] **Step 9: شغّل الاختبارات**
-
-Run: `npx playwright test tests/motion.spec.ts tests/scene.spec.ts && npm run typecheck && npm run lint`
-Expected: PASS
-
-- [ ] **Step 10: كوميت**
-
-```bash
-git add src/lib/scene.ts src/ui/hero-scene.tsx src/ui/hero.tsx tests/scene.spec.ts tests/motion.spec.ts
-git commit -m "feat: add the living-system hero scene with reduced-motion support"
-```
-
----
-
-### المهمة ١٠: نقل Cut Studio إلى المختبر
-
-**Files:**
-- Create: `src/app/[locale]/lab/[slug]/page.tsx`
-- Create: `src/lab/cut-studio/view.tsx`
-- Modify: `src/toolkit/toolkit.tsx` — نقطة الدخول فقط، لا المنطق
-- Test: `tests/cut-studio.spec.ts`
-
-**Interfaces:**
-- Consumes: `getLabWork`, `labWorks`, `getDictionary`, ومكوّن الأدوات القائم في `src/toolkit/toolkit.tsx`.
-- Produces: مسار `/[locale]/lab/[slug]` يعمل لكل عمل بحالة `live`، ويعطي 404 لما عداه.
-
-- [ ] **Step 1: اعرف نقطة دخول مجموعة الأدوات**
-
-```bash
-grep -n "export" src/toolkit/toolkit.tsx | head -20
-```
-
-سجّل اسم المكوّن المصدَّر — تحتاجه في الخطوة ٤. لا تغيّر أي منطق داخل `src/toolkit`.
-
-- [ ] **Step 2: اكتب الاختبار الفاشل**
-
-أنشئ `tests/cut-studio.spec.ts`:
-
-```ts
-import { test, expect } from "@playwright/test";
-
-test("the old tools path permanently redirects into the lab", async ({ page }) => {
-  await page.goto("/tools");
-  await expect(page).toHaveURL(/\/ar\/lab\/cut-studio$/);
-});
-
-test("Cut Studio opens inside the lab in both locales", async ({ page }) => {
-  for (const locale of ["ar", "en"] as const) {
-    const errors: string[] = [];
-    page.on("pageerror", e => errors.push(e.message));
-    await page.goto(`/${locale}/lab/cut-studio`);
-    await expect(page.locator("h1")).toContainText("Cut Studio");
-    expect(errors).toEqual([]);
-  }
-});
-
-test("a work that is still being built is not served as a page", async ({ page }) => {
-  const response = await page.goto("/ar/lab/automation-engine");
-  expect(response?.status()).toBe(404);
-});
-
-test("an unknown slug is a 404", async ({ page }) => {
-  const response = await page.goto("/ar/lab/nope");
-  expect(response?.status()).toBe(404);
-});
-
-test("the CDR conversion route exists on the deployed runtime", async ({ request }) => {
-  const response = await request.post("/api/tools/cdr", { data: {} });
-  expect(response.status()).not.toBe(404);
-});
-```
-
-- [ ] **Step 3: شغّله وتأكد أنه يفشل**
-
-Run: `npx playwright test tests/cut-studio.spec.ts`
-Expected: FAIL — لا يوجد مسار `lab/[slug]`
-
-- [ ] **Step 4: اكتب غلاف العمل**
-
-أنشئ `src/lab/cut-studio/view.tsx`. استبدل `Toolkit` باسم المكوّن الذي سجّلته في الخطوة ١:
-
-```tsx
-"use client";
-
-import { Toolkit } from "../../toolkit/toolkit";
-import type { Locale } from "../../content/locales";
-
-export function CutStudioView({ locale }: { locale: Locale }) {
-  return <Toolkit locale={locale} />;
-}
-```
-
-> إن كان المكوّن القائم يستقبل خصائص بأسماء مختلفة، مرّرها كما هي. الهدف تغليف لا تعديل.
-
-- [ ] **Step 5: اكتب صفحة العمل**
-
-أنشئ `src/app/[locale]/lab/[slug]/page.tsx`:
-
-```tsx
-import { notFound } from "next/navigation";
-import { getLabWork, labWorks } from "../../../../lab/registry";
-import { isLocale, locales } from "../../../../content/locales";
-import { CutStudioView } from "../../../../lab/cut-studio/view";
-
-export function generateStaticParams() {
-  return locales.flatMap(locale =>
-    labWorks.filter(work => work.status === "live").map(work => ({ locale, slug: work.slug })),
-  );
-}
-
-export async function generateMetadata({ params }: PageProps<"/[locale]/lab/[slug]">) {
-  const { locale, slug } = await params;
-  const work = getLabWork(slug);
-  if (!work || !isLocale(locale)) return {};
-  return { title: work.title[locale], description: work.blurb[locale] };
-}
-
-export default async function LabPage({ params }: PageProps<"/[locale]/lab/[slug]">) {
-  const { locale, slug } = await params;
-  if (!isLocale(locale)) notFound();
-  const work = getLabWork(slug);
-  if (!work || work.status !== "live") notFound();
-
-  return (
-    <main id="main" className="shell" style={{ paddingBlock: "3rem" }}>
-      <h1 style={{ fontSize: "clamp(1.8rem, 5vw, 3rem)", margin: "0 0 0.5rem" }}>{work.title[locale]}</h1>
-      <p style={{ color: "var(--text-secondary)", maxInlineSize: "56ch" }}>{work.blurb[locale]}</p>
-      {work.slug === "cut-studio" && <CutStudioView locale={locale} />}
-    </main>
-  );
-}
-```
-
-> شرط `work.status !== "live"` هو ما يجعل الأعمال قيد البناء تعطي 404 بدل صفحة فارغة. كل خطة عرض حي لاحقة تقلب حالتها إلى `live` وتضيف سطر عرضها هنا.
-
-- [ ] **Step 6: شغّل الاختبارات**
-
-Run: `npx playwright test tests/cut-studio.spec.ts tests/toolkit-ui.spec.ts`
-Expected: PASS — اختبارات مجموعة الأدوات القائمة يجب أن تبقى خضراء؛ أي كسر فيها يعني أنك عدّلت منطقاً بدل أن تغلّفه.
-
-- [ ] **Step 7: كوميت**
-
-```bash
-git add "src/app/[locale]/lab" src/lab/cut-studio tests/cut-studio.spec.ts
-git commit -m "feat: move Cut Studio into the lab and keep the old tools URL working"
-```
-
----
-
-### المهمة ١١: البيانات الوصفية وخريطة الموقع
-
-**Files:**
-- Create: `src/app/sitemap.ts`, `src/app/robots.ts`
-- Modify: `src/app/[locale]/layout.tsx`
-- Test: `tests/seo.spec.ts`
-
-**Interfaces:**
-- Consumes: `profile.siteUrl`, `locales`, `labWorks`, `getDictionary`.
-- Produces: وسوم `canonical` و `hreflang` عند توفّر `siteUrl` فقط، و`sitemap.xml` و`robots.txt`.
-
-- [ ] **Step 1: اكتب الاختبار الفاشل**
-
-أنشئ `tests/seo.spec.ts`:
-
-```ts
-import { test, expect } from "@playwright/test";
-import { profile } from "../src/content/profile";
-
-test("each locale carries its own title and description", async ({ page }) => {
+test("each locale carries its own title", async ({ page }) => {
   await page.goto("/ar");
   const arTitle = await page.title();
   await page.goto("/en");
   expect(await page.title()).not.toBe(arTitle);
-  const description = page.locator("meta[name='description']");
-  await expect(description).toHaveCount(1);
+  await expect(page.locator("meta[name='description']")).toHaveCount(1);
 });
 
-test("hreflang tags appear only when a site url is configured", async ({ page }) => {
+test("hreflang appears only when a site url is configured", async ({ page }) => {
   await page.goto("/ar");
   const alternates = page.locator("link[rel='alternate'][hreflang]");
-  if (profile.siteUrl) {
-    await expect(alternates).toHaveCount(2);
-  } else {
-    await expect(alternates).toHaveCount(0);
-  }
+  await expect(alternates).toHaveCount(profile.siteUrl ? 2 : 0);
 });
 
 test("sitemap and robots are served", async ({ request }) => {
@@ -2314,100 +1118,21 @@ test("sitemap and robots are served", async ({ request }) => {
 });
 ```
 
-- [ ] **Step 2: شغّله وتأكد أنه يفشل**
+- [ ] **Step 2: شغّله** → FAIL
 
-Run: `npx playwright test tests/seo.spec.ts`
-Expected: FAIL — لا خريطة موقع
+- [ ] **Step 3: وسّع `generateMetadata`** ليضيف `metadataBase` و `alternates` عند توفّر `profile.siteUrl` فقط، واكتب `sitemap.ts` يضم صفحتي اللغة وصفحات الأعمال الحية فقط، و`robots.ts` يمنع `/api/`.
 
-- [ ] **Step 3: أضف البدائل اللغوية إلى `generateMetadata`**
+- [ ] **Step 4: شغّله** — PASS
 
-في `src/app/[locale]/layout.tsx` وسّع الدالة:
-
-```tsx
-export async function generateMetadata({ params }: LayoutProps<"/[locale]">) {
-  const { locale } = await params;
-  if (!isLocale(locale)) return {};
-  const { meta } = getDictionary(locale);
-  const base = profile.siteUrl;
-  return {
-    title: meta.title,
-    description: meta.description,
-    ...(base
-      ? {
-          metadataBase: new URL(base),
-          alternates: {
-            canonical: `/${locale}`,
-            languages: Object.fromEntries(locales.map(l => [l, `/${l}`])),
-          },
-        }
-      : {}),
-  };
-}
-```
-
-- [ ] **Step 4: اكتب خريطة الموقع و robots**
-
-أنشئ `src/app/sitemap.ts`:
-
-```ts
-import type { MetadataRoute } from "next";
-import { locales } from "../content/locales";
-import { profile } from "../content/profile";
-import { labWorks } from "../lab/registry";
-
-export default function sitemap(): MetadataRoute.Sitemap {
-  const base = profile.siteUrl || "http://localhost:3000";
-  const entries: MetadataRoute.Sitemap = [];
-  for (const locale of locales) {
-    entries.push({ url: `${base}/${locale}`, priority: 1 });
-    for (const work of labWorks)
-      if (work.status === "live") entries.push({ url: `${base}/${locale}/lab/${work.slug}`, priority: 0.8 });
-  }
-  return entries;
-}
-```
-
-أنشئ `src/app/robots.ts`:
-
-```ts
-import type { MetadataRoute } from "next";
-import { profile } from "../content/profile";
-
-export default function robots(): MetadataRoute.Robots {
-  return {
-    rules: { userAgent: "*", allow: "/", disallow: "/api/" },
-    ...(profile.siteUrl ? { sitemap: `${profile.siteUrl}/sitemap.xml` } : {}),
-  };
-}
-```
-
-- [ ] **Step 5: شغّل الاختبار وتأكد أنه ينجح**
-
-Run: `npx playwright test tests/seo.spec.ts`
-Expected: PASS — ثلاثة اختبارات
-
-- [ ] **Step 6: كوميت**
-
-```bash
-git add src/app/sitemap.ts src/app/robots.ts "src/app/[locale]/layout.tsx" tests/seo.spec.ts
-git commit -m "feat: add locale metadata, sitemap and robots"
-```
+- [ ] **Step 5: كوميت** — `git add -A && git commit -m "feat: add locale metadata, sitemap and robots"`
 
 ---
 
-### المهمة ١٢: إمكانية الوصول والعمل بلا JavaScript
+### المهمة ١١: إمكانية الوصول والعمل بلا JavaScript
 
-**Files:**
-- Test: `tests/a11y.spec.ts`
-- Modify: أي ملف يكشفه الاختبار
+**Files:** Test `tests/a11y.spec.ts`; Modify أي ملف يكشفه الاختبار
 
-**Interfaces:**
-- Consumes: كل ما سبق.
-- Produces: لا واجهات جديدة. مهمة تحقق وإصلاح.
-
-- [ ] **Step 1: اكتب اختبار القبول**
-
-أنشئ `tests/a11y.spec.ts`:
+- [ ] **Step 1: اكتب `tests/a11y.spec.ts`**
 
 ```ts
 import { test, expect } from "@playwright/test";
@@ -2425,14 +1150,19 @@ test.describe("without javascript", () => {
     });
   }
 
-  test("the locale switch still works as a plain link", async ({ page }) => {
+  test("the factory stations are readable without scripts", async ({ page }) => {
+    await page.goto("/ar/lab/shorts-factory");
+    await expect(page.locator(".station")).toHaveCount(6);
+  });
+
+  test("the locale switch is a plain link", async ({ page }) => {
     await page.goto("/ar");
     await page.locator(".locale-switch").click();
     await expect(page).toHaveURL(/\/en$/);
   });
 });
 
-test("the page has exactly one h1 and no heading level is skipped", async ({ page }) => {
+test("exactly one h1 and no skipped heading level", async ({ page }) => {
   await page.goto("/ar");
   await expect(page.locator("h1")).toHaveCount(1);
   const levels = await page.evaluate(() =>
@@ -2440,31 +1170,33 @@ test("the page has exactly one h1 and no heading level is skipped", async ({ pag
   for (let i = 1; i < levels.length; i++) expect(levels[i] - levels[i - 1]).toBeLessThanOrEqual(1);
 });
 
-test("keyboard focus reaches the nav, the lab and the contact form", async ({ page }) => {
+test("keyboard focus reaches the nav and the contact form", async ({ page }) => {
   await page.goto("/ar");
-  const reached: string[] = [];
-  for (let i = 0; i < 30; i++) {
+  const seen: string[] = [];
+  for (let i = 0; i < 40; i++) {
     await page.keyboard.press("Tab");
-    reached.push(await page.evaluate(() => document.activeElement?.tagName ?? ""));
+    seen.push(await page.evaluate(() => document.activeElement?.tagName ?? ""));
   }
-  expect(reached).toContain("A");
-  expect(reached.some(tag => tag === "INPUT" || tag === "TEXTAREA" || tag === "BUTTON")).toBe(true);
+  expect(seen).toContain("A");
+  expect(seen.some(tag => ["INPUT", "TEXTAREA", "BUTTON"].includes(tag))).toBe(true);
 });
 
-test("every image and canvas is either labelled or explicitly decorative", async ({ page }) => {
-  await page.goto("/ar");
-  const unlabelled = await page.evaluate(() =>
-    [...document.querySelectorAll("img, canvas")].filter(
-      el => !el.getAttribute("alt") && el.getAttribute("aria-hidden") !== "true" && !el.getAttribute("aria-label"),
-    ).length);
-  expect(unlabelled).toBe(0);
+test("every image and canvas is labelled or explicitly decorative", async ({ page }) => {
+  for (const path of ["/ar", "/ar/lab/design-studies", "/ar/lab/shorts-factory"]) {
+    await page.goto(path);
+    const unlabelled = await page.evaluate(() =>
+      [...document.querySelectorAll("img, canvas")].filter(
+        el => !el.getAttribute("alt") && el.getAttribute("aria-hidden") !== "true" && !el.getAttribute("aria-label"),
+      ).length);
+    expect(unlabelled, path).toBe(0);
+  }
 });
 
-test("no console errors on any main route", async ({ page }) => {
+test("no console errors on the main routes", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", e => errors.push(e.message));
   page.on("console", msg => { if (msg.type() === "error") errors.push(msg.text()); });
-  for (const path of ["/ar", "/en", "/ar/lab/cut-studio"]) {
+  for (const path of ["/ar", "/en", "/ar/lab/cut-studio", "/ar/lab/shorts-factory", "/ar/lab/design-studies"]) {
     await page.goto(path);
     await page.waitForTimeout(400);
   }
@@ -2472,82 +1204,35 @@ test("no console errors on any main route", async ({ page }) => {
 });
 ```
 
-- [ ] **Step 2: شغّله وأصلح ما يكشفه**
+- [ ] **Step 2: شغّله وأصلح كل فشل في مصدره** — ترتيب عناوين مكسور يُصلَح في مكوّن القسم؛ قسم غير ظاهر بلا JavaScript يعني اعتماداً على حالة عميل يجب رفعه إلى الخادم؛ لوحة Canvas بلا تسمية تحتاج `aria-hidden="true"`.
 
-Run: `npx playwright test tests/a11y.spec.ts`
+- [ ] **Step 3: افحص التباين يدوياً** — شغّل `npm run dev`، وافحص في الوضعين أن `--text-secondary` و `--text-muted` على `--surface-0` و `--surface-1` لا تقلّ عن 4.5:1. عدّل الرموز وأعد `tests/theme.spec.ts`.
 
-أصلح كل فشل في مصدره. الإخفاقات المتوقعة وعلاجها:
-- ترتيب عناوين مكسور → صحّح مستوى العنوان في مكوّن القسم المعني.
-- قسم غير ظاهر بلا JavaScript → أزل اعتماده على حالة عميل؛ المحتوى النصي يجب أن يُصيَّر على الخادم.
-- لوحة Canvas بلا تسمية → تأكد من بقاء `aria-hidden="true"` عليها.
+- [ ] **Step 4: شغّل كل شيء** — `npm run typecheck && npm run lint && npm test` → كل الاختبارات خضراء، بما فيها العشرة القائمة لمجموعة الأدوات.
 
-- [ ] **Step 3: افحص التباين يدوياً في الوضعين**
-
-```bash
-npm run dev
-```
-
-افتح `/ar` و `/en` في الوضع الداكن ثم الفاتح، وافحص بأداة المتصفح أن نسبة تباين `--text-secondary` و `--text-muted` على `--surface-0` و `--surface-1` لا تقل عن 4.5:1. عدّل قيم الرموز في `globals.css` عند الحاجة، وأعد تشغيل `tests/theme.spec.ts`.
-
-- [ ] **Step 4: شغّل كل شيء**
-
-Run: `npm run typecheck && npm run lint && npm test`
-Expected: كل الاختبارات خضراء، بما فيها اختبارات مجموعة الأدوات التسعة القائمة.
-
-- [ ] **Step 5: كوميت**
-
-```bash
-git add -A
-git commit -m "test: cover no-javascript reading, heading order, focus and contrast"
-```
+- [ ] **Step 5: كوميت** — `git add -A && git commit -m "test: cover no-javascript reading, heading order, focus and labelling"`
 
 ---
 
-### المهمة ١٣: النشر على Vercel
+### المهمة ١٢: التوثيق والنشر على Vercel
 
-**Files:**
-- Create: `README.md` — يُعاد كتابة قسمَي النشر والتشغيل
-- Modify: `package.json` — إن لزم سكربت
+**Files:** Modify `README.md`
 
-**Interfaces:**
-- Consumes: كل ما سبق.
-- Produces: موقع منشور، ومتغيرات بيئة موثّقة.
+- [ ] **Step 1: تحقق أن بناء الإنتاج ينجح** — `npm run build`
 
-- [ ] **Step 1: تحقق أن بناء الإنتاج ينجح محلياً**
+- [ ] **Step 2: أعد كتابة `README.md`** — بورتفوليو شخصي؛ المختبر ومحتوياته الأربعة؛ التشغيل المحلي؛ متغيرات البيئة من `.env.example`؛ كيفية إضافة عمل إلى `src/lab/registry.ts`. احذف كل ذكر لـ GitHub Pages وللقيود الثابتة.
 
-Run: `npm run build`
-Expected: PASS، وبلا أي تحذير عن مسار يحاول التصدير الثابت.
+- [ ] **Step 3: اربط المشروع بـ Vercel** — استيراد المستودع، كشف تلقائي لـ Next.js، فرع الإنتاج `main`، ثم اضبط متغيرات `.env.example` للإنتاج والمعاينة. اترك مفاتيح التواصل فارغة حتى تتوفر: المسار يعيد 503 والواجهة تعرض «غير مفعّل»، وهو السلوك الصحيح.
 
-- [ ] **Step 2: اربط المشروع بـ Vercel**
-
-من لوحة Vercel: استورد المستودع، واترك الكشف التلقائي لـ Next.js دون تغيير، واضبط الفرع `main` كفرع إنتاج.
-
-- [ ] **Step 3: اضبط متغيرات البيئة**
-
-أضف في إعدادات المشروع على Vercel، لبيئتي الإنتاج والمعاينة، كل مفتاح مذكور في `.env.example`. اترك مفاتيح التواصل فارغة حتى تتوفر — المسار يعيد `503` والواجهة تعرض `errorDisabled`، وهو سلوك صحيح لا خطأ.
-
-- [ ] **Step 4: اضبط `NEXT_PUBLIC_SITE_URL`**
-
-بعد أول نشر ناجح، ضع نطاق الإنتاج الفعلي بلا شرطة أخيرة، ثم أعد النشر حتى تظهر وسوم `canonical` و `hreflang`.
+- [ ] **Step 4: بعد أول نشر** — ضع `NEXT_PUBLIC_SITE_URL` بالنطاق الفعلي بلا شرطة أخيرة وأعد النشر حتى تظهر `canonical` و `hreflang`.
 
 - [ ] **Step 5: شغّل الاختبارات ضد النشر**
 
 ```bash
-PORTFOLIO_TEST_URL=https://<your-vercel-domain> npx playwright test tests/routing.spec.ts tests/page.spec.ts tests/cut-studio.spec.ts tests/seo.spec.ts
+PORTFOLIO_TEST_URL=https://<domain> npx playwright test tests/routing.spec.ts tests/page.spec.ts tests/lab.spec.ts tests/seo.spec.ts
 ```
 
-Expected: PASS. أي فشل هنا يعني فرقاً بين بيئتي التطوير والإنتاج، وليس خطأ اختبار.
-
-- [ ] **Step 6: أعد كتابة README**
-
-يجب أن يصف: الموقع كبورتفوليو شخصي، Cut Studio كأحد أعمال المختبر، خطوات التشغيل المحلي، متغيرات البيئة، وكيفية إضافة عمل جديد إلى `src/lab/registry.ts`. احذف كل ذكر لـ GitHub Pages وللقيود الثابتة.
-
-- [ ] **Step 7: كوميت**
-
-```bash
-git add README.md package.json
-git commit -m "docs: document the Vercel deployment and how to add a lab work"
-```
+- [ ] **Step 6: كوميت** — `git add -A && git commit -m "docs: document the Vercel deployment and how to add a lab work"`
 
 ---
 
@@ -2557,21 +1242,21 @@ git commit -m "docs: document the Vercel deployment and how to add a lab work"
 
 | قسم المواصفة | المهمة |
 |---|---|
-| ١ الهدف ومعايير النجاح | ٧، ١٠، ١٢ |
-| ٣ القرارات (Vercel، اللغتان، Canvas) | ١، ٢، ٣، ٩، ١٣ |
+| ١٦ المجالات الخمسة | ٤، ٧ |
+| ١٦ المختبر بأعماله الأربعة | ٤، ٧، ٨ |
+| ١٦ مشهد البطل من محطات المصنع | ٦ |
+| ١٦ ما يبقى وما يُحذف | ١، ٨ |
+| ٣ القرارات (Vercel، اللغتان، Canvas) | ١، ٢، ٦، ١٢ |
 | ٤ الحزمة وإسقاط `three` | ١ |
-| ٥ البنية والحذف والإبقاء | ١، ٣، ٧ |
-| ٦ هيكل المحتوى ونقلة Cut Studio | ٥، ٧، ١٠ |
-| ٧ المختبر — Cut Studio | ٦، ١٠ |
-| ٧ المختبر — العروض الثلاثة الأخرى | خارج النطاق؛ خطط مستقلة، ونقطة تمديدها المهمة ٦ |
-| ٨ الأمان — تحديد المعدل والتحقق | ٨ |
-| ٩ اللغة البصرية | ٤، ٧، ٩ |
-| ١٠ الأداء وإمكانية الوصول | ١٢ |
-| ١١ معالجة الأخطاء | ٨ |
-| ١٢ الاختبار | كل مهمة، وتُجمع في ١٢ |
-| ١٣ ترتيب التسليم | ترتيب المهام هنا |
-| ١٤ المدخلات المطلوبة | ١ و ١٣ عبر `.env.example` |
+| ٨ الأمان، محصوراً في التواصل | ٩ |
+| ٩ اللغة البصرية | ٣، ٥، ٦، ٧ |
+| ١٠ الأداء وإمكانية الوصول | ١١ |
+| ١١ معالجة الأخطاء | ٩ |
+| ١٢ الاختبار | كل مهمة، وتُجمع في ١١ |
+| ١٤ المدخلات المطلوبة | ١ و ١٢ عبر `.env.example` |
 
-**فجوة مقصودة:** المواصفة تذكر في القسم ٨ خدمة إرسال بريد فعلية، وقرارها مؤجّل في القسم ١٥. المهمة ٨ هنا تبني كل شيء عداها وتفشل بـ `503` معلنة، فلا يدّعي الموقع نجاحاً لم يحدث. وصل الخدمة تغيير من خطوة واحدة داخل `src/app/api/contact/route.ts` عند حسم القرار.
+**فجوة مقصودة:** خدمة إرسال البريد مؤجّلة بقرار المواصفة (القسم ١٥). المهمة ٩ تبني كل شيء عداها وتفشل بـ 503 معلنة. وصل الخدمة تغيير من خطوة واحدة في `src/app/api/contact/route.ts`.
 
-**تناسق الأسماء:** `Locale`, `getDictionary`, `Dictionary`, `profile`, `labWorks`, `getLabWork`, `LabWork`, `LabStatus`, `rateLimit`, `resetRateLimit`, `RateLimitResult`, `clientIp`, `validateContact`, `ContactInput`, `ValidationResult`, `createScene`, `stepScene`, `Scene`, `SceneNode`, `SceneEdge`, `Pulse`, `HeroScene` — كلها مستخدمة بنفس التهجئة في كل مهمة تعتمد عليها.
+**خارج النطاق:** لوحة SaaS مسجَّلة بحالة `building` وصفحتها 404. تُبنى بخطة مستقلة تقلب حالتها وتضيف عرضها في المهمة ٨.
+
+**تناسق الأسماء:** `Locale`, `locales`, `defaultLocale`, `isLocale`, `pickLocale`, `oppositeLocale`, `copy`, `profile`, `projects`, `labWorks`, `getLabWork`, `LabWork`, `LabStatus`, `rateLimit`, `resetRateLimit`, `RateLimitResult`, `clientIp`, `validateContact`, `ContactInput`, `ValidationResult`, `createScene`, `stepScene`, `Scene`, `SceneNode`, `SceneEdge`, `Pulse`, `HeroScene`, `Hero`, `Fields`, `LabSection`, `Process`, `About`, `Contact`, `Section`, `Nav`, `Footer` — مستخدمة بنفس التهجئة في كل مهمة تعتمد عليها.
