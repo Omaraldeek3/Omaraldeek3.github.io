@@ -76,3 +76,130 @@ a { color: var(--live); }
     transition-duration: 0.001ms !important;
   }
 }
+
+/* ——— Shell ——— */
+
+.skip-link {
+  position: absolute;
+  inset-inline-start: -9999px;
+  inset-block-start: 0;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  inset-inline-start: 0;
+  background: var(--surface-2);
+  color: var(--text-primary);
+  padding: 0.75rem 1.25rem;
+}
+
+.site-nav {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 20;
+  background: color-mix(in srgb, var(--surface-0) 86%, transparent);
+  border-block-end: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+}
+
+.site-nav-inner {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 2vw, 1.75rem);
+  block-size: 4rem;
+}
+
+.site-nav a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.site-nav a:hover { color: var(--text-primary); }
+
+.wordmark {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-inline-end: auto;
+  color: var(--text-primary) !important;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.wordmark-dot {
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  border-radius: 50%;
+  background: var(--live);
+}
+
+.nav-links {
+  display: flex;
+  gap: clamp(0.65rem, 1.8vw, 1.5rem);
+}
+
+@media (max-width: 30rem) {
+  .nav-links { display: none; }
+}
+
+.locale-switch {
+  color: var(--live) !important;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+}
+
+.section {
+  padding-block: clamp(4rem, 10vw, 8rem);
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  color: var(--live);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.section-label::before {
+  content: "";
+  inline-size: 2rem;
+  block-size: 1px;
+  background: var(--live);
+}
+
+.section-title {
+  margin: 0.75rem 0 2rem;
+  font-size: clamp(1.9rem, 5.5vw, 3.4rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  max-inline-size: 20ch;
+  white-space: pre-line;
+}
+
+.site-footer {
+  border-block-start: 1px solid var(--border);
+  padding-block: 2.5rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.site-footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  align-items: baseline;
+}
+
+.site-footer-note { margin-inline-start: auto; }
+
+@media (max-width: 40rem) {
+  .site-footer-note { margin-inline-start: 0; }
+}

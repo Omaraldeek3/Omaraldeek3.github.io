@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import localFont from "next/font/local";
 import { copy, profile } from "@/content/site";
 import { isLocale, locales } from "@/content/locales";
+import { Nav } from "@/ui/nav";
+import { Footer } from "@/ui/footer";
 import "../globals.css";
 
 // Both faces are served from node_modules, so a visit makes no font request
@@ -70,7 +72,11 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
       dir={locale === "ar" ? "rtl" : "ltr"}
       className={`${arabic.variable} ${latin.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        <Nav locale={locale} />
+        {children}
+        <Footer locale={locale} />
+      </body>
     </html>
   );
 }
