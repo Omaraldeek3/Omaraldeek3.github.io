@@ -13,6 +13,8 @@ export function proxy(request: NextRequest) {
   return NextResponse.redirect(url);
 }
 
+// `tools` is excluded because Cut Studio is a locale-less app with its own
+// shell; its interface language comes from the ?lang query, not the path.
 export const config = {
-  matcher: ["/((?!_next|api|favicon.ico|icon.svg|images|sitemap.xml|robots.txt).*)"],
+  matcher: ["/((?!_next|api|tools|favicon.ico|icon.svg|images|sitemap.xml|robots.txt).*)"],
 };

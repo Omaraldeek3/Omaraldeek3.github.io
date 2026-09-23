@@ -6,9 +6,14 @@ test("no static export branch remains", () => {
   expect(config).not.toHaveProperty("trailingSlash");
 });
 
-test("the old tools path redirects into the lab", async () => {
+test("a bare cut-studio path lands on the lab page", async () => {
   const redirects = await config.redirects!();
-  const tools = redirects.find(r => r.source === "/tools");
-  expect(tools?.destination).toBe("/ar/lab/cut-studio");
-  expect(tools?.permanent).toBe(true);
+  const entry = redirects.find(r => r.source === "/cut-studio");
+  expect(entry?.destination).toBe("/ar/lab/cut-studio");
+  expect(entry?.permanent).toBe(true);
+});
+
+test("the toolkit keeps its own published path", async () => {
+  const redirects = await config.redirects!();
+  expect(redirects.some(r => r.source === "/tools")).toBe(false);
 });
