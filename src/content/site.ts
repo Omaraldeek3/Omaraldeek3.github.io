@@ -108,7 +108,7 @@ export const copy = {
     fields: [
       { slug: "cut-studio", title: "برمجة المواقع", text: "مواقع وتطبيقات ويب بـ Next.js و React و TypeScript: سريعة، ثنائية اللغة، وتعمل على الهاتف أولاً." },
       { slug: "design-studies", title: "التصميم", text: "تصميم بصري وواجهات، وتصميم للتصنيع والقص بالليزر: من الفيكتور النظيف إلى قطعة تُركّب." },
-      { slug: "ai-automation", title: "أنظمة الأتمتة", text: "أنظمة تربط الأدوات ببعضها وتعمل على جدول، وتُكمل العمل دون أن أقف فوقها." },
+      { slug: "ai-automation", title: "أنظمة الأتمتة بالذكاء الاصطناعي", text: "أنظمة تربط النماذج اللغوية والأدوات ببعضها وتعمل على جدول، وتُكمل العمل دون أن أقف فوقها." },
       { slug: "ai-automation", title: "تكاملات API", text: "ربط الخدمات ببعضها: مفاتيح آمنة، ومسار بديل عند التعثّر، وفشل معلن لا صامت." },
       { slug: "saas-panel", title: "منتجات SaaS", text: "لوحات تحكم ومنتجات بحالة حقيقية: بيانات تُقرأ وتُكتب وتبقى." },
     ],
@@ -225,7 +225,7 @@ export const copy = {
     fields: [
       { slug: "cut-studio", title: "Web development", text: "Web apps and sites in Next.js, React and TypeScript: fast, bilingual, and built for the phone first." },
       { slug: "design-studies", title: "Design", text: "Visual and interface design, and design for fabrication and laser cutting: from clean vectors to parts that fit together." },
-      { slug: "ai-automation", title: "Automation systems", text: "Systems that connect tools, run on a schedule, and carry the work on without me standing over them." },
+      { slug: "ai-automation", title: "AI automation systems", text: "Systems that connect language models and tools, run on a schedule, and carry the work on without me standing over them." },
       { slug: "ai-automation", title: "API integrations", text: "Wiring services together: keys kept safe, a fallback path when one stumbles, and failure that announces itself." },
       { slug: "saas-panel", title: "SaaS products", text: "Dashboards and products with real state: data that is read, written, and stays." },
     ],

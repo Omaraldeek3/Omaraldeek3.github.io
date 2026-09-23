@@ -37,8 +37,8 @@
 
 @media (max-width: 52rem) {
   .sp-side { border-inline-end: 0; border-block-end: 1px solid var(--border); }
-  .sp-side nav { display: flex; overflow-x: auto; gap: 0.3rem; padding-block-end: 0.3rem; }
-  .sp-side .sp-nav-item { flex: 0 0 auto; }
+  .sp-side nav { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+  .sp-side .sp-nav-item { flex: 1 1 auto; inline-size: auto; padding: 0.45rem 0.6rem; font-size: 0.84rem; }
 }
 
 .sp-brand {
