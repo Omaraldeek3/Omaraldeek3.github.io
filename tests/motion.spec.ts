@@ -1,8 +1,16 @@
 import { test, expect } from "@playwright/test";
 
-test("the hero renders a canvas marked decorative", async ({ page }) => {
+const FACTORY = "/ar/lab/shorts-factory";
+
+test("the hero carries type only, with nothing drawn behind it", async ({ page }) => {
   await page.goto("/ar");
-  const canvas = page.locator("canvas.hero-scene");
+  await expect(page.locator("h1")).toBeVisible();
+  await expect(page.locator(".hero canvas")).toHaveCount(0);
+});
+
+test("the factory renders a canvas marked decorative", async ({ page }) => {
+  await page.goto(FACTORY);
+  const canvas = page.locator("canvas.system-scene");
   await expect(canvas).toBeVisible();
   await expect(canvas).toHaveAttribute("aria-hidden", "true");
 });
@@ -21,7 +29,7 @@ async function countScenePaints(page: import("@playwright/test").Page, path: str
     };
   });
   await page.goto(path);
-  await expect(page.locator("canvas.hero-scene")).toBeVisible();
+  await expect(page.locator("canvas.system-scene")).toBeVisible();
   await page.waitForTimeout(600);
   const first = await page.evaluate(() => (window as unknown as { __scenePaints: number }).__scenePaints);
   await page.waitForTimeout(600);
@@ -31,13 +39,13 @@ async function countScenePaints(page: import("@playwright/test").Page, path: str
 
 test("reduced motion starts no animation loop", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
-  expect(await countScenePaints(page, "/ar")).toBe(0);
+  expect(await countScenePaints(page, FACTORY)).toBe(0);
 });
 
 test("reduced motion still leaves the station labels drawn", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/ar");
-  const canvas = page.locator("canvas.hero-scene");
+  await page.goto(FACTORY);
+  const canvas = page.locator("canvas.system-scene");
   await expect(canvas).toBeVisible();
   await expect
     .poll(() => canvas.evaluate((element: HTMLCanvasElement) => element.width))
@@ -56,14 +64,13 @@ test("reduced motion still leaves the station labels drawn", async ({ page }) =>
 
 test("without reduced motion the scene animates", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
-  expect(await countScenePaints(page, "/ar")).toBeGreaterThan(0);
+  expect(await countScenePaints(page, FACTORY)).toBeGreaterThan(0);
 });
 
-test("the headline stays readable over the scene", async ({ page }) => {
-  await page.goto("/ar");
-  await expect(page.locator("h1")).toBeVisible();
-  const box = await page.locator("h1").boundingBox();
-  expect(box!.width).toBeGreaterThan(0);
+test("the scene draws one node per station listed beneath it", async ({ page }) => {
+  await page.goto(FACTORY);
+  await expect(page.locator(".station")).toHaveCount(6);
+  await expect(page.locator("canvas.system-scene")).toBeVisible();
 });
 
 test("the scene does not throw on any viewport", async ({ page }) => {
@@ -71,7 +78,7 @@ test("the scene does not throw on any viewport", async ({ page }) => {
   page.on("pageerror", e => errors.push(e.message));
   for (const width of [360, 768, 1440]) {
     await page.setViewportSize({ width, height: 800 });
-    await page.goto("/ar");
+    await page.goto(FACTORY);
     await page.waitForTimeout(300);
   }
   expect(errors).toEqual([]);

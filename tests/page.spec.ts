@@ -57,3 +57,13 @@ test("every field card links into the lab", async ({ page }) => {
     cards.map(card => card.getAttribute("href")));
   for (const href of hrefs) expect(href).toMatch(/^\/ar\/lab\/[a-z0-9-]+$/);
 });
+
+// The first redesign shipped a mid-sized headline that read as timid. The
+// headline is the whole hero now, so its size is worth holding to.
+test("the headline is set at display size on a desktop viewport", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/ar");
+  const size = await page.locator("h1").evaluate(el =>
+    parseFloat(getComputedStyle(el).fontSize));
+  expect(size).toBeGreaterThanOrEqual(80);
+});

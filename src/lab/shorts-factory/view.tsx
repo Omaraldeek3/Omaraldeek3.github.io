@@ -1,4 +1,5 @@
 import { copy, profile } from "@/content/site";
+import { SystemScene } from "@/ui/system-scene";
 import type { Locale } from "@/content/locales";
 
 /** A real system, documented from its own stations. Nothing here is a mock-up:
@@ -17,6 +18,7 @@ export function ShortsFactoryView({ locale }: { locale: Locale }) {
   const channel = validUrl(profile.links.youtube);
   return (
     <div className="factory-view">
+      <SystemScene labels={t.stations.map(station => station.code)} rtl={locale === "ar"} />
       <ol className="station-list">
         {t.stations.map((station, index) => (
           <li className="station" key={station.code}>

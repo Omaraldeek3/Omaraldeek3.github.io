@@ -57,16 +57,16 @@ function draw(
   context.textAlign = "center";
   for (const node of scene.nodes) {
     const point = at(node.id);
+    // A filled square, matching the register mark the rest of the paper uses.
     context.fillStyle = live;
-    context.beginPath();
-    context.arc(point.x, point.y, 4.5, 0, Math.PI * 2);
-    context.fill();
+    context.fillRect(point.x - 3.5, point.y - 3.5, 7, 7);
     context.fillStyle = muted;
     context.fillText(node.label, point.x, point.y - 14);
   }
 }
 
-export function HeroScene({ labels, rtl }: { labels: string[]; rtl: boolean }) {
+/** The real production line, drawn from the station codes it is handed. */
+export function SystemScene({ labels, rtl }: { labels: string[]; rtl: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -120,5 +120,5 @@ export function HeroScene({ labels, rtl }: { labels: string[]; rtl: boolean }) {
     };
   }, [labels, rtl]);
 
-  return <canvas ref={canvasRef} className="hero-scene" aria-hidden="true" />;
+  return <canvas ref={canvasRef} className="system-scene" aria-hidden="true" />;
 }
