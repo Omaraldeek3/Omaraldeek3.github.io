@@ -60,6 +60,9 @@ test("an empty submission shows a message, never a false success", async ({ page
   await page.locator("#contact button[type='submit']").click();
   const alert = page.locator("#contact [role='alert']");
   await expect(alert).toBeVisible();
+  // Against a deployed server the request is in flight for a while, so wait
+  // for the settled state rather than reading the "sending" message.
+  await expect(alert).toHaveAttribute("data-status", "error");
   // Which refusal it is depends on whether this run already tripped the rate
   // limit. What must never happen is a success message for an empty form.
   const form = copy.ar.contactForm;

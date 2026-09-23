@@ -79,7 +79,15 @@ export function Contact({ locale }: { locale: Locale }) {
           {status === "sending" ? form.sending : form.submit}
         </button>
         {message && (
-          <p role="alert" className={status === "sent" ? "contact-ok" : "contact-problem"}>
+          <p
+            role="alert"
+            data-status={status}
+            className={
+              status === "sent" ? "contact-ok"
+              : status === "sending" ? "contact-working"
+              : "contact-problem"
+            }
+          >
             {message}
           </p>
         )}

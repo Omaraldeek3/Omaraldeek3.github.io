@@ -489,6 +489,8 @@ a { color: var(--live); }
 
 .contact-ok { color: var(--live); margin: 0; }
 .contact-problem { color: var(--warn); margin: 0; }
+/* In flight is neither success nor failure, so it stays neutral. */
+.contact-working { color: var(--text-secondary); margin: 0; }
 
 .contact-faq { margin-block-start: 3rem; max-inline-size: 60ch; }
 
