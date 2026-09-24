@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const groups = {
-  ort: ['onnxruntime-web/dist', ['ort.webgpu.bundle.min.mjs', 'ort-wasm-simd-threaded.asyncify.wasm', 'ort-wasm-simd-threaded.jsep.wasm']],
+  ort: ['onnxruntime-web/dist', ['ort.webgpu.bundle.min.mjs', 'ort-wasm-simd-threaded.asyncify.mjs', 'ort-wasm-simd-threaded.asyncify.wasm', 'ort-wasm-simd-threaded.jsep.mjs', 'ort-wasm-simd-threaded.jsep.wasm']],
   harfbuzz: ['harfbuzzjs/dist', ['index.mjs', 'harfbuzz.js', 'harfbuzz.wasm']],
 };
 
