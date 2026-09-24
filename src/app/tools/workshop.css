@@ -1,0 +1,60 @@
+/* Styles for the workshop tools added to Cut Studio: the vectorizer, the
+   upscaler, poster tiling, contours and Arabic lettering. They follow the
+   workbench's own palette: sage paper, olive ink, one warm accent. */
+
+/* ——— Shared pieces ——— */
+
+.vz-tabs { display: inline-flex; gap: 3px; padding: 3px; border: 1px solid #dfe4d5; border-radius: 6px; background: #fcfdf7; }
+.vz-tabs button { border: 0; background: none; border-radius: 4px; padding: 5px 10px; font-size: 10px; color: #7d8872; }
+.vz-tabs button.selected { background: #dce6c0; color: #40572f; font-weight: 650; }
+.canvas-toolbar { flex-wrap: wrap; }
+
+.ws-choice { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 6px; margin-bottom: 12px; }
+.ws-choice button, .vz-modes button {
+  display: flex; flex-direction: column; gap: 2px; text-align: start; border: 1px solid #e1e6d7; border-radius: 6px;
+  background: #fbfcf6; padding: 9px 10px; color: #6f7d63; font-size: 10px; line-height: 1.4;
+}
+.ws-choice button b, .vz-modes button b { font-size: 12px; color: #3d5130; }
+.ws-choice button.selected, .vz-modes button.selected { border-color: #9fb385; background: #eef3df; box-shadow: inset 0 0 0 1px #9fb385; }
+.vz-modes { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 12px; }
+
+.ws-progress { height: 6px; border-radius: 99px; background: #e6eadb; overflow: hidden; margin: 10px 0 6px; }
+.ws-progress > span { display: block; height: 100%; background: linear-gradient(90deg, #7f9a5d, #b9c98f); transition: width .25s; }
+.ws-note { font-size: 10px; color: #6f7d63; background: #f1f5e6; border: 1px solid #dfe7cc; border-radius: 5px; padding: 9px 11px; line-height: 1.7; margin: 10px 0; }
+html[dir=rtl] .ws-note { font-size: 12px; }
+.ws-card { background: #fffefa; border: 1px solid #dce0d5; border-radius: 7px; padding: 16px 18px; margin-top: 15px; }
+.ws-card h3 { margin: 0 0 10px; font-size: 12px; color: #455a37; }
+.ws-grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; }
+@media (max-width: 900px) { .ws-grid-2 { grid-template-columns: minmax(0, 1fr); } }
+
+/* ——— Vectorizer ——— */
+
+/* The stage is a size container, so the frame can fit it at 1× and grow past
+   it at 2× and 4×, when the stage scrolls. */
+.vz-stage {
+  position: relative; min-height: 320px; height: clamp(340px, 36vw, 560px); overflow: auto; padding: 24px;
+  display: grid; place-content: safe center; container-type: size;
+  background-image: radial-gradient(#abb69966 .7px, transparent .7px); background-size: 13px 13px;
+}
+.vz-frame { position: relative; width: calc(var(--zoom, 1) * min(100cqw, 100cqh * var(--ratio, 1))); aspect-ratio: var(--ratio, 1); box-shadow: 0 8px 23px #24321d12; border: 1px solid #d8dbcc; background: #fff;
+  background-image: linear-gradient(45deg, #eef0e8 25%, transparent 25%), linear-gradient(-45deg, #eef0e8 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #eef0e8 75%), linear-gradient(-45deg, transparent 75%, #eef0e8 75%);
+  background-size: 16px 16px; background-position: 0 0, 0 8px, 8px -8px, -8px 0; }
+.vz-original, .vz-vector, .vz-art { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.vz-original { image-rendering: auto; }
+.vz-vector { overflow: hidden; }
+.vz-divider { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: #bb693d; box-shadow: 0 0 0 1px #fff; pointer-events: none; }
+.vz-split { padding: 6px 13px; background: #f8faf0; border-top: 1px solid #dfe4d5; }
+.vz-split input { width: 100%; accent-color: #bb693d; }
+.vz-stage.is-busy .vz-frame { opacity: .72; transition: opacity .2s; }
+
+.vz-palette { margin-top: 15px; background: #fffefa; border: 1px solid #dce0d5; border-radius: 7px; padding: 12px 14px; }
+.vz-palette-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; margin-bottom: 9px; }
+.vz-palette-head strong { font-size: 11px; color: #455a37; }
+.vz-palette-head .micro { margin: 0; }
+.vz-palette-head .text-button { padding: 0; margin-inline-start: auto; }
+.vz-swatches { display: flex; flex-wrap: wrap; gap: 6px; }
+.vz-swatch { display: inline-flex; align-items: center; gap: 6px; border: 1px solid #e1e6d7; border-radius: 99px; background: #fbfcf6; padding: 3px 9px 3px 4px; font-size: 9px; color: #5d6b52; }
+.vz-swatch i { width: 18px; height: 18px; border-radius: 50%; border: 1px solid #0002; }
+.vz-swatch small { color: #9aa48e; }
+.vz-swatch[aria-pressed=false] { opacity: .45; text-decoration: line-through; }
+.vz-swatch[aria-pressed=false] i { background-image: linear-gradient(135deg, transparent 45%, #b04a3a 45% 55%, transparent 55%) !important; }

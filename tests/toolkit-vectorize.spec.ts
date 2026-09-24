@@ -1,0 +1,166 @@
+import { test, expect } from "@playwright/test";
+import {
+  defaultVectorize, despeckle, fitLoop, flatten, isolines, otsu, pathData, polygonArea, traceMask, vectorize,
+  type VectorizeOptions,
+} from "../src/toolkit/vectorize";
+import { colorPdf, colorSvg, outlineSvg, resultToDrawing } from "../src/toolkit/vector-export";
+import type { Raster } from "../src/toolkit/image";
+
+/** An RGBA raster painted by a function of (x, y). */
+function paint(width: number, height: number, colour: (x: number, y: number) => [number, number, number, number?]): Raster {
+  const data = new Uint8ClampedArray(width * height * 4);
+  for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
+    const [r, g, b, a = 255] = colour(x, y);
+    data.set([r, g, b, a], (y * width + x) * 4);
+  }
+  return { width, height, data };
+}
+
+const options = (extra: Partial<VectorizeOptions> = {}): VectorizeOptions => ({ ...defaultVectorize, denoise: false, ...extra });
+
+test("an iso-line around a filled square encloses the square's area", () => {
+  const w = 20, h = 20, field = new Float32Array(w * h);
+  for (let y = 5; y < 15; y++) for (let x = 5; x < 15; x++) field[y * w + x] = 1;
+  const loops = isolines(field, w, h, 0.5);
+  expect(loops).toHaveLength(1);
+  // Cut at half height between pixel centres, the square keeps its full area
+  // but loses its corners by half a pixel's triangle each.
+  expect(Math.abs(polygonArea(loops[0]))).toBeGreaterThan(98);
+  expect(Math.abs(polygonArea(loops[0]))).toBeLessThanOrEqual(100);
+});
+
+test("a hole comes out as its own loop", () => {
+  const w = 30, h = 30, mask = new Uint8Array(w * h);
+  for (let y = 3; y < 27; y++) for (let x = 3; x < 27; x++) mask[y * w + x] = x < 10 || x >= 20 || y < 10 || y >= 20 ? 1 : 0;
+  expect(traceMask(mask, w, h, 2, 0.5)).toHaveLength(2);
+});
+
+test("a one-pixel line survives the softening", () => {
+  const w = 40, h = 20, mask = new Uint8Array(w * h);
+  for (let x = 4; x < 36; x++) mask[10 * w + x] = 1;
+  const loops = traceMask(mask, w, h, 2, 0.57);
+  expect(loops).toHaveLength(1);
+  const xs = loops[0].map(p => p.x);
+  expect(Math.max(...xs) - Math.min(...xs)).toBeGreaterThan(28);
+});
+
+test("a shape touching the image edge keeps a straight edge there", () => {
+  const w = 20, h = 20, mask = new Uint8Array(w * h).fill(1);
+  const loops = traceMask(mask, w, h, 1, 0.8);
+  expect(loops).toHaveLength(1);
+  expect(Math.abs(polygonArea(loops[0]))).toBeGreaterThan(399);
+});
+
+test("a fitted circle stays within the error and needs few curves", () => {
+  const points = Array.from({ length: 120 }, (_, i) => ({ x: 50 + 30 * Math.cos((i / 120) * Math.PI * 2), y: 50 + 30 * Math.sin((i / 120) * Math.PI * 2) }));
+  const path = fitLoop(points, 0.5, 70);
+  expect(path.curves.length).toBeLessThanOrEqual(8);
+  for (const p of flatten(path, 0.05)) expect(Math.abs(Math.hypot(p.x - 50, p.y - 50) - 30)).toBeLessThan(0.6);
+});
+
+test("a square keeps four sharp corners", () => {
+  const points: { x: number; y: number }[] = [];
+  for (let i = 0; i < 40; i++) points.push({ x: 10 + i, y: 10 });
+  for (let i = 0; i < 40; i++) points.push({ x: 50, y: 10 + i });
+  for (let i = 0; i < 40; i++) points.push({ x: 50 - i, y: 50 });
+  for (let i = 0; i < 40; i++) points.push({ x: 10, y: 50 - i });
+  const flat = flatten(fitLoop(points, 0.4, 70), 0.02);
+  for (const corner of [[10, 10], [50, 10], [50, 50], [10, 50]])
+    expect(Math.min(...flat.map(p => Math.hypot(p.x - corner[0], p.y - corner[1])))).toBeLessThan(0.5);
+});
+
+test("specks below the minimum area join their surroundings", () => {
+  const w = 10, h = 10, labels = new Uint8Array(w * h);
+  labels[44] = labels[45] = 1;
+  labels[0] = 2;
+  despeckle(labels, w, h, 3);
+  expect([...labels].every(l => l === 0)).toBe(true);
+});
+
+test("Otsu splits two clusters between them", () => {
+  const histogram = new Array(256).fill(0);
+  histogram[40] = 500;
+  histogram[210] = 500;
+  const t = otsu(histogram);
+  expect(t).toBeGreaterThan(40);
+  expect(t).toBeLessThanOrEqual(210);
+});
+
+test("colour mode finds each flat colour and stacks them without gaps", () => {
+  const image = paint(80, 60, (x, y) => (Math.hypot(x - 40, y - 30) < 18 ? [220, 40, 40] : x < 20 ? [30, 60, 200] : [250, 250, 250]));
+  const result = vectorize(image, options({ colors: 4 }));
+  const colours = result.layers.map(l => l.color);
+  expect(colours).toHaveLength(3);
+  expect(colours[0]).toBe("#fafafa");
+  // Stacked: the bottom colour is the whole picture.
+  const bottom = flatten(result.layers[0].paths[0], 0.05);
+  expect(Math.abs(polygonArea(bottom))).toBeGreaterThan(80 * 60 - 2);
+});
+
+test("cut-out mode gives every colour only its own area", () => {
+  const image = paint(80, 60, (x) => (x < 40 ? [20, 20, 20] : [240, 240, 240]));
+  const result = vectorize(image, options({ colors: 2, layering: "cutout" }));
+  for (const layer of result.layers) {
+    const area = layer.paths.reduce((sum, p) => sum + Math.abs(polygonArea(flatten(p, 0.05))), 0);
+    expect(area).toBeGreaterThan(40 * 60 - 40);
+    expect(area).toBeLessThan(40 * 60 + 40);
+  }
+});
+
+test("a hidden colour is left out and can be listed again", () => {
+  const image = paint(60, 40, (x) => (x < 30 ? [200, 30, 30] : [255, 255, 255]));
+  const all = vectorize(image, options({ colors: 2 }));
+  const white = all.palette.find(p => p.color === "#ffffff")!;
+  const without = vectorize(image, options({ colors: 2, hidden: [white.color] }));
+  expect(without.layers.map(l => l.color)).toEqual(["#c81e1e"]);
+  expect(without.palette.find(p => p.color === "#ffffff")?.hidden).toBe(true);
+});
+
+test("transparent pixels stay empty", () => {
+  const image = paint(40, 40, (x, y) => (Math.hypot(x - 20, y - 20) < 12 ? [0, 0, 0, 255] : [0, 0, 0, 0]));
+  const result = vectorize(image, options({ colors: 3 }));
+  expect(result.layers).toHaveLength(1);
+  expect(result.layers[0].color).toBe("#000000");
+});
+
+test("outline mode traces the dark shape with an automatic threshold, or the light one inverted", () => {
+  const image = paint(60, 60, (x, y) => (Math.hypot(x - 30, y - 30) < 15 ? [15, 15, 15] : [245, 245, 245]));
+  const dark = vectorize(image, options({ mode: "outline" }));
+  expect(dark.threshold).toBeGreaterThan(15);
+  expect(dark.threshold).toBeLessThan(245);
+  const area = Math.abs(polygonArea(flatten(dark.layers[0].paths[0], 0.05)));
+  expect(area).toBeGreaterThan(Math.PI * 15 * 15 * 0.9);
+  expect(area).toBeLessThan(Math.PI * 15 * 15 * 1.1);
+  const light = vectorize(image, options({ mode: "outline", invert: true }));
+  expect(light.layers[0].paths).toHaveLength(2);
+});
+
+test("exports carry the physical size and real curves", () => {
+  const image = paint(50, 25, (x, y) => (Math.hypot(x - 25, y - 12) < 9 ? [0, 120, 200] : [255, 255, 255]));
+  const result = vectorize(image, options({ colors: 2 }));
+  const svg = colorSvg(result, 200);
+  expect(svg).toContain('width="200mm"');
+  expect(svg).toContain('height="100mm"');
+  expect(svg).toMatch(/C[\d.]+ [\d.]+/);
+  expect(outlineSvg(result, 200)).toContain('fill="none"');
+  const drawing = resultToDrawing(result, 200);
+  expect(drawing.width).toBe(200);
+  expect(drawing.height).toBe(100);
+  expect(pathData(result.layers[1].paths[0])).toMatch(/^M.*Z$/);
+});
+
+test("the PDF's cross-reference table points at its objects", () => {
+  const image = paint(30, 30, (x, y) => (x + y < 30 ? [10, 10, 10] : [255, 255, 255]));
+  const pdf = colorPdf(vectorize(image, options({ colors: 2 })), 100);
+  const text = new TextDecoder("latin1").decode(pdf);
+  expect(text.startsWith("%PDF-1.4")).toBe(true);
+  const xref = Number(/startxref\n(\d+)/.exec(text)![1]);
+  expect(text.slice(xref, xref + 4)).toBe("xref");
+  const offsets = [...text.slice(xref).matchAll(/^(\d{10}) 00000 n $/gm)].map(m => Number(m[1]));
+  offsets.forEach((offset, i) => expect(text.slice(offset, offset + 12)).toMatch(new RegExp(`^${i + 1} 0 obj\\n`)));
+});
+
+test("bad input is refused plainly", () => {
+  expect(() => vectorize({ width: 0, height: 1, data: new Uint8ClampedArray() }, options())).toThrow(/dimensions/);
+  expect(() => vectorize(paint(2, 2, () => [0, 0, 0]), options({ colors: 1 }))).toThrow(/Colours/);
+});

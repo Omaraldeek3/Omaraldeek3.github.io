@@ -24,9 +24,12 @@ test('all workspaces expose working outputs and calculated values',async({page})
 });
 test('trace and engraving generate real downloads from sample pixels',async({page})=>{
   await page.goto('/tools');await page.getByRole('button',{name:'Image to vector',exact:true}).click();
-  await page.getByRole('button',{name:'Trace image',exact:true}).click();await expect(page.getByText('Vector ready',{exact:true})).toBeVisible({timeout:20000});
+  await expect(page.getByText('Vector ready',{exact:true})).toBeVisible({timeout:30000});
+  await page.getByLabel('Width').fill('100');
   const pending=page.waitForEvent('download');await page.getByRole('button',{name:'Export SVG',exact:true}).click();const file=await pending;expect(file.suggestedFilename()).toMatch(/\.svg$/);
-  const svg=await readFile((await file.path())!,'utf8');expect(svg).toContain('width="100mm"');expect(svg).toContain('<path');expect(svg).not.toContain('<image');expect(svg.match(/ Z/g)?.length).toBe(2);
+  const svg=await readFile((await file.path())!,'utf8');expect(svg).toContain('width="100mm"');expect(svg).toContain('<path');expect(svg).not.toContain('<image');expect(svg).toMatch(/C[\d.]+ [\d.]+/);
+  await page.getByRole('radio',{name:/Outline/}).click();await expect(page.getByText('Vector ready',{exact:true})).toBeVisible({timeout:30000});
+  const dxf=page.waitForEvent('download');await page.getByRole('button',{name:'DXF',exact:true}).click();expect((await dxf).suggestedFilename()).toMatch(/outline\.dxf$/);
   await page.getByRole('button',{name:'Engraving prep',exact:true}).click();await page.getByRole('button',{name:'Process image',exact:true}).click();
   await expect(page.getByRole('button',{name:'Export PNG',exact:true})).toBeEnabled();
 });

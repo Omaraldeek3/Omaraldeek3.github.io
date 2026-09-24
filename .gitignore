@@ -9,3 +9,4 @@ playwright-report/
 .design-backups/
 .tools/
 .claude/
+public/vendor/

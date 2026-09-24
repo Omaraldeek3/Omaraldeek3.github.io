@@ -15,6 +15,7 @@ export function proxy(request: NextRequest) {
 
 // `tools` is excluded because Cut Studio is a locale-less app with its own
 // shell; its interface language comes from the ?lang query, not the path.
+// `vendor` and `models` are the runtimes and AI models it loads as files.
 export const config = {
-  matcher: ["/((?!_next|api|tools|favicon.ico|icon.svg|images|sitemap.xml|robots.txt).*)"],
+  matcher: ["/((?!_next|api|tools|vendor|models|favicon.ico|icon.svg|images|sitemap.xml|robots.txt).*)"],
 };
