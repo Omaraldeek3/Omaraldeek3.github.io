@@ -88,3 +88,7 @@ html[dir=rtl] .up-compare figcaption { font-size: 12px; }
 .tl-list li small { color: #8a9281; font-size: 9px; }
 .tl-list .button { min-height: 30px; padding: 5px 10px; }
 @media (max-width: 680px) { .tl-list li { grid-template-columns: 26px 1fr auto; } .tl-list li small { grid-column: 2; } }
+
+/* ——— Contour ——— */
+
+.ct-sticker { display: block; max-width: 100%; max-height: 480px; width: auto; height: 420px; background: #fff; border: 1px solid #d8dbcc; box-shadow: 0 8px 23px #24321d12; }
