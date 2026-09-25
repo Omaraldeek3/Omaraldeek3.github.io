@@ -37,7 +37,7 @@ export const copy = {
     heroEyebrow: "مبرمج · مصمّم · باني أنظمة أتمتة",
     heroBadge: "استوديو شخص واحد · من فلسطين إلى كل مكان",
     heroChips: [
-      { mark: "١٨", text: "أداة مجانية في متصفحك" },
+      { mark: "٢٣", text: "أداة مجانية في متصفحك" },
       { mark: "◆", text: "مصنع يعمل كل يوم" },
       { mark: "↗", text: "قناتان: عربية وإنجليزية" },
       { mark: "✦", text: "بلا حساب ولا رفع ملفات" },
@@ -47,7 +47,7 @@ export const copy = {
     heroRotatorLead: "أبني",
     heroRotator: ["مواقع وتطبيقات ويب", "أنظمة أتمتة بالذكاء الاصطناعي", "هويات بصرية", "أدوات ليزر مجانية", "منتجات SaaS"],
     stats: [
-      { value: "١٨", label: "أداة مجانية في المتصفح" },
+      { value: "٢٣", label: "أداة مجانية في المتصفح" },
       { value: "٩", label: "أنظمة أتمتة تعمل معاً" },
       { value: "٢", label: "قناتان تنشران كل يوم" },
       { value: "٢٠", label: "دراسة تصميم كاملة" },
@@ -154,7 +154,7 @@ export const copy = {
     heroEyebrow: "Developer · Designer · Automation builder",
     heroBadge: "A one-person studio · from Palestine, everywhere",
     heroChips: [
-      { mark: "18", text: "free tools in your browser" },
+      { mark: "23", text: "free tools in your browser" },
       { mark: "◆", text: "a factory that runs every day" },
       { mark: "↗", text: "two channels: Arabic and English" },
       { mark: "✦", text: "no account, no uploads" },
@@ -164,7 +164,7 @@ export const copy = {
     heroRotatorLead: "I build",
     heroRotator: ["web apps and sites", "AI automation systems", "visual identities", "free laser tools", "SaaS products"],
     stats: [
-      { value: "18", label: "free tools in the browser" },
+      { value: "23", label: "free tools in the browser" },
       { value: "9", label: "automation systems working together" },
       { value: "2", label: "channels publishing daily" },
       { value: "20", label: "complete design studies" },

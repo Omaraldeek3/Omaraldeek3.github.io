@@ -109,7 +109,7 @@ test("every fact on a chip is also stated in a section below", async ({ page }) 
   // The chips vanish on narrow viewports, so nothing may live only on them.
   const numbers = await page.locator(".hero-chip b").allTextContents();
   const stats = await page.locator(".stat b").allTextContents();
-  for (const value of ["١٨"]) {
+  for (const value of ["٢٣"]) {
     expect(numbers, "chip numbers").toContain(value);
     expect(stats, "stat strip").toContain(value);
   }
