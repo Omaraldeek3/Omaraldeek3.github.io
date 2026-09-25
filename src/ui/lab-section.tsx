@@ -14,8 +14,8 @@ export function LabSection({ locale }: { locale: Locale }) {
           <article key={work.slug} className="lab-card glow-card" data-slug={work.slug} data-status={work.status}>
             <div className="lab-shot" data-tilt>
               <p className="lab-status">{work.status === "live" ? t.labLive : t.labSoon}</p>
-              <span className="lab-kind" dir="ltr">
-                {work.kind}
+              <span className="lab-kind">
+                <bdi dir="ltr">{work.kind}</bdi>
               </span>
               <span className="lab-glyph" aria-hidden="true">
                 <LabArt slug={work.slug} />

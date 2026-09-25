@@ -81,7 +81,7 @@ export function Overview({ locale, open }: { locale: Locale; open: (app: AppId) 
           <div className="sp-chart" role="img" aria-label={months.map(month => `${month.label}: ${f.money(month.sum)}`).join("، ")}>
             {months.map(month => (
               <div className="sp-chart-col" key={month.key}>
-                <span className="sp-chart-value">{month.sum ? f.money(month.sum) : "—"}</span>
+                <span className="sp-chart-value">{month.sum ? f.compact(month.sum) : "—"}</span>
                 <span className="sp-chart-bar" style={{ blockSize: `${Math.max(2, (month.sum / peak) * 100)}%` }} />
                 <span className="sp-chart-label">{month.label}</span>
               </div>

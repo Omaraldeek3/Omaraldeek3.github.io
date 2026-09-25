@@ -60,7 +60,9 @@ test('a physical SVG uploads, nests and reexports at the requested scale',async(
 test('all mobile Arabic workspaces fit the viewport',async({page})=>{
   await page.setViewportSize({width:390,height:844});await page.goto('/tools');await page.getByRole('button',{name:'العربية',exact:true}).click();
   for(const name of ['تحويل صورة إلى فيكتور','تنظيف الفيكتور','المقاس والتكرار','تكلفة الخامة','اختبار التعشيق','تجهيز صور الحفر','صانع الصناديق']){
-    await page.getByRole('button',{name,exact:true}).click();await expect(page.getByRole('heading',{name,exact:true})).toBeVisible();
+    // On a phone the tools are chosen from one list rather than the strip.
+    const value=await page.locator('.tool-picker option').filter({hasText:name}).first().getAttribute('value');
+    await page.getByLabel('الأداة').selectOption(value!);await expect(page.getByRole('heading',{name,exact:true})).toBeVisible();
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),name).toBe(true);
   }
 });

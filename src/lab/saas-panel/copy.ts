@@ -107,6 +107,7 @@ export function formatters(locale: Locale) {
   const tag = locale === "ar" ? "ar-EG" : "en-US";
   const money = new Intl.NumberFormat(tag, { style: "currency", currency: "USD", maximumFractionDigits: 0 });
   const number = new Intl.NumberFormat(tag);
+  const compact = new Intl.NumberFormat(tag, { notation: "compact", maximumFractionDigits: 1 });
   const short = new Intl.DateTimeFormat(tag, { day: "numeric", month: "short" });
   const weekday = new Intl.DateTimeFormat(tag, { weekday: "short", day: "numeric" });
   const month = new Intl.DateTimeFormat(tag, { month: "short" });
@@ -119,7 +120,11 @@ export function formatters(locale: Locale) {
     return new Intl.DateTimeFormat(tag, { hour: "numeric", minute: "2-digit" }).format(date);
   };
   return {
-    money: (value: number) => money.format(value),
+    // In Arabic the amount is isolated as a left-to-right run, or the Latin
+    // "US$" and the digits trade places around it and read as "$US".
+    money: (value: number) => (locale === "ar" ? `⁦${money.format(value)}⁩` : money.format(value)),
+    /** Short amounts for tight places such as chart columns: 10.4K, ١٠٫٤ ألف. */
+    compact: (value: number) => compact.format(value),
     number: (value: number) => number.format(value),
     day: (day: string) => short.format(toDate(day)),
     weekday: (day: string) => weekday.format(toDate(day)),

@@ -195,8 +195,86 @@ a { color: var(--live); }
   gap: clamp(0.7rem, 1.8vw, 1.3rem);
 }
 
+/* On a phone the section links fold into a menu behind a button. */
+.nav-menu { display: none; }
+
 @media (max-width: 46rem) {
   .nav-links { display: none; }
+
+  .site-nav { padding-block: 0.6rem; }
+
+  .site-nav-inner {
+    inline-size: calc(100% - 1.5rem);
+    justify-content: space-between;
+    gap: 0.6rem;
+    padding-block: 0.4rem;
+    padding-inline: 0.9rem 0.4rem;
+  }
+
+  .wordmark { margin-inline-end: auto; }
+  .wordmark-dot { inline-size: 1.9rem; block-size: 1.9rem; }
+  .locale-switch { padding: 0.5rem 0.9rem; }
+
+  .nav-menu { display: block; position: relative; }
+
+  .nav-menu summary {
+    list-style: none;
+    display: grid;
+    place-items: center;
+    inline-size: 2.6rem;
+    block-size: 2.6rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-strong);
+    cursor: pointer;
+  }
+
+  .nav-menu summary::-webkit-details-marker { display: none; }
+
+  /* Three bars that turn into a cross while the menu is open. */
+  .nav-menu summary span,
+  .nav-menu summary span::before,
+  .nav-menu summary span::after {
+    display: block;
+    inline-size: 1.05rem;
+    block-size: 2px;
+    border-radius: 2px;
+    background: var(--text-primary);
+    transition: transform 0.2s, background-color 0.2s;
+  }
+
+  .nav-menu summary span { position: relative; }
+  .nav-menu summary span::before,
+  .nav-menu summary span::after { content: ""; position: absolute; inset-inline-start: 0; }
+  .nav-menu summary span::before { transform: translateY(-6px); }
+  .nav-menu summary span::after { transform: translateY(6px); }
+  .nav-menu[open] summary span { background: transparent; }
+  .nav-menu[open] summary span::before { transform: rotate(45deg); }
+  .nav-menu[open] summary span::after { transform: rotate(-45deg); }
+
+  .nav-menu-panel {
+    position: absolute;
+    inset-block-start: calc(100% + 0.8rem);
+    inset-inline-end: -0.4rem;
+    min-inline-size: 13rem;
+    display: grid;
+    padding: 0.5rem;
+    border-radius: 1.1rem;
+    border: 1px solid var(--border);
+    background: rgba(20, 20, 22, 0.96);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+  }
+
+  .site-nav .nav-menu-panel a {
+    display: block;
+    padding: 0.85rem 1rem;
+    border-radius: 0.8rem;
+    font-size: 1rem;
+    color: var(--text-primary);
+  }
+
+  .site-nav .nav-menu-panel a:hover,
+  .site-nav .nav-menu-panel a:focus-visible { background: var(--surface-2); }
 }
 
 .locale-switch {
@@ -716,6 +794,9 @@ html[dir="ltr"] .lab-shot {
 .back-link {
   display: inline-block;
   margin-block-end: 2rem;
+  /* Padding widens the tap area to a finger's size without moving the text. */
+  padding-block: 0.7rem;
+  margin-block-start: -0.7rem;
   color: var(--text-muted);
   text-decoration: none;
   font-size: 0.85rem;
