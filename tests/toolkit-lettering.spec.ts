@@ -13,9 +13,12 @@ test("a Latin line reads left to right, with Arabic inside it as its own run", (
   expect(runs.map(r => r.rtl)).toEqual([false, true]);
 });
 
-test("a closing bracket follows its opening one", () => {
-  const { runs } = bidiRuns("افتتاح (2026)");
-  expect(runs[runs.length - 1]).toEqual({ text: "(2026)", rtl: false });
+test("brackets in an Arabic line stay right-to-left, around a number that reads left to right", () => {
+  // Both brackets resolve with the line, so HarfBuzz mirrors them and the
+  // sign reads (2026) افتتاح, the way Arabic typesetting shows it.
+  expect(bidiRuns("افتتاح (2026)").runs).toEqual([{ text: "افتتاح (", rtl: true }, { text: "2026", rtl: false }, { text: ")", rtl: true }]);
+  // In a Latin line the pair travels with the Latin text around it.
+  expect(bidiRuns("Open (2026) مطعم").runs[0]).toEqual({ text: "Open (2026) ", rtl: false });
 });
 
 test("glyph commands flatten into closed loops, curves included", () => {
