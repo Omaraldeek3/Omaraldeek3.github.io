@@ -92,3 +92,9 @@ html[dir=rtl] .up-compare figcaption { font-size: 12px; }
 /* ——— Contour ——— */
 
 .ct-sticker { display: block; max-width: 100%; max-height: 480px; width: auto; height: 420px; background: #fff; border: 1px solid #d8dbcc; box-shadow: 0 8px 23px #24321d12; }
+
+/* ——— Lettering ——— */
+
+.lt-text { width: 100%; min-height: 78px; resize: vertical; border: 1px solid #dfe3d7; background: #fffefa; border-radius: 4px; padding: 9px 10px; font: inherit; font-size: 16px; line-height: 1.6; color: #2f3f29; }
+.lt-text:focus { outline: none; border-color: #8b9f74; box-shadow: 0 0 0 2px #cfdab64d; }
+.lt-warning { color: #9e4935 !important; }
