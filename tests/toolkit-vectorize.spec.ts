@@ -105,8 +105,10 @@ test("colour mode finds each flat colour and stacks them without gaps", () => {
     }
     return hits % 2 === 1;
   };
-  for (let y = 0.25; y < 60; y += 0.5) for (let x = 0.25; x < 80; x += 0.5) {
-    expect(result.layers.some(layer => inside(layer, x, y)), `${x},${y}`).toBe(true);
+  // Also when the heaviest smoothing moves the edges about.
+  const smoothest = vectorize(image, options({ colors: 4, smoothing: 100 }));
+  for (const traced of [result, smoothest]) for (let y = 0.25; y < 60; y += 0.5) for (let x = 0.25; x < 80; x += 0.5) {
+    expect(traced.layers.some(layer => inside(layer, x, y)), `${x},${y}`).toBe(true);
   }
   expect(inside(result.layers[0], 40, 12.6)).toBe(true);
   expect(inside(result.layers[0], 40, 30)).toBe(false);
@@ -193,4 +195,34 @@ test("the PDF's cross-reference table points at its objects", () => {
 test("bad input is refused plainly", () => {
   expect(() => vectorize({ width: 0, height: 1, data: new Uint8ClampedArray() }, options())).toThrow(/dimensions/);
   expect(() => vectorize(paint(2, 2, () => [0, 0, 0]), options({ colors: 1 }))).toThrow(/Colours/);
+});
+
+test("a gradient background is filled with gradients that meet without steps", () => {
+  // A left-to-right ramp with a dark disc in front of it.
+  const image = paint(160, 100, (x, y) => (Math.hypot(x - 80, y - 50) < 20 ? [20, 20, 20] : [60 + x, 60 + x, 60 + x]));
+  const flat = vectorize(image, options({ colors: 6 }));
+  expect(flat.layers.some(l => l.shades)).toBe(false);
+  const result = vectorize(image, options({ colors: 6, gradients: true }));
+  const shades = result.layers.flatMap(l => (l.shades ?? []).map(s => s.shade));
+  expect(shades.length).toBeGreaterThan(1);
+  for (const shade of shades) expect(Math.abs(shade.x2 - shade.x1)).toBeGreaterThan(Math.abs(shade.y2 - shade.y1));
+  // Each band's gradient ends near where the next one begins.
+  const ends = shades.map(s => ({ x: Math.max(s.x1, s.x2), grey: parseInt((s.x2 > s.x1 ? s.to : s.from).slice(1, 3), 16) })).sort((a, b) => a.x - b.x);
+  for (const end of ends.slice(0, -1)) expect(Math.abs(end.grey - (60 + end.x))).toBeLessThan(14);
+  const svg = colorSvg(result, 100);
+  expect(svg).toContain("<linearGradient");
+  expect(svg).toContain('fill="url(#shade-');
+  const pdf = new TextDecoder().decode(colorPdf(result, 100));
+  expect(pdf).toContain("/ShadingType 2");
+  expect(pdf).toMatch(/W\* n \/Sh0 sh Q/);
+});
+
+test("more smoothing gives fewer curves and keeps thin lines", () => {
+  // A wobbly edge and a thin line.
+  const image = paint(200, 120, (x, y) => (y > 60 + 3 * Math.sin(x / 2) ? [30, 30, 30] : x > 99 && x < 102 && y < 50 ? [30, 30, 30] : [250, 250, 250]));
+  const rough = vectorize(image, options({ colors: 2, smoothing: 0, detail: 100 }));
+  const smooth = vectorize(image, options({ colors: 2, smoothing: 100, detail: 100 }));
+  expect(smooth.nodes).toBeLessThan(rough.nodes * 0.7);
+  const dark = smooth.layers.find(l => l.color === "#1e1e1e")!;
+  expect(dark.paths.length).toBe(2);
 });
