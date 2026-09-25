@@ -75,3 +75,16 @@ html[dir=rtl] .up-compare figcaption { font-size: 12px; }
 .up-crop { display: block; width: 100%; aspect-ratio: 1; background: #eef0e8; border: 1px solid #dce2d1; image-rendering: auto; }
 .up-compare figure:first-child .up-crop { image-rendering: pixelated; }
 @media (max-width: 680px) { .up-compare { grid-template-columns: minmax(0, 1fr); } }
+
+/* ——— Poster tiling ——— */
+
+.tl-frame { position: relative; display: inline-block; max-width: 100%; box-shadow: 0 8px 23px #24321d12; border: 1px solid #d8dbcc; background: #fff; }
+.tl-frame img { display: block; max-width: 100%; max-height: 480px; width: auto; height: auto; }
+.tl-frame svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.tl-number { position: absolute; transform: translate(-50%, -50%); min-width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: #2a4233; color: #f0f2e6; font-weight: 750; font-size: 13px; box-shadow: 0 2px 6px #0003; }
+.tl-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.tl-list li { display: grid; grid-template-columns: 30px auto 1fr auto; align-items: center; gap: 10px; padding: 7px 10px; border: 1px solid #e3e6db; border-radius: 6px; background: #fcfdf7; font-size: 11px; color: #455a37; }
+.tl-list li b { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: #dce6c0; }
+.tl-list li small { color: #8a9281; font-size: 9px; }
+.tl-list .button { min-height: 30px; padding: 5px 10px; }
+@media (max-width: 680px) { .tl-list li { grid-template-columns: 26px 1fr auto; } .tl-list li small { grid-column: 2; } }

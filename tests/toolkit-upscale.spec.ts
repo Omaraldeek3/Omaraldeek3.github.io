@@ -79,12 +79,17 @@ test("the EXIF block states the exact resolution", () => {
   expect(view.getUint32(tiff + offset, true) / view.getUint32(tiff + offset + 4, true)).toBeCloseTo(31.37, 4);
 });
 
-test("an existing JFIF header gets the resolution in place", () => {
+test("a browser JPEG gets its resolution in JFIF and, exactly, in EXIF", () => {
   const jpeg = new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 0, 16, 0x4a, 0x46, 0x49, 0x46, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0xff, 0xd9]);
-  const out = setJpegDpi(jpeg, 150);
-  expect(out.length).toBe(jpeg.length);
-  expect([out[13], out[14] * 256 + out[15], out[16] * 256 + out[17]]).toEqual([1, 150, 150]);
-  expect(setJpegDpi(new Uint8Array([0xff, 0xd8, 0xff, 0xd9]), 72).length).toBe(22);
+  const out = setJpegDpi(jpeg, 31.4);
+  expect([out[13], out[14] * 256 + out[15], out[16] * 256 + out[17]]).toEqual([1, 31, 31]);
+  expect([out[20], out[21]]).toEqual([0xff, 0xe1]);
+  expect(new TextDecoder().decode(out.slice(24, 28))).toBe("Exif");
+  expect([out[out.length - 2], out[out.length - 1]]).toEqual([0xff, 0xd9]);
+  const bare = setJpegDpi(new Uint8Array([0xff, 0xd8, 0xff, 0xd9]), 72);
+  expect([bare[2], bare[3], bare[13]]).toEqual([0xff, 0xe0, 1]);
+  // A second pass leaves the EXIF block as it is.
+  expect(setJpegDpi(out, 31.4).length).toBe(out.length);
 });
 
 test("the PNG stream writes valid chunks with pHYs", async () => {
