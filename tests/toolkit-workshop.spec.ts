@@ -44,6 +44,19 @@ test("the AI upscaler enlarges a picture and saves a JPEG with its size", async 
   expect(errors).toEqual([]);
 });
 
+test("a small picture is cleaned up by the AI before it is traced", async ({ page }) => {
+  test.setTimeout(240_000);
+  const errors = await openTool(page, "Image to vector");
+  await page.getByLabel("Import image").setInputFiles({ name: "small.png", mimeType: "image/png", buffer: await picture(120, 90) });
+  await expect(page.getByText(/^AI clean-up \d+%$/)).toBeVisible();
+  await expect(page.getByText("Vector ready", { exact: true })).toBeVisible({ timeout: 200_000 });
+  // Traced from the AI enlargement, four times the pixels on each side.
+  await expect(page.locator(".preview-bottom")).toContainText("480 × 360 px traced");
+  await page.getByText("AI clean-up before tracing", { exact: true }).click();
+  await expect(page.locator(".preview-bottom")).toContainText("120 × 90 px traced", { timeout: 30_000 });
+  expect(errors).toEqual([]);
+});
+
 test("poster tiling splits a print into panels and saves one", async ({ page }) => {
   const errors = await openTool(page, "Poster tiling");
   await page.getByLabel("Import image").setInputFiles({ name: "front.png", mimeType: "image/png", buffer: await picture(600, 300) });

@@ -92,9 +92,24 @@ test("colour mode finds each flat colour and stacks them without gaps", () => {
   const colours = result.layers.map(l => l.color);
   expect(colours).toHaveLength(3);
   expect(colours[0]).toBe("#fafafa");
-  // Stacked: the bottom colour is the whole picture.
-  const bottom = flatten(result.layers[0].paths[0], 0.05);
-  expect(Math.abs(polygonArea(bottom))).toBeGreaterThan(80 * 60 - 2);
+  // Stacked: every point of the picture lies inside some colour's shape, and
+  // each colour reaches under the ones drawn above it.
+  const inside = (layer: typeof result.layers[number], x: number, y: number) => {
+    let hits = 0;
+    for (const path of layer.paths) {
+      const ring = flatten(path, 0.05);
+      for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+        const a = ring[i], b = ring[j];
+        if ((a.y > y) !== (b.y > y) && x < ((b.x - a.x) * (y - a.y)) / (b.y - a.y) + a.x) hits++;
+      }
+    }
+    return hits % 2 === 1;
+  };
+  for (let y = 0.25; y < 60; y += 0.5) for (let x = 0.25; x < 80; x += 0.5) {
+    expect(result.layers.some(layer => inside(layer, x, y)), `${x},${y}`).toBe(true);
+  }
+  expect(inside(result.layers[0], 40, 12.6)).toBe(true);
+  expect(inside(result.layers[0], 40, 30)).toBe(false);
 });
 
 test("cut-out mode gives every colour only its own area", () => {
@@ -105,6 +120,21 @@ test("cut-out mode gives every colour only its own area", () => {
     expect(area).toBeGreaterThan(40 * 60 - 40);
     expect(area).toBeLessThan(40 * 60 + 40);
   }
+});
+
+test("a pale one-pixel line on white keeps its own colour in a small picture", () => {
+  const image = paint(90, 60, (x, y) => (x === 45 && y > 5 && y < 55 ? [205, 200, 198] : x > 70 && y > 40 ? [30, 30, 30] : [255, 255, 255]));
+  const result = vectorize(image, options({ colors: 3, detail: 100 }));
+  const line = result.layers.find(l => l.color === "#cdc8c6");
+  expect(line).toBeDefined();
+  expect(line!.paths.length).toBe(1);
+});
+
+test("short flecks barely differing from their band are absorbed", () => {
+  // Two bands of a stepped gradient, with a broken seam of an in-between grey.
+  const image = paint(120, 80, (x, y) => (x === 60 && y % 12 < 3 ? [92, 92, 92] : x < 60 ? [80, 80, 80] : [104, 104, 104]));
+  const result = vectorize(image, options({ colors: 3, detail: 100 }));
+  expect(result.layers.map(l => l.color).sort()).toEqual(["#505050", "#686868"]);
 });
 
 test("a hidden colour is left out and can be listed again", () => {
