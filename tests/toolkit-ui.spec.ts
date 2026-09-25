@@ -30,8 +30,10 @@ test('trace and engraving generate real downloads from sample pixels',async({pag
   const svg=await readFile((await file.path())!,'utf8');expect(svg).toContain('width="100mm"');expect(svg).toContain('<path');expect(svg).not.toContain('<image');expect(svg).toMatch(/C[\d.]+ [\d.]+/);
   await page.getByRole('radio',{name:/Outline/}).click();await expect(page.getByText('Vector ready',{exact:true})).toBeVisible({timeout:30000});
   const dxf=page.waitForEvent('download');await page.getByRole('button',{name:'DXF',exact:true}).click();expect((await dxf).suggestedFilename()).toMatch(/outline\.dxf$/);
-  await page.getByRole('button',{name:'Engraving prep',exact:true}).click();await page.getByRole('button',{name:'Process image',exact:true}).click();
-  await expect(page.getByRole('button',{name:'Export PNG',exact:true})).toBeEnabled();
+  await page.getByRole('button',{name:'Engraving prep',exact:true}).click();await page.getByRole('button',{name:'Use a sample photo',exact:true}).click();
+  await expect(page.getByText('Ready to engrave',{exact:true})).toBeVisible({timeout:30000});
+  const bmp=page.waitForEvent('download');await page.getByRole('button',{name:'BMP',exact:true}).click();
+  const bmpFile=await readFile((await (await bmp).path())!);expect(bmpFile.subarray(0,2).toString()).toBe('BM');expect(bmpFile.readInt32LE(38)).toBe(10000);
 });
 test('unsupported artwork gives an actionable error and cannot export stale layout',async({page})=>{
   await page.goto('/tools');
