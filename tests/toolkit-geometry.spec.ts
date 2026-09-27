@@ -82,3 +82,14 @@ test('open paths outside every closed outline make the part nest by its convex h
  const sheet=result.sheets[0];for(let i=0;i<sheet.length;i++)for(let j=0;j<i;j++)expect(shapesCollide(sheet[i],sheet[j],0.999)).toBe(false);
  expect(()=>nest([{id:'line',name:'line',contours:[{closed:false,points:[{x:0,y:0},{x:5,y:5}]}]}],{width:100,height:40,margin:0,gap:1,copies:1,rotate:false})).toThrow(/closed/);
 });
+test('each part can have its own quantity, and 0 leaves it out',()=>{
+ const opts={width:200,height:200,margin:2,gap:2,copies:1,rotate:false};
+ const result=nest([rect('a',0,0,20,15),rect('b',0,0,12,12),rect('c',0,0,10,10)],{...opts,counts:[2,0,3]});
+ expect(result.total).toBe(5);expect(result.unplaced).toEqual([]);
+ const names=result.sheets.flat().map(s=>s.name).sort();
+ expect(names).toEqual(['a','a','c','c','c']);
+ expect(nest([rect('a',0,0,20,15)],opts).total).toBe(1);
+ expect(()=>nest([rect('a',0,0,20,15)],{...opts,counts:[0]})).toThrow();
+ expect(()=>nest([rect('a',0,0,20,15)],{...opts,counts:[1.5]})).toThrow();
+ expect(()=>nest([rect('a',0,0,20,15),rect('b',0,0,5,5)],{...opts,counts:[1]})).toThrow();
+});

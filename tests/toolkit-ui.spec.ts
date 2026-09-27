@@ -7,7 +7,7 @@ test('nesting runs locally and exports a dimensioned DXF',async({page})=>{
   await page.getByRole('button',{name:'Arrange parts',exact:true}).click();
   await expect(page.getByText('Layout ready',{exact:true})).toBeVisible({timeout:30000});
   const pending=page.waitForEvent('download');await page.getByRole('button',{name:'Export DXF',exact:true}).click();const d=await pending;expect(d.suggestedFilename()).toMatch(/\.dxf$/);
-  const content=await readFile((await d.path())!,'utf8');expect(content).toContain('$INSUNITS\n70\n4');expect(content.match(/\nPOLYLINE\n/g)?.length).toBe(21);expect(content.trim()).toMatch(/EOF$/);
+  const content=await readFile((await d.path())!,'utf8');expect(content).toContain('$INSUNITS\n70\n4');expect(content.match(/\nPOLYLINE\n/g)?.length).toBe(7);expect(content.trim()).toMatch(/EOF$/);
   await page.getByLabel('Sheet width').fill('100');
   await expect(page.getByRole('button',{name:'Export DXF',exact:true})).toBeDisabled();
 });
@@ -50,7 +50,7 @@ test('a physical SVG uploads, nests and reexports at the requested scale',async(
   const errors:string[]=[];page.on('pageerror',error=>errors.push(error.message));
   await page.goto('/tools');
   await page.getByLabel('Import vector file').setInputFiles({name:'reference.svg',mimeType:'image/svg+xml',buffer:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="110mm" height="110mm" viewBox="0 0 110 110"><path d="M5 5H105V105H5Z"/></svg>')});
-  await expect(page.getByText('1 parts loaded')).toBeVisible();await page.getByLabel('Copies of each part').fill('1');
+  await expect(page.getByText('1 parts loaded')).toBeVisible();await page.getByLabel('Quantity of each part').fill('1');
   await page.getByRole('button',{name:'Arrange parts',exact:true}).click();await expect(page.getByText('Layout ready',{exact:true})).toBeVisible();
   const pending=page.waitForEvent('download');await page.getByRole('button',{name:'Export DXF',exact:true}).click();const text=await readFile((await(await pending).path())!,'utf8');
   const lines=text.trim().split('\n');const xs:number[]=[],ys:number[]=[];
@@ -99,7 +99,7 @@ test('box maker builds every box type, dividers, labels and a 3D view, then nest
   await page.getByLabel(/^Height/).fill('60');
   await page.getByRole('button',{name:'Arrange on sheet',exact:true}).click();
   await expect(page.getByRole('heading',{name:'Material nesting'})).toBeVisible();await expect(page.getByText('8 parts loaded')).toBeVisible();
-  await page.getByLabel('Sheet width').fill('600');await page.getByLabel('Copies of each part').fill('1');
+  await page.getByLabel('Sheet width').fill('600');await page.getByLabel('Quantity of each part').fill('1');
   await page.getByRole('button',{name:'Arrange parts',exact:true}).click();
   await expect(page.getByText('Layout ready',{exact:true})).toBeVisible({timeout:30000});
 });
@@ -118,4 +118,17 @@ test('box maker flat edges make glued panels without fingers and still nest',asy
   await expect(page.getByText('5 parts loaded')).toBeVisible();
   await page.getByRole('button',{name:'Arrange parts',exact:true}).click();
   await expect(page.getByText('Layout ready',{exact:true})).toBeVisible({timeout:30000});
+});
+test('nesting places each part once by default and takes a quantity per part',async({page})=>{
+  await page.goto('/tools');
+  await expect(page.getByLabel('Quantity of each part')).toHaveValue('1');
+  await expect(page.getByText('6 pieces in this job')).toBeVisible();
+  await page.getByLabel('Quantity of part 1').fill('0');await page.getByLabel('Quantity of part 3').fill('4');
+  await expect(page.getByText('8 pieces in this job')).toBeVisible();
+  await page.getByRole('button',{name:'Arrange parts',exact:true}).click();
+  await expect(page.getByText('Layout ready',{exact:true})).toBeVisible({timeout:30000});
+  await expect(page.locator('.stat').filter({hasText:'Pieces placed'})).toContainText('8 / 8');
+  await page.getByLabel('Quantity of each part').fill('0');
+  await expect(page.locator('.error-note')).toContainText('above 0');
+  await expect(page.getByRole('button',{name:'Arrange parts',exact:true})).toBeDisabled();
 });
