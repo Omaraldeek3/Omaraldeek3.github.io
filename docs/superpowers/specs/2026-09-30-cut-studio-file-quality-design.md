@@ -43,15 +43,19 @@ A contour keeps its polyline `points` (used by nesting, collision, area and the
 3D box view, unchanged) and gains an optional exact path:
 
 ```ts
-type Seg = { type: 'L'; to: Point } | { type: 'C'; c1: Point; c2: Point; to: Point };
+type Seg =
+  | { type: 'L'; to: Point }
+  | { type: 'A'; to: Point; bulge: number }        // circular arc, DXF-style bulge
+  | { type: 'C'; c1: Point; c2: Point; to: Point };
 type Curve = { start: Point; segs: Seg[] };
 type Contour = { points: Point[]; closed: boolean; layer?: 'engrave'; curve?: Curve };
 ```
 
-Only lines and cubic Béziers. Arcs and circles are stored as cubics (a quarter
-circle as one cubic, error 0.027% of the radius). Cubics are affine-invariant,
-so `mapShape` (move, rotate in nesting, scale in resize & repeat) maps the
-control points and stays exact.
+Lines, circular arcs and cubic Béziers. Arcs are kept exact (a cubic
+approximation of a 100 mm radius is already 0.027 mm off). `mapShape` maps
+lines and cubics exactly under any affine map; arcs stay arcs under a
+similarity (move, rotate, uniform scale, mirror flips the bulge) and are
+converted to cubics under a non-uniform scale (resize & repeat).
 
 A new module `path.ts` holds: build a curve from primitives (line, arc,
 circle, rounded rectangle), flatten a curve to points within a tolerance,
@@ -62,22 +66,27 @@ arcs, the rest become cubics, and sharp corners stay sharp.
 Invariant: when `curve` is present, `points` is its flattening at 0.05 mm.
 Functions that build contours set both through one helper so they cannot drift.
 
+`fitPolyline` measures its error at the input vertices, because generated and
+imported polylines have their vertices on the true geometry.
+
 ### 2. Export
 
-- **SVG:** a contour with a curve is written as `M … L … C … Z`. A contour
+- **SVG:** a contour with a curve is written as `M … L … A … C … Z`. A contour
   without one is passed through `fitPolyline` (tolerance 0.02 mm) first, so
   every export benefits, including files imported from polylines.
 - **DXF:** stays R12 (`AC1009`), which RDWorks, LightBurn and CorelDRAW all read.
   Each contour is one `POLYLINE` whose vertices carry bulges (group 42) for arcs.
   Cubics are converted to arcs by biarc fitting within 0.01 mm. Lines stay lines.
+- On-screen previews keep drawing the polyline `points`; only files change.
 - Layers and colours (CUT red / ENGRAVE blue) are unchanged.
 
-### 3. Generators emit curves
+### 3. Generators
 
-`circle`, `roundedRect`, `polygon`, `star` and the box, tag, pattern, puzzle,
-hinge, gear, ruler, fit-test and test-card generators build contours through the
-path helpers. A circle exports as 4 cubics in SVG and 2 bulge arcs in DXF.
-The gear's involute flanks are fitted with cubics within 0.01 mm.
+The generators already place every polyline vertex exactly on the true line
+or arc (only the chords between vertices cut corners). `fitPolyline` fits
+through the vertices, so it recovers the exact lines and arcs at export. The
+generators therefore stay unchanged. A generated circle exports as 2 arcs in
+SVG and DXF; a box keeps its finger joints as exact lines.
 
 ### 4. Tracing
 
@@ -97,7 +106,7 @@ cut-out modes, drops the region colour that covers most of the image border.
 
 **Fitting:** the fitter first tests whether a loop, or a run inside it, is a
 straight line or a circular arc within the fitting error; those become `L` and
-exact arcs. A loop that fits a circle or ellipse becomes one exactly. Where no
+exact arcs. A loop that fits a circle becomes one exactly. Where no
 corner was detected, neighbouring cubics share a tangent (G1), which removes
 the bumps at joins.
 
@@ -136,11 +145,11 @@ The result feeds nesting and export as today.
 
 ### 7. Imports keep curves
 
-- **SVG import:** path commands `C S Q T A` and the `circle ellipse rect`
-  elements build a `curve` alongside the flattened points.
-- **DXF import:** `ARC`, `CIRCLE`, `ELLIPSE` and polyline bulges build curve
-  segments. `SPLINE` keeps its current flattening, then `fitPolyline`.
-- **CDR:** goes through the SVG importer, so it inherits the SVG behaviour.
+Both importers already sample every curve with vertices lying on the curve
+(SVG within 0.09 mm chords, DXF arcs exactly). Export runs `fitPolyline` on
+contours without a `curve`, so imported lines, arcs and curves come back out
+as lines, arcs and cubics. The importers stay unchanged; round-trip tests
+prove the behaviour. CDR goes through the SVG importer and inherits it.
 
 ## Error handling
 
@@ -155,8 +164,9 @@ The result feeds nesting and export as today.
 
 The project's Playwright suite gains:
 
-- **Export:** a circle exports as 4 `C` segments in SVG and 2 bulge vertices in
-  DXF; a rounded rectangle exports lines plus arcs; transforms keep curves exact.
+- **Export:** a generated circle exports as 2 arcs in SVG and 2 bulge vertices
+  in DXF; a rounded rectangle exports 4 lines and 4 arcs; transforms keep
+  curves exact.
 - **Geometry helper:** the audit analyser (duplicate length, crossings,
   self-crossings, node count) moves into the test helpers. Every generator and
   box type must report 0 duplicates and 0 crossings.
