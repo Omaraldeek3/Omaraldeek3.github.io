@@ -53,3 +53,10 @@ test('a traced cubic contour exports to DXF as arcs that import back onto the cu
   const moved = back.map(p => ({ x: p.x + minX, y: p.y + minY }));
   for (const p of exact) expect(dist(p, [...moved, moved[0]])).toBeLessThan(0.1);
 });
+test('a DXF CIRCLE and ARC import and export as arcs', () => {
+  const src = [0,'SECTION',2,'HEADER',9,'$INSUNITS',70,4,0,'ENDSEC',0,'SECTION',2,'ENTITIES',0,'CIRCLE',8,'0',10,50,20,50,40,20,0,'ARC',8,'0',10,150,20,50,40,20,50,0,51,90,0,'ENDSEC',0,'EOF'].join('\n');
+  const out = toDxf(parseDxf(src));
+  // Two semicircles for the circle, one arc for the quarter arc.
+  expect((out.match(/\n42\n/g) || []).length).toBe(3);
+  expect((out.match(/VERTEX/g) || []).length).toBe(4);
+});

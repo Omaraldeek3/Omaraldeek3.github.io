@@ -2,6 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import ts from 'typescript';
 import type { Drawing } from '../src/toolkit/types';
+import { toSvg } from '../src/toolkit/export';
 
 const file = 'src/toolkit/svg-import.ts';
 test.beforeEach(async ({ page }) => {
@@ -212,4 +213,12 @@ test('design-program allowances keep rejecting geometry-changing or external con
     await expect(parse(page, svg(body)), body).rejects.toThrow();
   }
   await expect(parse(page, `<!DOCTYPE svg [<!ENTITY x "y">]>${svg('<rect width="1" height="1"/>')}`)).rejects.toThrow(/entities/);
+});
+test('imported circles, rounded rectangles and Béziers export as arcs and lines, not polylines', async ({ page }) => {
+  const drawing = await parse(page, svg('<circle cx="25" cy="25" r="20"/><rect x="55" y="10" width="30" height="20" rx="4"/><path d="M50 45 C60 35 80 35 90 45"/>'));
+  const [circle, rect, wave] = drawing.shapes.map(s => toSvg({ ...drawing, shapes: [s] }));
+  expect(circle.match(/ [LAC]/g)).toEqual([' A', ' A']);
+  expect((rect.match(/ A/g) || []).length).toBe(4);
+  expect((rect.match(/ L/g) || []).length).toBe(4);
+  expect((wave.match(/ [LAC]/g) || []).length).toBeLessThan(drawing.shapes[2].contours[0].points.length / 3);
 });
