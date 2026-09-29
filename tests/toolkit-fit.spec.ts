@@ -42,3 +42,8 @@ for (const [name, drawing] of [['gear', gearDrawing(defaultGear)], ['puzzle', pu
     }
   });
 }
+test('a regular polygon stays a polygon, not a circle', () => {
+  const twelve = Array.from({ length: 12 }, (_, i) => ({ x: 20 * Math.cos((i * Math.PI) / 6), y: 20 * Math.sin((i * Math.PI) / 6) }));
+  const c = fitPolyline(twelve, true, 0.02);
+  expect(c.segs).toHaveLength(12); expect(c.segs.every(s => s.type === 'L')).toBe(true);
+});
