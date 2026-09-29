@@ -3,7 +3,8 @@ import {
   defaultVectorize, despeckle, fitLoop, flatten, isolines, otsu, pathData, polygonArea, traceMask, vectorize,
   type VectorizeOptions,
 } from "../src/toolkit/vectorize";
-import { colorPdf, colorSvg, outlineSvg, resultToDrawing } from "../src/toolkit/vector-export";
+import { colorPdf, colorSvg, cutDrawing, outlineSvg, resultToDrawing } from "../src/toolkit/vector-export";
+import { audit } from "./helpers/geometry-audit";
 import type { Raster } from "../src/toolkit/image";
 import type { Contour } from "../src/toolkit/types";
 import { logoRaster } from "./fixtures/logo";
@@ -259,4 +260,37 @@ test("smooth traced outlines have no kinks where no corner was found", async () 
     let diff = Math.abs(t1 - t2); if (diff > Math.PI) diff = 2 * Math.PI - diff;
     expect(diff).toBeLessThan((2 * Math.PI) / 180);
   }
+});
+
+// ——— Cut-out tracing on shared borders ———————————————————————————————————
+
+test("cut-out tracing shares every border between colours and drops the background", async () => {
+  const r = vectorize(await logoRaster(), { ...defaultVectorize, mode: "color", layering: "cutout", colors: 4 });
+  expect(r.edges?.length).toBeGreaterThan(0);
+  const d = cutDrawing(r, 800);
+  const a = audit(d);
+  expect(a.duplicateMm).toBe(0);
+  expect(a.crossings).toBe(0);
+  // Nothing runs round the page: every border has a point well inside it.
+  for (const c of d.shapes.flatMap(s => s.contours)) expect(c.points.some(p => p.x > 2 && p.x < 798 && p.y > 2 && p.y < 498)).toBe(true);
+  expect(r.layers.some(l => parseInt(l.color.slice(1, 3), 16) > 240 && parseInt(l.color.slice(3, 5), 16) > 240 && parseInt(l.color.slice(5, 7), 16) > 240)).toBe(false);
+  // Each colour's own outlines still close, for nesting colour by colour.
+  for (const layer of r.layers) expect(layer.paths.length).toBeGreaterThan(0);
+});
+
+test("the cut-out cut-line SVG writes each border once", async () => {
+  const r = vectorize(await logoRaster(), { ...defaultVectorize, mode: "color", layering: "cutout", colors: 4 });
+  const svg = outlineSvg(r, 300);
+  const starts = (svg.match(/M/g) || []).length;
+  expect(starts).toBe(r.edges!.length);
+});
+
+test("cut-out tracing of a photo stays under 15 seconds", async () => {
+  test.setTimeout(120000);
+  const sharp = (await import("sharp")).default;
+  const { data, info } = await sharp("public/images/coffee.jpg").resize(700).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+  const t = Date.now();
+  const r = vectorize({ width: info.width, height: info.height, data: new Uint8ClampedArray(data) }, { ...defaultVectorize, mode: "color", layering: "cutout", colors: 4 });
+  expect(Date.now() - t).toBeLessThan(15000);
+  expect(audit(cutDrawing(r, 300)).duplicateMm).toBe(0);
 });
