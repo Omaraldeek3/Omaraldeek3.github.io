@@ -5,6 +5,8 @@ import {
 } from "../src/toolkit/vectorize";
 import { colorPdf, colorSvg, outlineSvg, resultToDrawing } from "../src/toolkit/vector-export";
 import type { Raster } from "../src/toolkit/image";
+import { logoRaster } from "./fixtures/logo";
+import { flattenCurve } from "../src/toolkit/path";
 
 /** An RGBA raster painted by a function of (x, y). */
 function paint(width: number, height: number, colour: (x: number, y: number) => [number, number, number, number?]): Raster {
@@ -225,4 +227,35 @@ test("more smoothing gives fewer curves and keeps thin lines", () => {
   expect(smooth.nodes).toBeLessThan(rough.nodes * 0.7);
   const dark = smooth.layers.find(l => l.color === "#1e1e1e")!;
   expect(dark.paths.length).toBe(2);
+});
+
+// ——— True geometry from tracing ————————————————————————————————————————
+
+const ringOf = (contours: { points: { x: number; y: number }[] }[], R: number) =>
+  contours.find(c => c.points.every(p => Math.abs(Math.hypot(p.x - 220, p.y - 250) - R) < 3));
+
+test("outline tracing draws the ring as true circles and the square with straight sides", async () => {
+  const r = vectorize(await logoRaster(), { ...defaultVectorize, mode: "outline" });
+  const contours = resultToDrawing(r, 800).shapes.flatMap(s => s.contours); // 1 mm per pixel
+  for (const R of [170, 110]) {
+    const ring = ringOf(contours, R);
+    expect(ring?.curve).toBeTruthy();
+    const dense = flattenCurve(ring!.curve!, true, 0.01);
+    expect(Math.max(...dense.map(p => Math.abs(Math.hypot(p.x - 220, p.y - 250) - R)))).toBeLessThan(0.4);
+  }
+  const square = contours.find(c => c.points.every(p => p.x > 140 && p.x < 300 && p.y > 170 && p.y < 330));
+  expect(square?.curve?.segs.filter(s => s.type === "L")).toHaveLength(4);
+});
+
+test("smooth traced outlines have no kinks where no corner was found", async () => {
+  const r = vectorize(await logoRaster(), { ...defaultVectorize, mode: "outline" });
+  const ring = ringOf(resultToDrawing(r, 800).shapes.flatMap(s => s.contours), 170)!;
+  const segs = ring.curve!.segs;
+  for (let i = 0; i < segs.length; i++) {
+    const a = segs[i], b = segs[(i + 1) % segs.length];
+    if (a.type !== "C" || b.type !== "C") continue;
+    const t1 = Math.atan2(a.to.y - a.c2.y, a.to.x - a.c2.x), t2 = Math.atan2(b.c1.y - a.to.y, b.c1.x - a.to.x);
+    let diff = Math.abs(t1 - t2); if (diff > Math.PI) diff = 2 * Math.PI - diff;
+    expect(diff).toBeLessThan((2 * Math.PI) / 180);
+  }
 });
