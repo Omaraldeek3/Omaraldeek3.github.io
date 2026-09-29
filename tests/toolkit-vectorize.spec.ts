@@ -5,6 +5,7 @@ import {
 } from "../src/toolkit/vectorize";
 import { colorPdf, colorSvg, outlineSvg, resultToDrawing } from "../src/toolkit/vector-export";
 import type { Raster } from "../src/toolkit/image";
+import type { Contour } from "../src/toolkit/types";
 import { logoRaster } from "./fixtures/logo";
 import { flattenCurve } from "../src/toolkit/path";
 
@@ -231,7 +232,7 @@ test("more smoothing gives fewer curves and keeps thin lines", () => {
 
 // ——— True geometry from tracing ————————————————————————————————————————
 
-const ringOf = (contours: { points: { x: number; y: number }[] }[], R: number) =>
+const ringOf = (contours: Contour[], R: number) =>
   contours.find(c => c.points.every(p => Math.abs(Math.hypot(p.x - 220, p.y - 250) - R) < 3));
 
 test("outline tracing draws the ring as true circles and the square with straight sides", async () => {
