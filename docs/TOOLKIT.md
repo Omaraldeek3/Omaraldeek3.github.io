@@ -60,7 +60,8 @@ Native CDR, ASCII DXF and SVG input are supported. AI and PDF input remain unsup
 
 - Each SVG geometry element becomes a separate nesting part. A compound path keeps its subpaths and holes together; groups supply transforms but do not bind separate elements into a part.
 - Nesting uses outline collisions and conservative clearance. It does not place parts inside holes, perform common-line cuts, compensate kerf, optimize machine travel, or guarantee the global minimum number of sheets.
-- SVG curves are flattened into straight segments with a 0.1 mm approximation target. Both SVG and DXF output contain the flattened outlines. Nesting adds 0.1 mm to the sheet edge allowance and 0.201 mm to inter-part spacing.
+- Inside the toolkit, curves are held twice: as a polyline for nesting and previews, and, where the tool knows it, as the exact outline (lines, circular arcs and cubic Béziers). Nesting adds 0.1 mm to the sheet edge allowance and 0.201 mm to inter-part spacing.
+- Exports keep real geometry. SVG is written with lines, arcs and Bézier curves. DXF stays R12 (read by RDWorks, LightBurn and CorelDRAW) and uses lines and arcs (polyline bulges); Bézier curves become arcs within 0.01 mm. A contour known only as a polyline (generated shapes, imported SVG or DXF) is fitted into lines and arcs within 0.02 mm at export, measured at its vertices; an arc may not bow more than 0.1 mm away from any original segment, so straight sides and polygons stay exact. A generated circle exports as two arcs, not hundreds of segments.
 - Nesting supports up to 500 requested pieces. Collision tests use each part's outer outlines only (holes and inner engraving never touch another part; open paths outside every closed outline make the part use its convex hull). When those outlines exceed 8,000 nodes they are simplified in steps from 0.05 mm up to 2 mm, and twice the chosen tolerance is added to part spacing, so the exported full-detail parts still keep the requested spacing. The result reports the tolerance used. A worker keeps the interface responsive, supports cancellation and stops after 30 seconds. Internal search has an 18-second budget; reported partial results may have unplaced parts.
 - SVG input is limited to 32 MB, 5,000 shapes, 50,000 elements and 1,000,000 vertices. Adaptive Bézier subdivision uses transformed millimetres with a 0.09 mm curve-to-segment bound; straight collinear reduction is exact. Live text (not converted to curves) is ignored and the import reports how many text objects were left out; a file containing only text is rejected. Standard design-program export boilerplate is accepted: the public DOCTYPE line, <style> class rules and inline styles limited to paint, dash, font and rendering-hint properties, @font-face blocks, embedded fonts and other content inside <defs>, editor metadata in foreign namespaces, and fill/stroke references to gradients in the same file. Dash patterns do not split the cut path. CSS that can change geometry (transform, display, clipping) is still rejected. Unsupported external resources, scripts, effects, clipping and embedded images are rejected. Common paths, primitives, compound subpaths and transforms are supported. Geometry coordinates must be unitless; root physical dimensions support mm, cm, in, pt, pc and px.
 - Exported paths are cutting centerlines; SVG fill and stroke styling is not reproduced. Open paths remain open.
@@ -68,7 +69,12 @@ Native CDR, ASCII DXF and SVG input are supported. AI and PDF input remain unsup
 - Image input is PNG/JPEG/WebP, up to 10 MB and 40 megapixels. It is downscaled to a maximum 768-pixel side for processing, with the resize shown in the UI. Transparent pixels are composited on white.
 - Image tracing produces monochrome contours, not multicolour or centreline tracing. A zero simplification setting retains pixel boundaries (with exact collinear reduction). Higher settings approximate the contour and may change thin details. Preview before use.
 - All traced contours initially form one artwork part; separate pieces in your vector editor if you want them independently nested.
-- Cleanup compares normalized contour coordinates rounded to 0.0001 mm. It detects matching point sequences, not every visually equivalent representation. Removing small contours also removes small holes. It does not repair or automatically close open paths.
+- Vector cleanup repairs a file for cutting, and reports each change:
+  - **Remove overlapping lines** (on by default): any stretch of cut line lying on another within 0.02 mm is removed from the later one, so it is cut once. This is the Delete Overlap step of RDWorks and LightBurn. A contour that loses part of itself becomes open paths.
+  - **Join gaps up to** (0.1 mm by default, 0 to 10 mm): open paths whose ends are that close are joined, closest first; a path whose own ends meet is closed.
+  - **Remove areas smaller than**: closed contours under the area are removed (this includes small holes).
+  - **Reduce nodes** (on by default): contours are refitted into lines and arcs within 0.02 mm.
+  Engraved lines are never changed.
 - The cost calculator uses the selected currency as a label and performs no currency conversion. It does not infer prices, tax or profit.
 
 ## Development
@@ -100,3 +106,11 @@ The native-format and detailed-path updates pass **all 94 tests** against the pr
 - [Ruida RDWorks resources and DXF import guidance](https://www.rdacs.com/search?keyword=Rdworks&page=2)
 - [Official MSYS2 libcdr runtime](https://packages.msys2.org/packages/mingw-w64-x86_64-libcdr)
 - [Autodesk DXF reference](https://help.autodesk.com/cloudhelp/2017/ENU/AutoCAD-DXF/files/index.htm)
+
+### Tracing, lettering and offset
+
+- Image to vector, outline and colour modes: a loop that fits a circle within half the fitting error becomes a true circle, and a side between two corners that fits a straight line becomes one. Traced curves go to the laser tools and to DXF as curves, not as a 0.02 mm polyline.
+- Image to vector, cut-out colour mode: every border between two colours is found once, on the cracks between pixels, and fitted once with its ends pinned where three or more colours meet. Each colour's outline is built from those shared borders, so neighbouring colours match exactly. The cut-line SVG and the DXF write each border once. Where a colour strip is thinner than the smoothing, its borders are refitted closer to the pixels until no two cross. **Remove the background** (on by default) leaves out the colour covering more than half of the picture's edge.
+- Arabic lettering welds the glyph outlines with a vector union (Clipper2) at the final size, from outlines flattened within 0.005 mm, and refits the result within 0.01 mm.
+- Contour & offset offsets vector artwork with Clipper2 using round joins (even-odd fill, so imported holes work whichever way they wind). Picture (sticker) input is still rasterised and traced, because there is no vector to offset.
+- `npx jiti scripts/test-pack.ts` writes a machine test pack (box, gear, puzzle, traced logo in outline and cut-out modes, offset) as SVG and DXF into `test-pack/`.
