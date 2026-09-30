@@ -40,6 +40,15 @@ export function LabArt({ slug }: { slug: string }) {
           <circle cx="104" cy="86" r="3" className="art-node" />
         </svg>
       );
+    case "harf":
+      return (
+        <svg className="lab-art art-harf" viewBox="0 0 160 120" aria-hidden="true">
+          <rect x="30" y="22" width="100" height="76" rx="4" className="art-sheet" />
+          <line x1="42" y1="80" x2="118" y2="80" className="art-rule" />
+          <text x="80" y="76" textAnchor="middle" className="art-glyph">ح</text>
+          <circle cx="112" cy="36" r="3" className="art-node" />
+        </svg>
+      );
     case "design-studies":
       return (
         <svg className="lab-art art-design" viewBox="0 0 160 120" aria-hidden="true">

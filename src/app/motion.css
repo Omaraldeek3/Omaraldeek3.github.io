@@ -63,6 +63,7 @@
 .art-node.dim { opacity: 0.45; }
 .art-sheet { fill: rgba(255, 255, 255, 0.03); stroke: rgba(255, 255, 255, 0.16); }
 .art-rule { stroke: rgba(255, 255, 255, 0.12); }
+.art-glyph { fill: var(--live); font-size: 52px; font-weight: 700; }
 .art-cutline { fill: none; stroke: var(--live); stroke-width: 2; stroke-dasharray: 100; stroke-dashoffset: 0; }
 .art-beam { stroke: var(--live-pale); stroke-width: 1.5; opacity: 0; }
 .art-card { stroke: rgba(255, 255, 255, 0.2); transform-box: view-box; transform-origin: 80px 104px; transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1); }

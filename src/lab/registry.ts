@@ -58,6 +58,19 @@ export const labWorks: LabWork[] = [
     },
   },
   {
+    slug: "harf",
+    field: "design",
+    status: "live",
+    glyph: "ح",
+    kind: "WEB TOOL",
+    count: { ar: "٤٣٦ خطاً", en: "436 fonts" },
+    title: { ar: "حرف", en: "Harf" },
+    blurb: {
+      ar: "مساحة مجانية لمعاينة الخطوط العربية والإنجليزية ومقارنتها: اكتب جملتك وشاهدها بمئات الخطوط، ثم نزّل الخط مع رخصته أو صدّر النص مسارات SVG جاهزة لتصميمك.",
+      en: "A free place to preview and compare Arabic and English fonts: type your line, see it in hundreds of typefaces, then download the font with its licence or export the text as SVG outlines ready for your design.",
+    },
+  },
+  {
     slug: "design-studies",
     field: "design",
     status: "live",
