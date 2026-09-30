@@ -1,8 +1,8 @@
 import { test, expect } from "@playwright/test";
 import {
-  defaultGear, defaultHinge, defaultPattern, defaultPuzzle, defaultRuler, defaultSign, defaultTag, defaultTestCard,
+  defaultGear, defaultHinge, defaultPattern, defaultPuzzle, defaultRuler, defaultTag, defaultTestCard,
   gearDrawing, gearGeometry, hingeDrawing, jobEstimate, patternDrawing, printSize, puzzleDrawing, resolution,
-  rulerDrawing, signDrawing, steps, tagDrawing, testCardDrawing, defaultJob,
+  rulerDrawing, steps, tagDrawing, testCardDrawing, defaultJob,
 } from "../src/toolkit/generators";
 import { toDxf, toSvg } from "../src/toolkit/export";
 import type { Drawing } from "../src/toolkit/types";
@@ -16,7 +16,7 @@ const engraved = (d: Drawing) => d.shapes.flatMap(s => s.contours).filter(c => c
 test("every generator draws inside its own artboard and exports", () => {
   const drawings = [
     hingeDrawing(defaultHinge), gearDrawing(defaultGear), puzzleDrawing(defaultPuzzle), tagDrawing(defaultTag),
-    patternDrawing(defaultPattern), testCardDrawing(defaultTestCard), rulerDrawing(defaultRuler), signDrawing(defaultSign),
+    patternDrawing(defaultPattern), testCardDrawing(defaultTestCard), rulerDrawing(defaultRuler),
   ];
   for (const d of drawings) {
     expect(inside(d), d.shapes[0].name).toBe(true);
@@ -61,8 +61,16 @@ test("a puzzle has one edge per shared side, and the same seed gives the same pu
   expect(JSON.stringify(puzzleDrawing({ ...o, seed: o.seed + 1 }))).not.toBe(JSON.stringify(d));
 });
 
-test("a tag refuses text that does not fit and places the hole inside", () => {
-  expect(() => tagDrawing({ ...defaultTag, text: "A VERY LONG LABEL TEXT", textHeight: 8 })).toThrow(/wider/);
+test("a tag shrinks text to fit every shape, refuses text that cannot be read, and places the hole inside", () => {
+  for (const [shape, text] of [["rounded", "LONG LABEL"], ["circle", "LONG LABEL"], ["hexagon", "LONG LABEL"], ["star", "STAR"], ["shield", "LONG LABEL"]] as const) {
+    const d = tagDrawing({ ...defaultTag, shape, text, textHeight: 8 });
+    const b = d.shapes[0].contours.filter(c => c.layer === "engrave").flatMap(c => c.points);
+    expect(Math.min(...b.map(p => p.x))).toBeGreaterThan(0); expect(Math.max(...b.map(p => p.x))).toBeLessThan(d.width);
+  }
+  expect(() => tagDrawing({ ...defaultTag, width: 20, text: "A MUCH TOO LONG LABEL FOR THIS" })).toThrow(/too long/);
+  const font = { loops: [[{ x: 0, y: 0 }, { x: 100, y: 0 }, { x: 100, y: 20 }, { x: 0, y: 20 }]], width: 100, height: 20 };
+  const withFont = tagDrawing(defaultTag, font).shapes[0].contours.filter(c => c.layer === "engrave" && c.curve);
+  expect(withFont).toHaveLength(1);
   const d = tagDrawing(defaultTag);
   expect(engraved(d).length).toBeGreaterThan(1);
   for (const shape of ["circle", "hexagon", "star", "shield"] as const)
@@ -97,11 +105,6 @@ test("a millimetre ruler has one tick per millimetre", () => {
   expect(last - first).toBeCloseTo(100, 9);
 });
 
-test("a sign only accepts what the engraving font can draw", () => {
-  expect(() => signDrawing({ ...defaultSign, line1: "مرحبا" })).toThrow(/A–Z/);
-  expect(() => signDrawing({ ...defaultSign, line1: "", line2: "" })).toThrow();
-  expect(signDrawing(defaultSign).width).toBeGreaterThan(0);
-});
 
 test("the job estimate adds cutting, piercing and travel", () => {
   const square: Drawing = { width: 100, height: 100, shapes: [{ id: "a", name: "a", contours: [{ closed: true, points: [{ x: 0, y: 0 }, { x: 100, y: 0 }, { x: 100, y: 100 }, { x: 0, y: 100 }] }] }] };
