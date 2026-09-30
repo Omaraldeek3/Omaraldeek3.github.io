@@ -28,7 +28,7 @@ test("sitemap and robots are served and list the real routes", async ({ request 
   expect(sitemap.status()).toBe(200);
   const body = await sitemap.text();
   expect(body).toContain("/ar/lab/ai-automation");
-  expect(body).toContain("/tools");
+  expect(body).not.toContain("/tools");
   expect(body).toContain("/ar/lab/saas-panel");
   expect(body).toContain("/ar/studies/nabd");
 

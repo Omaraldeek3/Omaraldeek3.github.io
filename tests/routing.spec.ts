@@ -24,6 +24,6 @@ test("an unknown locale is a 404", async ({ page }) => {
 });
 
 test("api routes are not rewritten by the locale proxy", async ({ request }) => {
-  const status = (await request.get("/api/tools/cdr")).status();
+  const status = (await request.get("/api/contact")).status();
   expect([307, 308]).not.toContain(status);
 });

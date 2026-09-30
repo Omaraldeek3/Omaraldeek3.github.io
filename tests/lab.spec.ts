@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { copy } from "../src/content/site";
-import { toolIds } from "../src/toolkit/copy";
+import { cutStudioToolCount } from "../src/lab/cut-studio/view";
 import { studies } from "../src/lab/design-studies/studies";
 import { systems } from "../src/lab/ai-automation/systems";
 
@@ -26,19 +26,17 @@ test("the automation page lists the factory's six real stations with their tools
   await expect(page.locator(".oversight")).toContainText("Buzz");
 });
 
-test("the cut studio page opens the workshop at its own path", async ({ page }) => {
+test("the cut studio page opens the workshop on its own site, in the reader's language", async ({ page }) => {
   await page.goto("/ar/lab/cut-studio");
   const open = page.getByRole("link", { name: new RegExp(copy.ar.toolsCta) });
-  await expect(open).toHaveAttribute("href", "/tools?lang=ar");
-  await expect(page.locator(".studio-tools li")).toHaveCount(toolIds.length);
+  await expect(open).toHaveAttribute("href", "https://cutstudio.omardeek.tech/ar");
+  await expect(page.locator(".studio-tools li")).toHaveCount(cutStudioToolCount);
 });
 
-test("the workshop itself still loads", async ({ page }) => {
-  const errors: string[] = [];
-  page.on("pageerror", e => errors.push(e.message));
-  await page.goto("/tools");
-  await expect(page.locator(".toolkit")).toBeVisible();
-  expect(errors).toEqual([]);
+test("the old workshop address sends visitors to the new site", async ({ request }) => {
+  const response = await request.get("/tools", { maxRedirects: 0 });
+  expect(response.status()).toBe(308);
+  expect(response.headers().location).toBe("https://cutstudio.omardeek.tech/ar");
 });
 
 test("the design studies page links every study and says they are studies", async ({ page }) => {
@@ -135,6 +133,4 @@ test("an unknown slug is a 404", async ({ page }) => {
   expect((await page.goto("/ar/lab/nope"))?.status()).toBe(404);
 });
 
-test("the CDR route is reachable on this runtime", async ({ request }) => {
-  expect((await request.get("/api/tools/cdr")).status()).toBe(200);
-});
+

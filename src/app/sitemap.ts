@@ -19,6 +19,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
       entries.push({ url: `${base}/${locale}/studies/${study.slug}`, priority: 0.5 });
   }
 
-  entries.push({ url: `${base}/tools`, priority: 0.7 });
   return entries;
 }

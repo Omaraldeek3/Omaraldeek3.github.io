@@ -13,7 +13,7 @@ test("a bare cut-studio path lands on the lab page", async () => {
   expect(entry?.permanent).toBe(true);
 });
 
-test("the toolkit keeps its own published path", async () => {
+test("the old toolkit path sends visitors to Cut Studio's own site", async () => {
   const redirects = await config.redirects!();
-  expect(redirects.some(r => r.source === "/tools")).toBe(false);
+  expect(redirects.find(r => r.source === "/tools")?.destination).toBe("https://cutstudio.omardeek.tech/ar");
 });
