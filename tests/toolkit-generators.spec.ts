@@ -123,3 +123,17 @@ test("resolution converts both ways", () => {
   const back = printSize(254, 1000, 500);
   expect(back.width).toBeCloseTo(100, 9);
 });
+
+test("every test-card square has its own colour layer named by its power and speed", () => {
+  const d = testCardDrawing(defaultTestCard);
+  const pens = d.shapes.flatMap(s => s.contours).flatMap(c => (c.pen ? [c.pen] : []));
+  expect(pens).toHaveLength(25);
+  expect(new Set(pens.map(p => p.aci)).size).toBe(25);
+  expect(new Set(pens.map(p => p.name)).size).toBe(25);
+  expect(pens.every(p => p.aci !== 1 && p.aci !== 5)).toBe(true);
+  expect(pens[0].name).toBe("01-P10-S100");
+  const dxf = toDxf(d);
+  for (const p of pens) expect(dxf).toContain(`\n2\n${p.name}\n70\n0\n62\n${p.aci}\n`);
+  expect(toSvg(d).match(/<path id="\d\d-P/g)).toHaveLength(25);
+  expect(() => testCardDrawing({ ...defaultTestCard, columns: 6, rows: 6 })).toThrow(/at most 30/);
+});

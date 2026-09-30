@@ -107,3 +107,7 @@ html[dir=rtl] .up-compare figcaption { font-size: 12px; }
 /* ——— Print sheet ——— */
 
 .sh-sheet { display: block; height: 470px; max-width: 100%; width: auto; border: 1px solid #d8dbcc; box-shadow: 0 8px 23px #24321d12; background: #fff; }
+.pen-table{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;margin-top:8px}
+.pen-row{display:grid;grid-template-columns:1fr 1fr 1.4fr;gap:6px;align-items:center;padding:7px 10px;border:1px solid #dfe4d3;border-radius:6px;background:#fffcf3;font-size:12px}
+.pen-row i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-inline-end:6px;vertical-align:-2px;border:1px solid #0002}
+.pen-head{grid-column:1/-1;display:none}
