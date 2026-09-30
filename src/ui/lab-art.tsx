@@ -28,6 +28,18 @@ export function LabArt({ slug }: { slug: string }) {
           <line className="art-beam" x1="30" y1="22" x2="30" y2="98" />
         </svg>
       );
+    case "sira":
+      return (
+        <svg className="lab-art art-sira" viewBox="0 0 160 120" aria-hidden="true">
+          <rect className="art-card c1" x="44" y="22" width="56" height="74" rx="4" />
+          <rect x="62" y="28" width="56" height="74" rx="4" className="art-sheet" />
+          <line x1="72" y1="42" x2="108" y2="42" className="art-rule" />
+          <line x1="72" y1="54" x2="100" y2="54" className="art-rule" />
+          <line x1="72" y1="64" x2="104" y2="64" className="art-rule" />
+          <line x1="72" y1="74" x2="94" y2="74" className="art-rule" />
+          <circle cx="104" cy="86" r="3" className="art-node" />
+        </svg>
+      );
     case "design-studies":
       return (
         <svg className="lab-art art-design" viewBox="0 0 160 120" aria-hidden="true">

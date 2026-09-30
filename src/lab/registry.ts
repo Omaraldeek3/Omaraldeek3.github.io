@@ -46,6 +46,18 @@ export const labWorks: LabWork[] = [
     },
   },
   {
+    slug: "sira",
+    field: "code",
+    status: "live",
+    glyph: "✎",
+    kind: "WEB TOOL",
+    title: { ar: "سيرة", en: "Sira" },
+    blurb: {
+      ar: "منشئ سيرة ذاتية مجاني يُبقي نسختك العربية والإنجليزية متطابقتين: تكتب كل نص بلغتين، وتطبع كل نسخة PDF نظيفاً من متصفحك. بلا حساب، وبياناتك لا تغادر جهازك.",
+      en: "A free CV builder that keeps your Arabic and English CVs in step: write each line in both languages and print each version to a clean PDF from your browser. No account, and your data never leaves your device.",
+    },
+  },
+  {
     slug: "design-studies",
     field: "design",
     status: "live",

@@ -8,6 +8,7 @@ import { AiAutomationView } from "@/lab/ai-automation/view";
 import { CutStudioView } from "@/lab/cut-studio/view";
 import { DesignStudiesView } from "@/lab/design-studies/view";
 import { SaasPanelView } from "@/lab/saas-panel/view";
+import { SiraView } from "@/lab/sira/view";
 
 export function generateStaticParams() {
   return locales.flatMap(locale =>
@@ -48,6 +49,7 @@ export default async function LabPage({ params }: PageProps<"/[locale]/lab/[slug
         {work.slug === "cut-studio" && <CutStudioView locale={locale} />}
         {work.slug === "design-studies" && <DesignStudiesView locale={locale} />}
         {work.slug === "saas-panel" && <SaasPanelView locale={locale} />}
+        {work.slug === "sira" && <SiraView locale={locale} />}
       </div>
     </main>
   );
