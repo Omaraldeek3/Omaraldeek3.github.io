@@ -38,11 +38,11 @@ export const labWorks: LabWork[] = [
     status: "live",
     glyph: "✂",
     kind: "WEB TOOL",
-    count: { ar: "٢٣ أداة", en: "23 tools" },
+    count: { ar: "٢١ أداة", en: "21 tools" },
     title: { ar: "Cut Studio", en: "Cut Studio" },
     blurb: {
-      ar: "٢٣ أداة للّيزر والطباعة والتصميم تعمل داخل متصفحك: تحويل الصور إلى فيكتور، وتكبيرها بالذكاء الاصطناعي، وكتابة عربية جاهزة للقص. بلا حساب وبلا رفع ملفات، صنعتها لورشتي وتركتها مجانية.",
-      en: "Twenty-three laser, print and design tools that run in your browser: image to vector, AI upscaling, Arabic lettering ready to cut. No account, no uploads; built for my own workshop and left free.",
+      ar: "٢١ أداة للّيزر والطباعة والتصميم تعمل داخل متصفحك: تحويل الصور إلى فيكتور، وتكبيرها بالذكاء الاصطناعي، وكتابة عربية جاهزة للقص. بلا حساب وبلا رفع ملفات، صنعتها لورشتي وتركتها مجانية.",
+      en: "Twenty-one laser, print and design tools that run in your browser: image to vector, AI upscaling, Arabic lettering ready to cut. No account, no uploads; built for my own workshop and left free.",
     },
   },
   {

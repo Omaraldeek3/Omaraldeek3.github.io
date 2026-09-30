@@ -16,9 +16,13 @@ test('all workspaces expose working outputs and calculated values',async({page})
   await page.getByRole('button',{name:'Resize & repeat',exact:true}).click();
   await expect(page.getByRole('heading',{name:'Resize & repeat'})).toBeVisible();
   await expect(page.getByRole('button',{name:'Export SVG',exact:true})).toBeEnabled();
-  await page.getByRole('button',{name:'Material cost',exact:true}).click();
-  await page.getByLabel('Sheet price').fill('50');await page.getByLabel('Sheets used').fill('2');await page.getByLabel('Finished pieces').fill('10');
-  await expect(page.getByTestId('cost-total')).toHaveText('100.00');
+  await page.getByRole('button',{name:'Job quote',exact:true}).click();
+  await page.getByText('Time it from the artwork',{exact:true}).click();
+  await page.getByLabel('Quantity').fill('10');await page.getByLabel('Sheet price').fill('50');await page.getByLabel('Sheets used').fill('2');
+  await page.getByLabel('Machine time for the whole job').fill('30');await page.getByLabel('Machine rate per hour').fill('20');
+  await page.getByLabel('Labour and extras for the job').fill('0');await page.getByLabel('Overhead').fill('0');await page.getByLabel('Profit').fill('10');
+  await expect(page.getByTestId('quote-total')).toHaveText('121.00');
+  await expect(page.getByTestId('quote-each')).toHaveText('12.10 ILS');
   await page.getByRole('button',{name:'Fit test',exact:true}).click();await expect(page.getByRole('button',{name:'Export DXF',exact:true})).toBeEnabled();
   await page.getByRole('button',{name:'Vector cleanup',exact:true}).click();await page.getByRole('button',{name:'Apply cleanup',exact:true}).click();await expect(page.getByRole('button',{name:'Export SVG',exact:true})).toBeEnabled();
 });
@@ -59,7 +63,7 @@ test('a physical SVG uploads, nests and reexports at the requested scale',async(
 });
 test('all mobile Arabic workspaces fit the viewport',async({page})=>{
   await page.setViewportSize({width:390,height:844});await page.goto('/tools');await page.getByRole('button',{name:'العربية',exact:true}).click();
-  for(const name of ['تحويل صورة إلى فيكتور','تنظيف الفيكتور','المقاس والتكرار','تكلفة الخامة','اختبار التعشيق','تجهيز صور الحفر','صانع الصناديق']){
+  for(const name of ['تحويل صورة إلى فيكتور','تنظيف الفيكتور','المقاس والتكرار','عرض السعر','اختبار التعشيق','تجهيز صور الحفر','صانع الصناديق']){
     // On a phone the tools are chosen from one list rather than the strip.
     const value=await page.locator('.tool-picker option').filter({hasText:name}).first().getAttribute('value');
     await page.getByLabel('الأداة').selectOption(value!);await expect(page.getByRole('heading',{name,exact:true})).toBeVisible();

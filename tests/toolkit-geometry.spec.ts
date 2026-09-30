@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { bounds, shapesCollide, nest, repeatDrawing, kerfDrawing, costEstimate, cleanDrawing, contourKey } from '../src/toolkit/geometry';
+import { bounds, shapesCollide, nest, repeatDrawing, kerfDrawing, cleanDrawing, contourKey } from '../src/toolkit/geometry';
 import { toSvg, toDxf } from '../src/toolkit/export';
 import type { Shape } from '../src/toolkit/types';
 import { sampleDrawing } from '../src/toolkit/samples';
@@ -42,7 +42,7 @@ test('repeat dimensions, coupons and cost are computed from supplied values',()=
   expect(repeated.width).toBe(130);expect(repeated.height).toBe(45);expect(repeated.shapes).toHaveLength(6);
   const coupon=kerfDrawing(3,0.1,5);expect(coupon.shapes).toHaveLength(1);
   expect(coupon.labels.map(l=>l.value)).toEqual(['2.80','2.90','3.00','3.10','3.20']);
-  expect(costEstimate(50,2,10,20,5,10)).toEqual({material:100,extras:15,total:138,perItem:13.8});
+  
 });
 test('cleanup distinguishes open and closed paths and canonicalizes rotations',()=>{
  const base=rect('r',0,0,20,10).contours[0];

@@ -111,3 +111,6 @@ html[dir=rtl] .up-compare figcaption { font-size: 12px; }
 .pen-row{display:grid;grid-template-columns:1fr 1fr 1.4fr;gap:6px;align-items:center;padding:7px 10px;border:1px solid #dfe4d3;border-radius:6px;background:#fffcf3;font-size:12px}
 .pen-row i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-inline-end:6px;vertical-align:-2px;border:1px solid #0002}
 .pen-head{grid-column:1/-1;display:none}
+.quote-message{white-space:pre-wrap;font:inherit;font-size:13px;line-height:1.7;background:#f6f3e8;border:1px dashed #cfd6c1;border-radius:6px;padding:12px 14px;margin:14px 0 12px}
+.quote-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.quote-actions .button.disabled{opacity:.45;pointer-events:none}
