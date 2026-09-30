@@ -6,7 +6,6 @@ import { hasLocalePrefix, localisedPath } from "./content/locales";
 // `app` — here that means src/, not the repository root.
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  if (pathname === "/mada" || pathname.startsWith("/mada/")) return NextResponse.next();
   if (hasLocalePrefix(pathname)) return;
 
   const url = request.nextUrl.clone();
