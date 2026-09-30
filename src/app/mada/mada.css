@@ -1,0 +1,18 @@
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+body.mada-body { margin: 0; color: #112247; background: #f7f9fd; font-family: var(--font-mada-arabic), var(--font-mada-latin), sans-serif; font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.mada-body h1, .mada-body h2, .mada-body h3, .mada-body p { margin: 0; }
+.mada-body button, .mada-body input, .mada-body textarea, .mada-body select { font: inherit; }
+.mada-body button, .mada-body a { -webkit-tap-highlight-color: transparent; }
+.mada-body button { cursor: pointer; }
+.mada-body button:disabled { cursor: wait; }
+.mada-body a { color: inherit; text-decoration: none; }
+.mada-body svg { flex-shrink: 0; }
+.mada-body :focus-visible { outline: 3px solid #2854de; outline-offset: 5px; }
+.mada-body ::selection { color: #112247; background: #d9e4ff; }
+.mada-body input, .mada-body textarea, .mada-body select { min-width: 0; }
+.mada-body [dir="ltr"], .mada-body bdi { font-family: var(--font-mada-latin), var(--font-mada-arabic), sans-serif; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .mada-body *, .mada-body *::before, .mada-body *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
