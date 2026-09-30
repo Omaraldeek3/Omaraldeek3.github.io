@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import {
   defaultGear, defaultHinge, defaultPattern, defaultPuzzle, defaultRuler, defaultTag, defaultTestCard,
-  gearDrawing, gearGeometry, hingeDrawing, jobEstimate, patternDrawing, printSize, puzzleDrawing, resolution,
+  centreDistance, gearDrawing, gearGeometry, gearPairDrawing, hingeDrawing, jobEstimate, patternDrawing, printSize, puzzleDrawing, resolution,
   rulerDrawing, steps, tagDrawing, testCardDrawing, defaultJob,
 } from "../src/toolkit/generators";
 import { toDxf, toSvg } from "../src/toolkit/export";
@@ -136,4 +136,18 @@ test("every test-card square has its own colour layer named by its power and spe
   for (const p of pens) expect(dxf).toContain(`\n2\n${p.name}\n70\n0\n62\n${p.aci}\n`);
   expect(toSvg(d).match(/<path id="\d\d-P/g)).toHaveLength(25);
   expect(() => testCardDrawing({ ...defaultTestCard, columns: 6, rows: 6 })).toThrow(/at most 30/);
+});
+
+test("a gear pair is laid out in mesh: centres a pitch-radius sum apart, teeth never overlapping", () => {
+  for (const [a, b] of [[24, 36], [24, 12], [13, 31], [20, 20]]) {
+    const d = gearPairDrawing({ ...defaultGear, teeth: a }, b);
+    expect(d.shapes).toHaveLength(2);
+    const centre = (i: number) => { const c = d.shapes[i].contours.find(x => x.layer === "engrave")!.points; const xs = c.map(p => p.x); return (Math.min(...xs) + Math.max(...xs)) / 2; };
+    expect(centre(1) - centre(0)).toBeCloseTo(centreDistance(defaultGear.module, a, b), 1);
+    const g1 = d.shapes[0].contours[0].points, g2 = d.shapes[1].contours[0].points;
+    const inside = (p: { x: number; y: number }, poly: { x: number; y: number }[]) => { let h = false; for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) { const A = poly[i], B = poly[j]; if ((A.y > p.y) !== (B.y > p.y) && p.x < ((B.x - A.x) * (p.y - A.y)) / (B.y - A.y) + A.x) h = !h; } return h; };
+    expect(g1.filter(p => inside(p, g2)).length + g2.filter(p => inside(p, g1)).length).toBe(0);
+    let gap = Infinity; for (const p of g1) for (const q of g2) gap = Math.min(gap, Math.hypot(p.x - q.x, p.y - q.y));
+    expect(gap).toBeLessThan(defaultGear.module * 0.2);
+  }
 });
