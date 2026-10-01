@@ -49,6 +49,25 @@ export function LabArt({ slug }: { slug: string }) {
           <circle cx="112" cy="36" r="3" className="art-node" />
         </svg>
       );
+    case "naqsh":
+      return (
+        <svg className="lab-art art-naqsh" viewBox="0 0 160 120" aria-hidden="true">
+          <rect x="30" y="22" width="100" height="76" rx="4" className="art-sheet" />
+          <path className="art-diamond" d="M80 36l8 16 16 8-16 8-8 16-8-16-16-8 16-8z" />
+          <circle cx="80" cy="60" r="30" className="art-rule" fill="none" />
+          <circle cx="112" cy="34" r="3" className="art-node" />
+        </svg>
+      );
+    case "organizer":
+      return (
+        <svg className="lab-art art-organizer" viewBox="0 0 160 120" aria-hidden="true">
+          <rect className="art-card c1" x="36" y="30" width="40" height="30" rx="3" />
+          <rect className="art-card c2" x="84" y="30" width="40" height="30" rx="3" />
+          <rect x="36" y="66" width="88" height="30" rx="3" className="art-sheet" />
+          <line x1="46" y1="81" x2="114" y2="81" className="art-rule" />
+          <circle cx="116" cy="40" r="3" className="art-node" />
+        </svg>
+      );
     case "design-studies":
       return (
         <svg className="lab-art art-design" viewBox="0 0 160 120" aria-hidden="true">

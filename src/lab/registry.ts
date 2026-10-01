@@ -71,6 +71,31 @@ export const labWorks: LabWork[] = [
     },
   },
   {
+    slug: "naqsh",
+    field: "design",
+    status: "live",
+    glyph: "✦",
+    kind: "WEB TOOL",
+    count: { ar: "٤٨٠ تصميماً", en: "480 designs" },
+    title: { ar: "نقش", en: "Naqsh" },
+    blurb: {
+      ar: "مكتبة واستوديو SVG مفتوح المصدر يبدأ بالزخارف العربية والإسلامية والنباتية: شبكات هندسية وأرابيسك ووردات وإطارات، تخصّصها وتصدّرها من متصفحك بلا حساب.",
+      en: "An open-source SVG library and studio that starts with Arabic, Islamic and floral ornament: geometric grids, arabesque, rosettes and frames you customise and export from your browser, no account.",
+    },
+  },
+  {
+    slug: "organizer",
+    field: "code",
+    status: "live",
+    glyph: "▦",
+    kind: "DESKTOP APP",
+    title: { ar: "منظّم الاستوديو", en: "Smart File Organizer" },
+    blurb: {
+      ar: "تطبيق ويندوز يرتّب ملفات CorelDRAW وPhotoshop وIllustrator في أرشيف حسب العميل ثم الشهر، ويفهم الاسم العربي والإنجليزي للعميل نفسه. يعمل محلياً بالكامل ويمكن التراجع عن كل عملية.",
+      en: "A Windows app that files CorelDRAW, Photoshop and Illustrator work into an archive by client, then month, and knows a client's Arabic and English names are the same client. Fully local, and every run can be undone.",
+    },
+  },
+  {
     slug: "design-studies",
     field: "design",
     status: "live",
