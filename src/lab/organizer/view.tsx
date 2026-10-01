@@ -35,9 +35,6 @@ export function OrganizerView({ locale }: { locale: Locale }) {
       <a className="button button-live" href={ORGANIZER_URL}>
         {t.organizerCta} <span aria-hidden="true">↗</span>
       </a>
-      <p className="studio-small mono">
-        <a href={ORGANIZER_URL}>{t.siraSource}</a>
-      </p>
       <p>
         <Link href={`/${locale}`}>{t.backTop}</Link>
       </p>
