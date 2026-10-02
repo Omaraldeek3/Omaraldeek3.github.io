@@ -25,15 +25,23 @@ export function DesignStudiesView({ locale }: { locale: Locale }) {
           count: counts.get(key) ?? 0,
         }))}
       >
-        {projects.map(project => (
+        {projects.map((project, index) => (
           <Link
             className="study"
             key={project.slug}
             href={`/${locale}/work/${project.slug}`}
             data-category={originalCategories[project.slug]}
           >
-            <div className={`study-frame ${project.theme}`}>
-              <SitePreview project={project} locale={locale} imageSizes="(max-width: 1024px) 88vw, 30vw" />
+            {/* A picture of the study: the meta below names the card, so the mock
+                site's text stays out of the link's accessible name. */}
+            <div className={`study-frame ${project.theme}`} aria-hidden="true">
+              {/* The first card's photo is the largest thing on a phone screen. */}
+              <SitePreview
+                project={project}
+                locale={locale}
+                priority={index === 0}
+                imageSizes="(max-width: 1024px) 88vw, 30vw"
+              />
             </div>
             <div className="study-meta">
               <span className="mono" dir="ltr">
@@ -51,7 +59,7 @@ export function DesignStudiesView({ locale }: { locale: Locale }) {
             href={`/${locale}/studies/${study.slug}`}
             data-category={study.category}
           >
-            <div className="study-frame concept-frame">
+            <div className="study-frame concept-frame" aria-hidden="true">
               <Concept study={study} locale={locale} />
             </div>
             <div className="study-meta">
