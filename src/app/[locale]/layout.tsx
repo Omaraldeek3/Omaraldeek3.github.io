@@ -98,6 +98,8 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
     <html
       lang={locale}
       dir={locale === "ar" ? "rtl" : "ltr"}
+      // globals.css scrolls smoothly; this keeps page changes instant.
+      data-scroll-behavior="smooth"
       className={`${arabic.variable} ${latin.variable} ${mono.variable} ${rounded.variable}`}
     >
       <body>
