@@ -1,6 +1,9 @@
+/* The studies were drawn with the old layer's font names; point them at the
+   fonts the site loads now. */
+.site-preview { --font-latin:var(--font-en); --font-arabic:var(--font-ar); }
 .site-preview { container-type:inline-size; overflow:hidden; width:100%; background:#f5f0e6; color:#3c2c23; }
 .preview-window { width:100%; }
-.preview-browser { direction:ltr; height:3cqw; min-height:12px; display:flex; align-items:center; justify-content:space-between; padding:0 1.8cqw; font:400 1cqw var(--font-latin),sans-serif; background:#e9e6df; color:#8c8b82; border-bottom:1px solid #00000010; }
+.preview-browser { direction:ltr; height:3cqw; min-height:12px; display:flex; align-items:center; justify-content:space-between; padding:0 1.8cqw; font:400 1cqw var(--font-latin),sans-serif; background:#e9e6df; color:#66655d; border-bottom:1px solid #00000010; }
 .preview-browser>div { display:flex; gap:.4cqw; }
 .preview-browser i { height:.5cqw; width:.5cqw; border-radius:50%; background:#b9b7af; }
 .preview-nav { padding:2cqw 4cqw; display:flex; justify-content:space-between; align-items:center; height:9cqw; }
@@ -16,6 +19,8 @@
 .preview-cta { display:inline-flex; justify-content:space-between; align-items:center; gap:3cqw; margin-top:3cqw; padding:1cqw 1.5cqw; font-size:1cqw; background:#473629; color:#eee4cf; border-radius:1px; }
 .preview-cta>span { font-size:1.8cqw; }
 .preview-image { position:relative; min-height:30cqw; }
+/* The photo fills its frame by cropping, never by stretching. */
+.preview-image img { object-fit:cover; }
 .coffee-image { margin:1cqw 3cqw 1cqw 0; border-radius:44% 44% 0 0; overflow:hidden; }
 [dir="ltr"] .coffee-image { margin:1cqw 0 1cqw 3cqw; }
 .coffee-image img { filter:brightness(.7) saturate(.7); }
