@@ -58,6 +58,18 @@ export function LabArt({ slug }: { slug: string }) {
           <circle cx="112" cy="34" r="3" className="art-node" />
         </svg>
       );
+    case "qalib":
+      return (
+        <svg className="lab-art art-qalib" viewBox="0 0 160 120" aria-hidden="true">
+          <rect x="30" y="22" width="100" height="76" rx="4" className="art-sheet" />
+          <line x1="30" y1="34" x2="130" y2="34" className="art-rule" />
+          <rect x="40" y="44" width="36" height="44" rx="2" className="art-sheet" />
+          <line x1="86" y1="50" x2="120" y2="50" className="art-rule" />
+          <line x1="86" y1="60" x2="114" y2="60" className="art-rule" />
+          <line x1="86" y1="70" x2="118" y2="70" className="art-rule" />
+          <circle cx="112" cy="28" r="3" className="art-node" />
+        </svg>
+      );
     case "organizer":
       return (
         <svg className="lab-art art-organizer" viewBox="0 0 160 120" aria-hidden="true">
