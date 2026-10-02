@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { copy, isLocale, locales, projects, profile } from "@/content/site";
 import { SitePreview, DemoContent } from "@/components/preview";
+import "../../../../work.css";
 import type { Metadata } from "next";
 export function generateStaticParams() { return locales.flatMap(locale => projects.map(project => ({ locale, slug: project.slug }))); }
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
@@ -14,5 +15,5 @@ export default async function PreviewPage({ params }: { params: Promise<{ locale
   const { locale, slug } = await params; const project = projects.find(p => p.slug === slug);
   if (!isLocale(locale) || !project) notFound();
   const t = copy[locale];
-  return <main id="main" className="demo-page"><div className="demo-notice wrap" id="top"><Link href={`/${locale}/work/${slug}`}>← {t.backProject}</Link><h1>{project[locale].name} — {t.preview}</h1><p>{t.previewNotice}</p></div><SitePreview project={project} locale={locale} priority interactive /><DemoContent project={project} locale={locale} /></main>;
+  return <main id="main" className="demo-page"><div className="demo-notice shell" id="top"><Link href={`/${locale}/work/${slug}`}>← {t.backProject}</Link><h1>{project[locale].name} — {t.preview}</h1><p>{t.previewNotice}</p></div><SitePreview project={project} locale={locale} priority interactive /><DemoContent project={project} locale={locale} /></main>;
 }

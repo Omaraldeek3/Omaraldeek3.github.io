@@ -1,0 +1,278 @@
+/* ============================================================================
+   The three design studies' case pages (/work/<slug>) and their full-page
+   previews (/work/<slug>/preview).
+
+   These rules went with the old visual layer and the pages were left
+   unstyled; this is the same layout in the site's current language. The page
+   around each study follows the site, while the study frames keep their own
+   identity (previews.css).
+   ========================================================================== */
+
+/* ——— A study's case page ——— */
+
+.work-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.work-tags li {
+  padding: 0.25rem 0.85rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+/* The study at full width, on a ground taken from its own palette. */
+.work-frame {
+  margin-block-end: 3.5rem;
+  padding: clamp(0.75rem, 4vw, 3rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #191814;
+}
+
+.work-frame.coffee { background: #211a15; }
+.work-frame.business { background: #121d2c; }
+
+.work-frame > .site-preview {
+  max-inline-size: 83rem;
+  margin-inline: auto;
+  box-shadow: 0 25px 75px rgba(0, 0, 0, 0.27);
+}
+
+/* What the study set out to do, how, and what it contains. */
+.work-case { margin-block-end: 3.5rem; }
+
+.work-case-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 0.8rem;
+}
+
+.work-case article {
+  padding: 1.3rem;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.work-case article > .mono {
+  color: var(--live);
+  font-size: 0.74rem;
+}
+
+.work-case h3 {
+  margin: 0.4rem 0 0.6rem;
+  font-size: 1.15rem;
+  font-weight: 900;
+}
+
+.work-case p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.work-case ul {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--text-secondary);
+}
+
+.work-case li::before {
+  content: "—";
+  margin-inline-end: 0.6rem;
+  color: var(--live-deep);
+}
+
+/* The same study on a desktop screen and on a phone, side by side. */
+.work-preview { margin-block-end: 3.5rem; }
+
+.work-preview-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  margin-block-end: 1.5rem;
+}
+
+.work-preview-head h2 {
+  margin: 0;
+  font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+  font-weight: 900;
+}
+
+.work-showcase {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 2.5vw, 2rem);
+  padding: clamp(1.5rem, 5vw, 4rem) clamp(0.8rem, 3.5vw, 3rem);
+  border-radius: var(--radius);
+  background: #23221b;
+  overflow: hidden;
+}
+
+.work-showcase.coffee { background: #34291e; }
+.work-showcase.business { background: #182841; }
+
+.showcase-desktop {
+  flex: 0 0 77%;
+  min-inline-size: 0;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.19);
+}
+
+.showcase-mobile {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  border: 5px solid #080908;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.27);
+}
+
+/* Inside the phone frame the study switches to its narrow layout. */
+.showcase-mobile .preview-browser { display: none; }
+.showcase-mobile .preview-nav { height: 20cqw; padding: 4cqw 6cqw; }
+.showcase-mobile .preview-nav strong { font-size: 9cqw; }
+.showcase-mobile .preview-nav > div { display: none; }
+.showcase-mobile .preview-menu { font-size: 6cqw; }
+.showcase-mobile .preview-body { display: flex; flex-direction: column; padding: 0; }
+.showcase-mobile .preview-copy { display: block; padding: 7cqw; }
+.showcase-mobile .preview-eyebrow { font-size: 3cqw; }
+.showcase-mobile .preview-heading { font-size: 13cqw; margin-top: 4cqw; }
+.showcase-mobile .preview-copy p { font-size: 3.5cqw; }
+.showcase-mobile .preview-cta { font-size: 3cqw; padding: 3cqw; margin-top: 5cqw; }
+.showcase-mobile .preview-image { min-height: 65cqw; margin: 4cqw; }
+.showcase-mobile .business-art { min-height: 65cqw; }
+.showcase-mobile .preview-footer { font-size: 2.8cqw; padding: 4cqw 0; }
+.showcase-mobile .coffee-stamp { width: 30cqw; height: 30cqw; font-size: 7cqw; }
+.showcase-mobile .image-caption { font-size: 3cqw; }
+.showcase-mobile .orbit { width: 60cqw; height: 60cqw; left: 25cqw; top: 10cqw; }
+.showcase-mobile .orbit-two { width: 45cqw; height: 45cqw; left: 32cqw; top: 18cqw; }
+.showcase-mobile .orbit-three { width: 30cqw; height: 30cqw; left: 40cqw; top: 25cqw; }
+.showcase-mobile .orbit-caption { top: 35cqw; left: 51cqw; font-size: 9cqw; }
+
+@media (max-width: 40rem) {
+  .showcase-desktop { flex-basis: 66%; }
+  .showcase-mobile { border-width: 3px; border-radius: 10px; }
+}
+
+/* ——— A study's full-page preview ——— */
+
+.demo-page { padding-block: clamp(1.5rem, 4vw, 2.5rem) 0; }
+
+.demo-notice { padding-block-end: 2rem; }
+
+.demo-notice > a {
+  display: inline-block;
+  padding-block: 0.7rem;
+  margin-block-start: -0.7rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.demo-notice > a:hover { color: var(--live); }
+
+.demo-notice h1 {
+  margin: 0.5rem 0;
+  font-size: clamp(1.6rem, 4vw, 2.3rem);
+  font-weight: 900;
+}
+
+.demo-notice p {
+  margin: 0;
+  max-inline-size: 60ch;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.demo-page > .site-preview { max-inline-size: 112rem; margin-inline: auto; }
+
+/* The preview's own links are real here: give them a finger-sized target. */
+.demo-page .preview-nav a { min-height: 44px; display: inline-flex; align-items: center; }
+.demo-page .preview-nav a:hover { text-decoration: underline; }
+.demo-page .preview-cta { min-height: 44px; }
+.demo-page :focus-visible { outline-color: currentColor; }
+
+/* The sections below the study's first screen, in its own colours. */
+.demo-extra {
+  padding: clamp(2.8rem, 6vw, 5rem) 7%;
+  background: #f5f0e6;
+  color: #3c2c23;
+}
+
+.demo-extra.interior { background: #e7e7de; color: #393b30; }
+.demo-extra.business { background: #edeff4; color: #143267; }
+
+.demo-extra > .eyebrow {
+  display: block;
+  margin-block-end: 1.5rem;
+  font-size: 0.8rem;
+}
+
+.demo-extra h2 {
+  margin: 0;
+  font-size: clamp(2.2rem, 5vw, 3.25rem);
+  line-height: 1.3;
+}
+
+.demo-columns {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 3rem;
+  margin-block-start: 3rem;
+}
+
+.demo-columns section {
+  border-block-start: 1px solid rgba(153, 153, 153, 0.47);
+  padding-block-start: 1.4rem;
+}
+
+.demo-columns .mono { font-size: 0.75rem; }
+
+.demo-columns h3 {
+  margin-block: 0.9rem;
+  font-size: clamp(1.6rem, 3vw, 1.9rem);
+}
+
+.demo-columns p {
+  margin: 0;
+  color: inherit;
+  font-size: 1.05rem;
+  line-height: 1.9;
+  opacity: 0.85;
+}
+
+@media (max-width: 48rem) {
+  .demo-columns { grid-template-columns: minmax(0, 1fr); gap: 1.9rem; margin-block-start: 1.9rem; }
+}
+
+/* On a phone the preview drops its desktop chrome and stacks, as the
+   study's own site would. */
+@media (max-width: 44rem) {
+  .demo-page > .site-preview .preview-browser { display: none; }
+  .demo-page > .site-preview .preview-nav { height: 18cqw; padding: 5cqw; }
+  .demo-page > .site-preview .preview-nav strong { font-size: 8cqw; }
+  .demo-page > .site-preview .preview-nav > div { font-size: 3.1cqw; gap: 3cqw; }
+  .demo-page > .site-preview .preview-menu { display: none; }
+  .demo-page > .site-preview .preview-body { display: flex; flex-direction: column; padding: 0; }
+  .demo-page > .site-preview .preview-copy { display: block; padding: 7cqw; }
+  .demo-page > .site-preview .preview-eyebrow { font-size: 2.7cqw; margin-bottom: 4cqw; }
+  .demo-page > .site-preview .preview-heading { font-size: 13cqw; }
+  .demo-page > .site-preview .preview-copy p { font-size: 3.8cqw; margin-top: 4cqw; }
+  .demo-page > .site-preview .preview-cta { font-size: 3.5cqw; padding: 2.5cqw 4cqw; margin-top: 5cqw; }
+  .demo-page > .site-preview .preview-image { min-height: 75cqw; margin: 4cqw 6cqw; }
+  .demo-page > .site-preview .coffee-stamp { width: 30cqw; height: 30cqw; font-size: 7cqw; }
+  .demo-page > .site-preview .image-caption { font-size: 3cqw; }
+  .demo-page > .site-preview .preview-footer { font-size: 2.5cqw; padding-block: 3cqw; }
+  .demo-page > .site-preview .business-art { min-height: 50cqw; }
+}
