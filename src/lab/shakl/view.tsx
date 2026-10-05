@@ -8,10 +8,11 @@ export const SHAKL_URL = "https://shakl.omardeek.tech";
 const REPO = "https://github.com/Omaraldeek3/shakl-3d-library";
 
 const features: [string, string][] = [
-  ["1,024 procedural wooden models", "١٠٢٤ نموذجاً خشبياً إجرائياً"],
-  ["Houses, boxes, lanterns and decor", "بيوت وصناديق وفوانيس وديكور"],
+  ["45 designs, none repeated", "٤٥ تصميماً بلا تكرار"],
+  ["Practical templates for desk, shop and home", "قوالب عملية للمكتب والمحل والبيت"],
+  ["QR codes engraved from your link or Wi-Fi", "رمز QR محفور من رابطك أو شبكة الواي فاي"],
   ["Live 3D preview", "معاينة حية ثلاثية الأبعاد"],
-  ["Set width, depth and height", "تحديد العرض والعمق والارتفاع"],
+  ["The sizes that matter for each design", "مقاسات تخص كل تصميم"],
   ["Parts follow your board thickness", "القطع تتبع سماكة خشبك"],
   ["Laser kerf compensation", "تعويض عرض قطع الليزر"],
   ["Download 1:1 SVG cutting files", "تنزيل ملفات قص SVG بمقياس ١:١"],

@@ -38,11 +38,11 @@ export const labWorks: LabWork[] = [
     status: "live",
     glyph: "✂",
     kind: "WEB TOOL",
-    count: { ar: "٢١ أداة", en: "21 tools" },
+    count: { ar: "٢٦ أداة", en: "26 tools" },
     title: { ar: "Cut Studio", en: "Cut Studio" },
     blurb: {
-      ar: "٢١ أداة للّيزر والطباعة والتصميم تعمل داخل متصفحك: تحويل الصور إلى فيكتور، وتكبيرها بالذكاء الاصطناعي، وكتابة عربية جاهزة للقص. بلا حساب وبلا رفع ملفات، صنعتها لورشتي وتركتها مجانية.",
-      en: "Twenty-one laser, print and design tools that run in your browser: image to vector, AI upscaling, Arabic lettering ready to cut. No account, no uploads; built for my own workshop and left free.",
+      ar: "٢٦ أداة للّيزر والطباعة والتصميم تعمل داخل متصفحك: تحويل الصور إلى فيكتور، وتكبيرها بالذكاء الاصطناعي، وكتابة عربية بخطوط حرف تبقى نقاطها على حروفها عند القص. بلا حساب وبلا رفع ملفات، صنعتها لورشتي وتركتها مجانية.",
+      en: "Twenty-six laser, print and design tools that run in your browser: image to vector, AI upscaling, Arabic lettering in Harf's fonts that keeps its dots on when it is cut. No account, no uploads; built for my own workshop and left free.",
     },
   },
   {
@@ -102,11 +102,11 @@ export const labWorks: LabWork[] = [
     status: "live",
     glyph: "ش",
     kind: "3D LIBRARY",
-    count: { ar: "١٠٢٤ نموذجاً", en: "1,024 models" },
+    count: { ar: "٤٥ تصميماً", en: "45 designs" },
     title: { ar: "شكل", en: "Shakl" },
     blurb: {
-      ar: "مكتبة نماذج خشبية ثلاثية الأبعاد للقص بالليزر: بيوت وصناديق وفوانيس وديكور، تعاينها مجسّمة وتغيّر مقاساتها ثم تنزّل ملفات القص SVG بمقياس ١:١ من متصفحك، بلا حساب.",
-      en: "A library of 3D wooden models for laser cutting: houses, boxes, lanterns and decor you preview in 3D, resize, then download as 1:1 SVG cutting files from your browser, no account.",
+      ar: "مكتبة تصاميم خشبية ثلاثية الأبعاد للقص بالليزر بلا تكرار: قوالب عملية للمكتب والمحل والبيت، من حامل الجوال وحامل رمز QR إلى قطار التروس، مع بيوت وصناديق وفوانيس. تعاينها مجسّمة وتغيّر مقاساتها ثم تنزّل ملفات القص SVG بمقياس ١:١، بلا حساب.",
+      en: "A library of 3D wooden designs for laser cutting, none repeated: practical templates for the desk, the shop and the home, from a phone stand and a QR code stand to a gear train, with houses, boxes and lanterns. Preview in 3D, resize, then download 1:1 SVG cutting files, no account.",
     },
   },
   {
