@@ -12,6 +12,7 @@ import { SiraView } from "@/lab/sira/view";
 import { HarfView } from "@/lab/harf/view";
 import { NaqshView } from "@/lab/naqsh/view";
 import { QalibView } from "@/lab/qalib/view";
+import { ShaklView } from "@/lab/shakl/view";
 import { OrganizerView } from "@/lab/organizer/view";
 
 export function generateStaticParams() {
@@ -57,6 +58,7 @@ export default async function LabPage({ params }: PageProps<"/[locale]/lab/[slug
         {work.slug === "harf" && <HarfView locale={locale} />}
         {work.slug === "naqsh" && <NaqshView locale={locale} />}
         {work.slug === "qalib" && <QalibView locale={locale} />}
+        {work.slug === "shakl" && <ShaklView locale={locale} />}
         {work.slug === "organizer" && <OrganizerView locale={locale} />}
       </div>
     </main>

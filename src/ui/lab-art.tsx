@@ -70,6 +70,15 @@ export function LabArt({ slug }: { slug: string }) {
           <circle cx="112" cy="28" r="3" className="art-node" />
         </svg>
       );
+    case "shakl":
+      return (
+        <svg className="lab-art art-shakl" viewBox="0 0 160 120" aria-hidden="true">
+          <path className="art-sheet" d="M50 92V56l30-22 30 22v36z" />
+          <path className="art-rule" fill="none" d="M50 56l30 14 30-14M80 70v22" />
+          <rect x="72" y="78" width="16" height="14" className="art-sheet" />
+          <circle cx="112" cy="34" r="3" className="art-node" />
+        </svg>
+      );
     case "organizer":
       return (
         <svg className="lab-art art-organizer" viewBox="0 0 160 120" aria-hidden="true">

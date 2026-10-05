@@ -97,6 +97,19 @@ export const labWorks: LabWork[] = [
     },
   },
   {
+    slug: "shakl",
+    field: "design",
+    status: "live",
+    glyph: "ش",
+    kind: "3D LIBRARY",
+    count: { ar: "١٠٢٤ نموذجاً", en: "1,024 models" },
+    title: { ar: "شكل", en: "Shakl" },
+    blurb: {
+      ar: "مكتبة نماذج خشبية ثلاثية الأبعاد للقص بالليزر: بيوت وصناديق وفوانيس وديكور، تعاينها مجسّمة وتغيّر مقاساتها ثم تنزّل ملفات القص SVG بمقياس ١:١ من متصفحك، بلا حساب.",
+      en: "A library of 3D wooden models for laser cutting: houses, boxes, lanterns and decor you preview in 3D, resize, then download as 1:1 SVG cutting files from your browser, no account.",
+    },
+  },
+  {
     slug: "organizer",
     field: "code",
     status: "live",
