@@ -8,12 +8,12 @@ export const CUT_STUDIO_URL = "https://cutstudio.omardeek.tech";
 
 // In Cut Studio's own order: the working tools first, the ready-made templates last.
 const tools: [string, string][] = [
-  ["Image to vector", "تحويل صورة إلى فيكتور"], ["Design from text", "تصميم من وصف"], ["AI upscaler", "تكبير الصور بالذكاء الاصطناعي"], ["Arabic lettering", "الكتابة العربية"],
+  ["Image to vector", "تحويل صورة إلى فيكتور"], ["Design from text", "تصميم من وصف"], ["Remove background", "إزالة الخلفية"], ["AI upscaler", "تكبير الصور بالذكاء الاصطناعي"], ["Arabic lettering", "الكتابة العربية"],
   ["Contour & offset", "الكونتور والإزاحة"], ["Vector cleanup", "تنظيف الفيكتور"], ["Resize & repeat", "المقاس والتكرار"],
   ["Material nesting", "ترتيب القطع"], ["Box maker", "صانع الصناديق"], ["Living hinge", "المفصل المرن"], ["Grille patterns", "نقوش التهوية"],
   ["Engraving prep", "تجهيز صور الحفر"], ["Power & speed test", "بطاقة اختبار القوة والسرعة"], ["Fit test", "اختبار التعشيق"], ["CNC prep", "تجهيز CNC"],
   ["Feeds & speeds", "السرعات والتغذية"], ["Poster tiling", "تقسيم البوستر"], ["Print sheet", "ورقة الطباعة"], ["Resolution & DPI", "الدقة والـDPI"],
-  ["Job quote", "عرض السعر"], ["Product templates", "قوالب المنتجات"], ["Polygon box", "صندوق مضلع"], ["Tags & keychains", "الميداليات والبطاقات"],
+  ["Job quote", "عرض السعر"], ["Product mockup", "معاينة على منتج"], ["Product templates", "قوالب المنتجات"], ["Polygon box", "صندوق مضلع"], ["Tags & keychains", "الميداليات والبطاقات"],
   ["Trophy base", "قاعدة الدروع"], ["Gear maker", "صانع التروس"], ["Jigsaw puzzle", "صانع البازل"], ["Ruler maker", "صانع المساطر"],
 ];
 export const cutStudioToolCount = tools.length;
