@@ -14,7 +14,8 @@ const features: [string, string][] = [
   ["A live demo for every design", "معاينة حية لكل تصميم"],
   ["A detailed prompt for Claude Code", "برومبت مفصّل لـ Claude Code"],
   ["An interactive style driven by scroll and pointer", "أسلوب تفاعلي يتحرك مع التمرير والمؤشر"],
-  ["Restaurants, clinics, shops, hotels and more", "مطاعم وعيادات ومتاجر وفنادق وغيرها"],
+  ["33 kinds of business, from restaurants to dive centres", "٣٣ نوعاً من الأعمال، من المطاعم إلى مراكز الغوص"],
+  ["No business repeats within a style", "لا يتكرر النشاط نفسه داخل الأسلوب"],
   ["Search and filter by style", "بحث وتصفية حسب الأسلوب"],
   ["No account, nothing to install", "بلا حساب ولا تثبيت"],
 ];
