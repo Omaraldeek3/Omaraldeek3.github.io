@@ -89,11 +89,11 @@ export const labWorks: LabWork[] = [
     status: "live",
     glyph: "ق",
     kind: "DESIGN LIBRARY",
-    count: { ar: "٣١٢ تصميماً", en: "312 designs" },
+    count: { ar: "٣٢٤ تصميماً", en: "324 designs" },
     title: { ar: "قالب", en: "Qalib" },
     blurb: {
-      ar: "مكتبة تصاميم مواقع بالعربية والإنجليزية: ٢٦ أسلوباً من الكلاسيكي إلى البكسل والطيني، لكل تصميم معاينة حية وبرومبت مفصّل يبني الموقع نفسه مع Claude Code.",
-      en: "A library of Arabic and English website designs: 26 styles from classic to pixel and clay, each design with a live demo and a detailed prompt that builds the same site with Claude Code.",
+      ar: "مكتبة تصاميم مواقع وتطبيقات بالعربية والإنجليزية: ٢٧ أسلوباً من الكلاسيكي إلى البكسل وواجهات الأدوات، لكل تصميم معاينة حية وبرومبت مفصّل يبني الموقع نفسه مع Claude Code.",
+      en: "A library of Arabic and English website and app designs: 27 styles from classic to pixel and tool interfaces, each design with a live demo and a detailed prompt that builds the same site with Claude Code.",
     },
   },
   {
