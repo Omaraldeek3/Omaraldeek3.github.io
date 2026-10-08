@@ -1,0 +1,10 @@
+video-review-tools/
+.video-review-tools/
+UsersomardAppDataLocalTemp/
+video-review/
+video-edit/
+svg-studio/**/*.png
+svg-studio/**/*.svg
+*.png
+*.jpg
+*.svg
