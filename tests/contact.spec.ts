@@ -38,12 +38,18 @@ test("a flood is rate limited with 429 and a retry header", async ({ request }) 
   expect(limited).toBe(true);
 });
 
-test("the contact form renders in both locales", async ({ page }) => {
+test("unavailable contact delivery is disclosed before entering data in both locales", async ({ page }) => {
   for (const locale of ["ar", "en"] as const) {
     await page.goto(`/${locale}`);
     await expect(page.locator("#contact form")).toBeVisible();
-    await expect(page.locator("#contact input[name='email']")).toBeVisible();
-    await expect(page.locator("#contact textarea[name='message']")).toBeVisible();
+    const notice = page.locator("#contact-unavailable");
+    await expect(notice).toBeVisible();
+    await expect(notice).toHaveText(copy[locale].contactForm.errorDisabled);
+    await expect(page.locator("#contact form")).toHaveAttribute("aria-describedby", "contact-unavailable");
+    await expect(page.locator("#contact input[name='name']")).toBeDisabled();
+    await expect(page.locator("#contact input[name='email']")).toBeDisabled();
+    await expect(page.locator("#contact textarea[name='message']")).toBeDisabled();
+    await expect(page.locator("#contact button[type='submit']")).toBeDisabled();
   }
 });
 
@@ -55,18 +61,11 @@ test("unset contact channels are hidden, not faked", async ({ page }) => {
   await expect(channels).toContainText(copy.ar.pendingContact);
 });
 
-test("an empty submission shows a message, never a false success", async ({ page }) => {
+test("unavailable delivery remains disabled without JavaScript", async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
   await page.goto("/ar");
-  await page.locator("#contact button[type='submit']").click();
-  const alert = page.locator("#contact [role='alert']");
-  await expect(alert).toBeVisible();
-  // Against a deployed server the request is in flight for a while, so wait
-  // for the settled state rather than reading the "sending" message.
-  await expect(alert).toHaveAttribute("data-status", "error");
-  // Which refusal it is depends on whether this run already tripped the rate
-  // limit. What must never happen is a success message for an empty form.
-  const form = copy.ar.contactForm;
-  await expect(alert).not.toHaveText(form.sent);
-  await expect(alert).toHaveClass(/contact-problem/);
-  expect([form.errorValidation, form.errorRate]).toContain(await alert.textContent());
+  await expect(page.locator("#contact-unavailable")).toHaveText(copy.ar.contactForm.errorDisabled);
+  await expect(page.locator("#contact button[type='submit']")).toBeDisabled();
+  await context.close();
 });

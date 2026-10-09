@@ -1,51 +1,10 @@
-"use client";
-
-import { useState } from "react";
 import { Section } from "./section";
 import { copy, profile } from "@/content/site";
 import type { Locale } from "@/content/locales";
 
-type Status = "idle" | "sending" | "sent" | "error";
-
 export function Contact({ locale }: { locale: Locale }) {
   const t = copy[locale];
   const form = t.contactForm;
-  const [status, setStatus] = useState<Status>("idle");
-  const [message, setMessage] = useState("");
-
-  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const data = Object.fromEntries(new FormData(event.currentTarget));
-    setStatus("sending");
-    setMessage(form.sending);
-
-    let response: Response;
-    try {
-      response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(data),
-      });
-    } catch {
-      setStatus("error");
-      setMessage(form.errorServer);
-      return;
-    }
-
-    if (response.ok) {
-      setStatus("sent");
-      setMessage(form.sent);
-      return;
-    }
-
-    setStatus("error");
-    setMessage(
-      response.status === 400 ? form.errorValidation
-      : response.status === 429 ? form.errorRate
-      : response.status === 503 ? form.errorDisabled
-      : form.errorServer,
-    );
-  }
 
   return (
     <Section id="contact" index="05 / 05" label={t.contactLabel} title={t.contactTitle}>
@@ -59,38 +18,27 @@ export function Contact({ locale }: { locale: Locale }) {
         )}
       </div>
 
-      <form className="contact-form" onSubmit={onSubmit} noValidate>
-        <noscript>
-          <p className="contact-pending mono">{form.needsJs}</p>
-        </noscript>
+      <p id="contact-unavailable" className="contact-pending mono">
+        {form.errorDisabled}
+      </p>
+      {/* The API has no delivery provider yet, so availability cannot be inferred
+          from environment keys. Keep this disabled until delivery is implemented. */}
+      <form className="contact-form" aria-describedby="contact-unavailable">
         <label>
           {form.nameLabel}
-          <input name="name" autoComplete="name" />
+          <input name="name" autoComplete="name" disabled />
         </label>
         <label>
           {form.emailLabel}
-          <input name="email" type="email" autoComplete="email" />
+          <input name="email" type="email" autoComplete="email" disabled />
         </label>
         <label>
           {form.messageLabel}
-          <textarea name="message" rows={5} />
+          <textarea name="message" rows={5} disabled />
         </label>
-        <button className="button button-live" type="submit" disabled={status === "sending"}>
-          {status === "sending" ? form.sending : form.submit}
+        <button className="button button-live" type="submit" disabled>
+          {form.submit}
         </button>
-        {message && (
-          <p
-            role="alert"
-            data-status={status}
-            className={
-              status === "sent" ? "contact-ok"
-              : status === "sending" ? "contact-working"
-              : "contact-problem"
-            }
-          >
-            {message}
-          </p>
-        )}
       </form>
 
       <details className="contact-faq">

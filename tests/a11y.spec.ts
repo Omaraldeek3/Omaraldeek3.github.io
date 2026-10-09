@@ -42,15 +42,21 @@ test("exactly one h1 and no skipped heading level", async ({ page }) => {
   }
 });
 
-test("keyboard focus reaches the nav and the contact form", async ({ page }) => {
+test("keyboard focus reaches the nav and contact FAQ, skipping unavailable form fields", async ({ page }) => {
   await page.goto("/ar");
   const seen: string[] = [];
   for (let i = 0; i < 45; i++) {
     await page.keyboard.press("Tab");
-    seen.push(await page.evaluate(() => document.activeElement?.tagName ?? ""));
+    seen.push(await page.evaluate(() => {
+      const active = document.activeElement;
+      return active?.closest(".contact-faq") ? "CONTACT_FAQ" : active?.tagName ?? "";
+    }));
   }
   expect(seen).toContain("A");
-  expect(seen.some(tag => ["INPUT", "TEXTAREA", "BUTTON"].includes(tag))).toBe(true);
+  expect(seen).toContain("CONTACT_FAQ");
+  expect(seen).not.toContain("INPUT");
+  expect(seen).not.toContain("TEXTAREA");
+  await expect(page.locator(".contact-form button")).toBeDisabled();
 });
 
 test("every image and canvas is labelled or explicitly decorative", async ({ page }) => {
