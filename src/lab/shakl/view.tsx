@@ -8,7 +8,7 @@ export const SHAKL_URL = "https://shakl.omardeek.tech";
 const REPO = "https://github.com/Omaraldeek3/shakl-3d-library";
 
 const features: [string, string][] = [
-  ["53 designs, none repeated", "٥٣ تصميماً بلا تكرار"],
+  ["203 designs, none repeated", "٢٠٣ تصميماً بلا تكرار"],
   ["Practical templates for desk, shop and home", "قوالب عملية للمكتب والمحل والبيت"],
   ["QR codes engraved from your link or Wi-Fi", "رمز QR محفور من رابطك أو شبكة الواي فاي"],
   ["Live 3D preview", "معاينة حية ثلاثية الأبعاد"],
