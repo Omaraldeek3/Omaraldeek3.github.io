@@ -102,11 +102,11 @@ export const labWorks: LabWork[] = [
     status: "live",
     glyph: "ش",
     kind: "3D LIBRARY",
-    count: { ar: "٢٧٠ تصميماً", en: "270 designs" },
+    count: { ar: "٣٠٢ تصميم", en: "302 designs" },
     title: { ar: "شكل", en: "Shakl" },
     blurb: {
-      ar: "مكتبة تصاميم خشبية ثلاثية الأبعاد للقص بالليزر بلا تكرار: قوالب عملية للمكتب والمحل والبيت، من حامل الجوال وحامل رمز QR ورف البهارات ومدرج العرض إلى قطار التروس، مع بيوت وصناديق وفوانيس، وقسم لألواح الكيبون ثلاثية الأبعاد بشبكات ثني وألسنة برشام. تعاينها مجسّمة وتغيّر مقاساتها ثم تنزّل ملفات القص SVG بمقياس ١:١، بلا حساب.",
-      en: "A library of 3D wooden designs for laser cutting, none repeated: practical templates for the desk, the shop and the home, from a phone stand, a QR code stand, a spice rack and counter display steps to a gear train, with houses, boxes and lanterns, plus a section of folded 3D ACM cladding panels with V-groove nets and riveted fins. Preview in 3D, resize, then download 1:1 SVG cutting files, no account.",
+      ar: "مكتبة تصاميم خشبية ثلاثية الأبعاد للقص بالليزر بلا تكرار: قوالب عملية للمكتب والمحل والبيت، من حامل الجوال وحامل رمز QR ورف البهارات ومدرج العرض إلى قطار التروس، مع بيوت وصناديق وفوانيس، وقسم لألواح الكيبون ثلاثية الأبعاد بشبكات ثني وألسنة برشام، وقسم لعلب الكرتون والتغليف بخطوط قص حمراء وطي زرقاء. تعاينها مجسّمة وتغيّر مقاساتها ثم تنزّل ملفات القص SVG بمقياس ١:١، بلا حساب.",
+      en: "A library of 3D wooden designs for laser cutting, none repeated: practical templates for the desk, the shop and the home, from a phone stand, a QR code stand, a spice rack and counter display steps to a gear train, with houses, boxes and lanterns, plus a section of folded 3D ACM cladding panels with V-groove nets and riveted fins, and a section of cardboard boxes and packaging with red cut and blue crease lines. Preview in 3D, resize, then download 1:1 SVG cutting files, no account.",
     },
   },
   {

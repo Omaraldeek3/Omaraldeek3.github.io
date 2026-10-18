@@ -8,8 +8,9 @@ export const SHAKL_URL = "https://shakl.omardeek.tech";
 const REPO = "https://github.com/Omaraldeek3/shakl-3d-library";
 
 const features: [string, string][] = [
-  ["270 designs, none repeated", "٢٧٠ تصميماً بلا تكرار"],
-  ["67 folded 3D ACM panels, fins on both sides of every joint", "٦٧ لوح كيبون ثلاثي الأبعاد بلسانين على جهتي كل وصلة"],
+  ["302 designs, none repeated", "٣٠٢ تصميم بلا تكرار"],
+  ["71 folded 3D ACM panels, fins on both sides of every joint", "٧١ لوح كيبون ثلاثي الأبعاد بلسانين على جهتي كل وصلة"],
+  ["28 cardboard boxes and packaging: red cut, blue crease", "٢٨ علبة كرتون وتغليف: قص أحمر وطي أزرق"],
   ["Practical templates for desk, shop and home", "قوالب عملية للمكتب والمحل والبيت"],
   ["QR codes engraved from your link or Wi-Fi", "رمز QR محفور من رابطك أو شبكة الواي فاي"],
   ["Live 3D preview", "معاينة حية ثلاثية الأبعاد"],
