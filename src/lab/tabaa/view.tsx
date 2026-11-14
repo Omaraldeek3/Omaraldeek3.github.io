@@ -8,11 +8,11 @@ export const TABAA_URL = "https://tabaa.omardeek.tech";
 const REPO = "https://github.com/Omaraldeek3/tabaa";
 
 const features: [string, string][] = [
-  ["60 original templates", "٦٠ قالباً أصلياً"],
+  ["200 original templates, no repeats", "٢٠٠ قالب أصلي بلا تكرار"],
   ["Wedding and occasion invitations", "دعوات أعراس ومناسبات"],
   ["Posters, menus and business cards", "بوسترات وقوائم طعام وكروت أعمال"],
   ["Product labels, greetings, certificates", "ملصقات منتجات وتهاني وشهادات"],
-  ["Tatreez, olive, keffiyeh, Jerusalem arches", "تطريز وزيتون وكوفية وأقواس القدس"],
+  ["Similar-template search before you edit", "بحث عن قوالب مشابهة قبل التعديل"],
   ["Fill in fields, switch colours and font", "حقول جاهزة وتبديل الألوان والخط"],
   ["CMYK PDF with bleed and crop marks", "PDF بألوان CMYK وهامش وعلامات قص"],
   ["Arabic text outlined, no fonts needed", "النص العربي مسارات بلا حاجة لخطوط"],

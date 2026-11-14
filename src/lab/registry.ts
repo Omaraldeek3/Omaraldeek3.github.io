@@ -89,11 +89,11 @@ export const labWorks: LabWork[] = [
     status: "live",
     glyph: "ط",
     kind: "PRINT LIBRARY",
-    count: { ar: "٦٠ قالباً", en: "60 templates" },
+    count: { ar: "٢٠٠ قالب", en: "200 templates" },
     title: { ar: "طبعة", en: "Tabaa" },
     blurb: {
-      ar: "مكتبة قوالب مطبوعات عربية وفلسطينية: دعوات أعراس وبوسترات وكروت أعمال وقوائم طعام وملصقات وشهادات، بتطريز فلاحي وزيتون وكوفية وأقواس القدس. تكتب نصّك وتبدّل الألوان والخط، ثم تنزّل PDF بألوان CMYK وهامش قص وعلامات قص، والنص مسارات. بلا حساب.",
-      en: "A library of Arabic and Palestinian print templates: wedding invitations, posters, business cards, menus, labels and certificates, drawn with fallahi tatreez, olive, keffiyeh and Jerusalem arches. Type your text, switch colours and font, then download a CMYK PDF with bleed and crop marks and outlined text. No account.",
+      ar: "مكتبة قوالب مطبوعات عربية وفلسطينية: دعوات أعراس وبوسترات وكروت أعمال وقوائم طعام وملصقات وشهادات ولوحات مدن فلسطين وتذاكر وتقاويم وأوراق رسمية، بتطريز فلاحي وزيتون وكوفية وأقواس القدس. تكتب نصّك وتبدّل الألوان والخط، ثم تنزّل PDF بألوان CMYK وهامش قص وعلامات قص، والنص مسارات. بلا حساب.",
+      en: "A library of Arabic and Palestinian print templates: wedding invitations, posters, business cards, menus, labels, certificates, Palestinian city prints, tickets, calendars and stationery, drawn with fallahi tatreez, olive, keffiyeh and Jerusalem arches. Type your text, switch colours and font, then download a CMYK PDF with bleed and crop marks and outlined text. No account.",
     },
   },
   {
