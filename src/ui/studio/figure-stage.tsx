@@ -362,13 +362,16 @@ export function FigureStage({ rtl, glyph, framed = false, className, avoid }: { 
       } catch {
         return; // no WebGL: the page stands on its own
       }
-      const dpr = Math.min(window.devicePixelRatio || 1, phone ? 2 : 1.75);
+      // Points are soft glows: past ~1.25x the extra pixels cost far more than
+      // they show. `quality` steps down further below if frames run slow.
+      const dpr = Math.min(window.devicePixelRatio || 1, phone ? 1.5 : 1.25);
+      let quality = 1;
       renderer.setPixelRatio(dpr);
       renderer.setClearColor(0x000000, 0);
 
       const family = getComputedStyle(document.documentElement).getPropertyValue("--font-ar-loaded").trim() || "sans-serif";
       try { await document.fonts.load(`900 100px ${family}`, glyph); } catch {}
-      const cloud = await loadCloud(`/models/${readChoice().model}.bin`, phone ? 90000 : 320000, glyph, family);
+      const cloud = await loadCloud(`/models/${readChoice().model}.bin`, phone ? 60000 : 180000, glyph, family);
       if (disposed) { renderer.dispose(); return; }
 
       const geometry = new THREE.BufferGeometry();
@@ -492,7 +495,7 @@ export function FigureStage({ rtl, glyph, framed = false, className, avoid }: { 
 
       // Motes: a little gold dust drifting up through the light around the
       // figure, so the air itself feels alive.
-      const MOTES = phone ? 260 : 700;
+      const MOTES = phone ? 120 : 400;
       const motePos = new Float32Array(MOTES * 3);
       const moteSeed = new Float32Array(MOTES);
       for (let i = 0; i < MOTES; i++) {
@@ -543,6 +546,7 @@ export function FigureStage({ rtl, glyph, framed = false, className, avoid }: { 
         width = framed ? canvas.clientWidth || window.innerWidth : window.innerWidth;
         height = framed ? canvas.clientHeight || window.innerHeight : window.innerHeight;
         viewH = window.innerHeight;
+        renderer.setPixelRatio(dpr * quality);
         renderer.setSize(width, height, false);
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
@@ -550,7 +554,7 @@ export function FigureStage({ rtl, glyph, framed = false, className, avoid }: { 
         // Point size in pixels at distance 1, scaled with the viewport so the
         // grain reads the same on a laptop and a large monitor.
         const base = phone ? 4.2 : 3.4;
-        uniforms.uSize.value = base * dpr * (height / 900) * 10;
+        uniforms.uSize.value = base * dpr * quality * (height / 900) * 10;
       };
       resize();
       window.addEventListener("resize", resize);
@@ -639,6 +643,8 @@ export function FigureStage({ rtl, glyph, framed = false, className, avoid }: { 
       // Free-space placement (see `avoid`): targets and eased values, in NDC.
       const free = { tx: 0, ty: 0, tv: 1, x: 0, y: 0, v: 1, face: 0, tface: 0 };
       let ticks = 0; // own frame count: requestAnimationFrame ids are shared with the page
+      let slowSum = 0, slowN = 0;
+      let blank = false; // the canvas was cleared while the figure is faded out
       const COLS = 24, ROWS = 16;
       const findFree = () => {
         if (!avoid) return;
@@ -683,8 +689,15 @@ export function FigureStage({ rtl, glyph, framed = false, className, avoid }: { 
       const tick = (now: number) => {
         frame = requestAnimationFrame(tick);
         if (!running) return;
-        const dt = Math.min(0.05, (now - last) / 1000);
+        const raw = now - last;
+        const dt = Math.min(0.05, raw / 1000);
         last = now;
+        // Adaptive quality: if frames keep running slow, draw fewer pixels.
+        if (raw < 250) { slowSum += raw; slowN++; }
+        if (slowN >= 90) {
+          if (slowSum / slowN > 21 && quality > 0.55) { quality *= 0.8; resize(); }
+          slowSum = 0; slowN = 0;
+        }
         const t = (now - start) / 1000;
 
         measure();
@@ -773,6 +786,12 @@ export function FigureStage({ rtl, glyph, framed = false, className, avoid }: { 
         if (!calm) uniforms.uIntro.value = Math.min(1, (t - 0.15) / 2.6);
         maskUniforms.uSize.value = uniforms.uSize.value;
 
+        // Faded out: clear once, then skip drawing until it comes back.
+        if (uniforms.uDim.value < 0.01) {
+          if (!blank) { renderer.clear(); blank = true; }
+          return;
+        }
+        blank = false;
         renderer.render(scene, camera);
       };
       frame = requestAnimationFrame(tick);

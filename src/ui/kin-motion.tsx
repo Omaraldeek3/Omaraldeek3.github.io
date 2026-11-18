@@ -77,7 +77,10 @@ export function KinMotion() {
     window.addEventListener("resize", place);
 
     // ——— Depth ———
+    // The values go on the few panels that lean, not on <html>: a custom
+    // property on the root restyles the whole page on every pointer frame.
     const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const leaners = Array.from(document.querySelectorAll<HTMLElement>(".kin-page .kin-panel, .kin-page .hero-corner-start, .kin-page .hero-giant"));
     let frame = 0;
     let tx = 0, ty = 0, x = 0, y = 0;
     const onMove = (e: PointerEvent) => {
@@ -88,8 +91,11 @@ export function KinMotion() {
     const step = () => {
       x += (tx - x) * 0.12;
       y += (ty - y) * 0.12;
-      root.style.setProperty("--kx", x.toFixed(4));
-      root.style.setProperty("--ky", y.toFixed(4));
+      const kx = x.toFixed(4), ky = y.toFixed(4);
+      for (const el of leaners) {
+        el.style.setProperty("--kx", kx);
+        el.style.setProperty("--ky", ky);
+      }
       frame = Math.abs(tx - x) + Math.abs(ty - y) > 0.002 ? requestAnimationFrame(step) : 0;
     };
     if (fine && !calm) window.addEventListener("pointermove", onMove, { passive: true });
