@@ -15,5 +15,5 @@ export function proxy(request: NextRequest) {
 
 // `tools` is excluded so the redirect to Cut Studio's own site applies as is.
 export const config = {
-  matcher: ["/((?!_next|api|tools|favicon.ico|icon.svg|images|sitemap.xml|robots.txt).*)"],
+  matcher: ["/((?!_next|api|tools|data|favicon.ico|icon.svg|images|models|sitemap.xml|robots.txt).*)"],
 };

@@ -15,6 +15,7 @@ import { TabaaView } from "@/lab/tabaa/view";
 import { QalibView } from "@/lab/qalib/view";
 import { ShaklView } from "@/lab/shakl/view";
 import { OrganizerView } from "@/lab/organizer/view";
+import { DaftarLiteView } from "@/lab/daftar-lite/view";
 
 export function generateStaticParams() {
   return locales.flatMap(locale =>
@@ -62,6 +63,7 @@ export default async function LabPage({ params }: PageProps<"/[locale]/lab/[slug
         {work.slug === "qalib" && <QalibView locale={locale} />}
         {work.slug === "shakl" && <ShaklView locale={locale} />}
         {work.slug === "organizer" && <OrganizerView locale={locale} />}
+        {work.slug === "daftar-lite" && <DaftarLiteView locale={locale} />}
       </div>
     </main>
   );

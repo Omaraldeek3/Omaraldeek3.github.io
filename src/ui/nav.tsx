@@ -2,6 +2,7 @@ import Link from "next/link";
 import { copy, profile } from "@/content/site";
 import { oppositeLocale, type Locale } from "@/content/locales";
 import { NavMenu } from "./nav-menu";
+import { NavStatus } from "./nav-status";
 
 // Links only, so the whole nav works with JavaScript disabled. Each section
 // link carries the locale, so it also leads home from a lab page.
@@ -21,6 +22,7 @@ export function Nav({ locale }: { locale: Locale }) {
           </span>
           {profile.name[locale]}
         </Link>
+        <NavStatus locale={locale} />
         <div className="nav-links">{links}</div>
         <Link className="locale-switch" href={`/${other}`} lang={other}>
           {t.nav2.switchTo}

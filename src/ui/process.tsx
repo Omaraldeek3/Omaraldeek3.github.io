@@ -6,7 +6,7 @@ import type { Locale } from "@/content/locales";
 export function Process({ locale }: { locale: Locale }) {
   const t = copy[locale];
   return (
-    <section id="process" className="section">
+    <section id="process" className="section" data-scene="about">
       <div className="shell process-split">
         <div>
           <div className="section-head">

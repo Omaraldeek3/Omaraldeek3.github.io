@@ -17,5 +17,5 @@
     "paths": { "@/*": ["./src/*"] }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".next/dev/types/**/*.ts"],
-  "exclude": ["node_modules", ".design-backups"]
+  "exclude": ["node_modules", ".design-backups", "svg-studio", "arabic-font-preview", "audit-reports"]
 }

@@ -271,3 +271,6 @@
     animation: lift-in 0.8s 0.24s both cubic-bezier(0.22, 0.61, 0.36, 1), shimmer 7s 1.2s ease-in-out infinite alternate;
   }
 }
+
+/* Daftar Lite's card: the tick on the photographed page. */
+.art-check { fill: none; stroke: #141416; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }

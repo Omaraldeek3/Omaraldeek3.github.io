@@ -20,6 +20,19 @@ export type LabWork = {
  *  its own folder under src/lab; nothing else in the site needs to change. */
 export const labWorks: LabWork[] = [
   {
+    slug: "daftar-lite",
+    field: "saas",
+    status: "live",
+    glyph: "د",
+    kind: "SAAS · LIVE",
+    count: { ar: "محل حقيقي", en: "A real shop" },
+    title: { ar: "دفتر لايت", en: "Daftar Lite" },
+    blurb: {
+      ar: "حسابات المحل بلا محاسب. يكتب صاحب المحل ورقة اليوم بيده، صفحة دفتر A5 واحدة تغطي اليوم كله، يصوّرها بجواله، فيقرأها الذكاء الاصطناعي ويعرضها للمراجعة ثم يُقفل صندوق الفرع. وحوله نظام كامل: فروع لكل منها صندوق، ومبيعات آجلة ومشتريات ومصاريف، وسندات قبض وصرف وشيكات، ورواتب وحضور، وصفحة ربح الشهر. يعمل الآن في محل حقيقي، ويُثبَّت على الجوال كتطبيق.",
+      en: "Shop accounting without an accountant. The owner fills in the day by hand on one A5 notebook page and photographs it; AI reads it, shows it for review, then closes the branch's cash box. Around it sits a full system: branches with their own cash boxes, credit sales, purchases and expenses, receipt and payment vouchers, cheques, payroll and attendance, and a monthly profit page. Running in a real shop now, and installs on a phone like an app.",
+    },
+  },
+  {
     slug: "ai-automation",
     field: "systems",
     status: "live",
@@ -41,8 +54,8 @@ export const labWorks: LabWork[] = [
     count: { ar: "٢٩ أداة", en: "29 tools" },
     title: { ar: "Cut Studio", en: "Cut Studio" },
     blurb: {
-      ar: "٢٩ أداة للّيزر والطباعة والتصميم تعمل داخل متصفحك: تحويل الصور إلى فيكتور، ورسم تصميم من وصف بأي نموذج صور، وإزالة خلفية الصور، ومعاينة التصميم على المنتج، وتكبير الصور بالذكاء الاصطناعي، وكتابة عربية بخطوط حرف. بلا حساب وبلا رفع ملفات، صنعتها لورشتي وتركتها مجانية.",
-      en: "Twenty-nine laser, print and design tools that run in your browser: image to vector, design from a description with any image model, photo background removal, product mockups, AI upscaling, Arabic lettering in Harf's fonts. No account, no uploads; built for my own workshop and left free.",
+      ar: "٢٩ أداة للّيزر والطباعة والتصميم تعمل داخل متصفحك: تحويل الصور إلى فيكتور، ورسم تصميم من وصف بأي نموذج صور، وإزالة خلفية الصور، ومعاينة التصميم على المنتج، وتكبير الصور بالذكاء الاصطناعي، وكتابة عربية بخطوط حرف، ويقرأ ملفات CorelDRAW وDXF مع إبقاء خطوط القص والحفر بألوانها. بلا حساب وبلا رفع ملفات، صنعتها لورشتي وتركتها مجانية.",
+      en: "Twenty-nine laser, print and design tools that run in your browser: image to vector, design from a description with any image model, photo background removal, product mockups, AI upscaling, Arabic lettering in Harf's fonts; it opens CorelDRAW and DXF files with cut and engrave lines kept by colour. No account, no uploads; built for my own workshop and left free.",
     },
   },
   {
@@ -76,11 +89,11 @@ export const labWorks: LabWork[] = [
     status: "live",
     glyph: "✦",
     kind: "WEB TOOL",
-    count: { ar: "٤٨٠ تصميماً", en: "480 designs" },
+    count: { ar: "+١٢٣ ألف تصميم", en: "123,000+ designs" },
     title: { ar: "نقش", en: "Naqsh" },
     blurb: {
-      ar: "مكتبة واستوديو SVG مفتوح المصدر يبدأ بالزخارف العربية والإسلامية والنباتية: شبكات هندسية وأرابيسك ووردات وإطارات، تخصّصها وتصدّرها من متصفحك بلا حساب.",
-      en: "An open-source SVG library and studio that starts with Arabic, Islamic and floral ornament: geometric grids, arabesque, rosettes and frames you customise and export from your browser, no account.",
+      ar: "مكتبة واستوديو SVG مفتوح المصدر: ٤٨٠ تصميماً أصلياً من الزخارف العربية والإسلامية والنباتية، ومعها مكتبة ١٢٣٬٣٠٦ تصميماً جاهزاً للقص والطباعة في ٢٠ قسماً، من الحيوانات والزهور والإطارات إلى الماندالا والزخرفة الإسلامية، كلها برخصة CC0. تخصّصها وتصدّرها من متصفحك بلا حساب.",
+      en: "An open-source SVG library and studio: 480 original Arabic, Islamic and floral ornament designs, plus a library of 123,306 ready-to-cut and print designs in 20 sections, from animals, flowers and frames to mandalas and Islamic patterns, all CC0. Customise and export them from your browser, no account.",
     },
   },
   {
@@ -92,8 +105,8 @@ export const labWorks: LabWork[] = [
     count: { ar: "٢٠٠ قالب", en: "200 templates" },
     title: { ar: "طبعة", en: "Tabaa" },
     blurb: {
-      ar: "مكتبة قوالب مطبوعات عربية وفلسطينية: دعوات أعراس وبوسترات وكروت أعمال وقوائم طعام وملصقات وشهادات ولوحات مدن فلسطين وتذاكر وتقاويم وأوراق رسمية، بتطريز فلاحي وزيتون وكوفية وأقواس القدس. تكتب نصّك وتبدّل الألوان والخط، ثم تنزّل PDF بألوان CMYK وهامش قص وعلامات قص، والنص مسارات. بلا حساب.",
-      en: "A library of Arabic and Palestinian print templates: wedding invitations, posters, business cards, menus, labels, certificates, Palestinian city prints, tickets, calendars and stationery, drawn with fallahi tatreez, olive, keffiyeh and Jerusalem arches. Type your text, switch colours and font, then download a CMYK PDF with bleed and crop marks and outlined text. No account.",
+      ar: "مكتبة قوالب مطبوعات عربية وفلسطينية: دعوات أعراس وبوسترات وكروت أعمال وقوائم طعام وملصقات وشهادات ولوحات مدن فلسطين وتذاكر وتقاويم وأوراق رسمية، بتطريز فلاحي وزيتون وكوفية وأقواس القدس، ولكل قالب إطار مزخرف خاص به (تطريز وخرز وأقواس وخاتم سليمان). تكتب نصّك وتبدّل الألوان والخط، ثم تنزّل PDF بألوان CMYK وهامش قص وعلامات قص، والنص مسارات. بلا حساب.",
+      en: "A library of Arabic and Palestinian print templates: wedding invitations, posters, business cards, menus, labels, certificates, Palestinian city prints, tickets, calendars and stationery, drawn with fallahi tatreez, olive, keffiyeh and Jerusalem arches, each set in its own ornate frame (tatreez, beads, arcades, khatam). Type your text, switch colours and font, then download a CMYK PDF with bleed and crop marks and outlined text. No account.",
     },
   },
   {
@@ -102,11 +115,11 @@ export const labWorks: LabWork[] = [
     status: "live",
     glyph: "ق",
     kind: "DESIGN LIBRARY",
-    count: { ar: "٣٢٤ تصميماً", en: "324 designs" },
+    count: { ar: "٣٣٩ تصميماً", en: "339 designs" },
     title: { ar: "قالب", en: "Qalib" },
     blurb: {
-      ar: "مكتبة تصاميم مواقع وتطبيقات بالعربية والإنجليزية: ٢٧ أسلوباً من الكلاسيكي إلى البكسل وواجهات الأدوات، لـ٣٣ نوعاً من الأعمال لا يتكرر محتواها، ولكل تصميم معاينة حية وبرومبت مفصّل يبني الموقع نفسه مع Claude Code.",
-      en: "A library of Arabic and English website and app designs: 27 styles from classic to pixel and tool interfaces, for 33 kinds of business whose demo content doesn't repeat, each design with a live demo and a detailed prompt that builds the same site with Claude Code.",
+      ar: "مكتبة تصاميم مواقع وتطبيقات بالعربية والإنجليزية: ٢٧ أسلوباً من الكلاسيكي إلى البكسل وواجهات الأدوات، لـ٣٣ نوعاً من الأعمال لا يتكرر محتواها، ومنها ١٥ تصميماً لمعارض الأعمال (بورتفوليو) بتخطيطات معمارية خاصة، ولكل تصميم معاينة حية وبرومبت مفصّل يبني الموقع نفسه مع Claude Code.",
+      en: "A library of Arabic and English website and app designs: 27 styles from classic to pixel and tool interfaces, for 33 kinds of business whose demo content doesn't repeat, including 15 portfolio designs with bespoke architectural layouts, each design with a live demo and a detailed prompt that builds the same site with Claude Code.",
     },
   },
   {
@@ -115,11 +128,11 @@ export const labWorks: LabWork[] = [
     status: "live",
     glyph: "ش",
     kind: "3D LIBRARY",
-    count: { ar: "٣٠٢ تصميم", en: "302 designs" },
+    count: { ar: "٤٦٧ تصميماً", en: "467 designs" },
     title: { ar: "شكل", en: "Shakl" },
     blurb: {
-      ar: "مكتبة تصاميم خشبية ثلاثية الأبعاد للقص بالليزر بلا تكرار: قوالب عملية للمكتب والمحل والبيت، من حامل الجوال وحامل رمز QR ورف البهارات ومدرج العرض إلى قطار التروس، مع بيوت وصناديق وفوانيس، وقسم لألواح الكيبون ثلاثية الأبعاد بشبكات ثني وألسنة برشام، وقسم لعلب الكرتون والتغليف بخطوط قص حمراء وطي زرقاء. تعاينها مجسّمة وتغيّر مقاساتها ثم تنزّل ملفات القص SVG بمقياس ١:١، بلا حساب.",
-      en: "A library of 3D wooden designs for laser cutting, none repeated: practical templates for the desk, the shop and the home, from a phone stand, a QR code stand, a spice rack and counter display steps to a gear train, with houses, boxes and lanterns, plus a section of folded 3D ACM cladding panels with V-groove nets and riveted fins, and a section of cardboard boxes and packaging with red cut and blue crease lines. Preview in 3D, resize, then download 1:1 SVG cutting files, no account.",
+      ar: "مكتبة تصاميم خشبية ثلاثية الأبعاد للقص بالليزر بلا تكرار: قوالب عملية للمكتب والمحل والبيت، من حامل الجوال وحامل رمز QR ورف البهارات ومدرج العرض إلى قطار التروس، مع بيوت وصناديق وفوانيس، وقسم لألواح الكيبون ثلاثية الأبعاد بشبكات ثني وألسنة برشام، وقسم لعلب الكرتون والتغليف بخطوط قص حمراء وطي زرقاء، و١٦٥ ملف قص جاهزاً من الكتالوج المشترك مع نقش. تعاينها مجسّمة وتغيّر مقاساتها ثم تنزّل ملفات القص SVG بمقياس ١:١، بلا حساب.",
+      en: "A library of 3D wooden designs for laser cutting, none repeated: practical templates for the desk, the shop and the home, from a phone stand, a QR code stand, a spice rack and counter display steps to a gear train, with houses, boxes and lanterns, plus a section of folded 3D ACM cladding panels with V-groove nets and riveted fins, and a section of cardboard boxes and packaging with red cut and blue crease lines, plus 165 ready-made cut files from the catalogue it shares with Naqsh. Preview in 3D, resize, then download 1:1 SVG cutting files, no account.",
     },
   },
   {

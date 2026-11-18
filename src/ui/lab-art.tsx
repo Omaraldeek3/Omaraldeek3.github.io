@@ -2,6 +2,21 @@
  *  only. Decorative: the card's title and text carry everything it says. */
 export function LabArt({ slug }: { slug: string }) {
   switch (slug) {
+    case "daftar-lite":
+      // The day's page, framed by a phone camera's corners, with a tick.
+      return (
+        <svg className="lab-art art-daftar" viewBox="0 0 160 120" aria-hidden="true">
+          <rect x="52" y="18" width="56" height="78" rx="2" className="art-sheet" />
+          <line x1="60" y1="30" x2="100" y2="30" className="art-rule" />
+          <line x1="60" y1="40" x2="92" y2="40" className="art-rule" />
+          <line x1="60" y1="50" x2="100" y2="50" className="art-rule" />
+          <line x1="60" y1="60" x2="88" y2="60" className="art-rule" />
+          <line x1="60" y1="70" x2="100" y2="70" className="art-rule" />
+          <path className="art-cutline" pathLength="100" d="M40 22v-10h12M108 12h12v10M120 92v10h-12M52 102h-12v-10" />
+          <circle cx="104" cy="88" r="11" className="art-node" />
+          <path className="art-check" d="M98 88l4 4 8-8" />
+        </svg>
+      );
     case "ai-automation":
       return (
         <svg className="lab-art art-auto" viewBox="0 0 160 120" aria-hidden="true">

@@ -1237,3 +1237,944 @@ html[dir="rtl"] .scroll-progress { transform-origin: 100% 50%; }
 .lab-card[data-status="live"]:hover { transform: translateY(-3px); }
 
 .study:hover .study-frame { transform: translateY(-3px); }
+
+/* ——— Kin OS 3D Stage, From-Scratch Editorial & Bento Design ———————————— */
+
+.kin-page {
+  position: relative;
+  overflow-x: clip;
+}
+
+.kin-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.kin-canvas {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+/* ——— Top Capsule Navbar Telemetry ——— */
+
+.nav-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.28rem 0.72rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(9, 9, 11, 0.72);
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.nav-status-grid {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.nav-status-clock {
+  color: var(--text-muted);
+}
+
+.nav-status-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.nav-status-live i,
+.kin-live-badge i,
+.kin-window-dot i {
+  display: inline-block;
+  inline-size: 0.44rem;
+  block-size: 0.44rem;
+  border-radius: 50%;
+  background: #c8f135;
+  box-shadow: 0 0 10px rgba(200, 241, 53, 0.78);
+}
+
+@media (max-width: 52rem) {
+  .nav-status { display: none; }
+}
+
+.kin-page .ribbon,
+.kin-page .section > .shell,
+.site-footer {
+  position: relative;
+  z-index: 3;
+}
+
+.kin-page .ribbon {
+  background: var(--surface-0);
+}
+
+/* ——— Stage 1: Kin OS Hero (Unobstructed 3D Face + Bottom Corner Typography) ——— */
+
+.kin-page .hero {
+  min-block-size: min(48rem, calc(100svh - 4.4rem));
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: stretch;
+  text-align: start;
+  padding: clamp(8rem, 24svh, 15rem) 0 clamp(1.1rem, 2.5svh, 2rem);
+}
+
+.hero-giant {
+  position: absolute;
+  inset-block-start: clamp(2rem, 7svh, 4.5rem);
+  inset-inline: 0;
+  z-index: 0;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.hero-giant span {
+  font-size: clamp(4.6rem, 16.5vw, 15.5rem);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+  color: rgba(235, 235, 245, 0.16);
+  text-shadow: 0 0 60px rgba(255, 255, 255, 0.06);
+}
+
+html[lang="ar"] .hero-giant span {
+  letter-spacing: 0;
+  font-size: clamp(4.2rem, 15vw, 13.5rem);
+}
+
+.hero-stage {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1.5rem 2.5rem;
+}
+
+.hero-corner-start {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-inline-size: 27rem;
+  padding: 0.95rem 1.15rem;
+  border-radius: 1.25rem;
+  background: radial-gradient(
+    90% 90% at 30% 60%,
+    rgba(9, 9, 11, 0.84),
+    rgba(9, 9, 11, 0.56) 72%,
+    transparent 100%
+  );
+  backdrop-filter: blur(8px);
+}
+
+.kin-page .hero-badge {
+  margin: 0 0 0.85rem;
+  font-size: 0.78rem;
+  padding: 0.38rem 0.9rem;
+}
+
+.kin-page .hero-headline {
+  font-size: clamp(1.75rem, 2.35vw, 2.4rem);
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+
+html[lang="en"] .kin-page .hero-headline {
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+}
+
+.kin-page .hero-lead {
+  margin: 0.55rem 0 0.95rem;
+  font-size: 0.93rem;
+  max-inline-size: 46ch;
+}
+
+.kin-page .hero-actions {
+  justify-content: flex-start;
+}
+
+.hero-corner-end {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-inline-start: auto;
+}
+
+.hero-chips-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.45rem;
+}
+
+.kin-page .hero-chip {
+  position: static;
+  inset: auto;
+  padding: 0.38rem 0.85rem;
+  font-size: 0.78rem;
+  background: rgba(16, 16, 20, 0.78);
+}
+
+.kin-page .hero-scroll {
+  margin-block-start: 0.25rem;
+}
+
+@media (max-width: 56rem) {
+  .kin-page .hero {
+    padding-block-start: clamp(14rem, 36svh, 19rem);
+  }
+
+  .hero-corner-start {
+    max-inline-size: 100%;
+    padding: 1rem;
+  }
+
+  .hero-corner-end {
+    inline-size: 100%;
+    align-items: center;
+  }
+
+  .hero-chips-stack {
+    display: none;
+  }
+}
+
+/* ——— Stage 2: Light-Silver Stage with Central Pitch-Black OS Window ——— */
+
+.kin-light-stage {
+  position: relative;
+  overflow: clip;
+  padding-block: clamp(4rem, 8vw, 6.5rem);
+}
+
+.kin-light-shell {
+  position: relative;
+}
+
+.kin-light-head,
+.kin-light-title {
+  position: relative;
+  z-index: 3;
+}
+
+.kin-light-head .section-label {
+  color: var(--live);
+}
+
+.kin-light-head .section-label::before {
+  background: var(--live);
+}
+
+.kin-light-head .section-index {
+  color: var(--text-muted);
+}
+
+.kin-light-title {
+  color: var(--text-primary);
+  margin-block-end: clamp(1.75rem, 3.5vw, 2.75rem);
+}
+
+.kin-light-title em {
+  background: linear-gradient(to left, var(--live-pale), var(--live) 55%, var(--live-deep));
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+html[dir="ltr"] .kin-light-title em {
+  background: linear-gradient(to right, var(--live-pale), var(--live) 55%, var(--live-deep));
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.kin-window-stage {
+  position: relative;
+  display: grid;
+  gap: 1.1rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.kin-window-connectors {
+  display: none;
+}
+
+/* Transparent center lets the z-index: 1 3D point cloud over #09090b shine
+   through, while the outer 180vmax shadow paints the section's ground: a
+   step lighter than the page, so the section still reads as its own. */
+.kin-window {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-block-size: clamp(17rem, 36svh, 24rem);
+  border-radius: 1.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: radial-gradient(75% 75% at 50% 52%, transparent 45%, rgba(9, 9, 11, 0.6) 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(245, 165, 36, 0.18),
+    0 24px 60px rgba(0, 0, 0, 0.25),
+    0 0 0 180vmax #121216;
+  padding: 1rem 1.15rem;
+  pointer-events: none;
+}
+
+.kin-window-bar {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.kin-window-dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  padding: 0.28rem 0.72rem;
+  border-radius: 999px;
+  background: rgba(14, 14, 17, 0.8);
+  border: 1px solid var(--border);
+}
+
+.kin-window-chips {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.kin-window-chips span {
+  padding: 0.22rem 0.58rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(14, 14, 17, 0.76);
+  font-size: 0.68rem;
+  color: var(--text-secondary);
+}
+
+.kin-window-aperture {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  place-items: end center;
+  padding-block: 1rem 0.5rem;
+  text-align: center;
+}
+
+.kin-window-caption {
+  margin: 0;
+  padding: 0.45rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(9, 9, 11, 0.78);
+  font-size: clamp(1.05rem, 1.85vw, 1.38rem);
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--text-primary);
+  text-shadow: 0 2px 24px rgba(9, 9, 11, 0.95);
+}
+
+.kin-window-stage .field-card {
+  position: relative;
+  z-index: 3;
+  background: #121216;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 18px 40px rgba(10, 10, 18, 0.18);
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.kin-window-stage .field-card:hover {
+  background: #1a1a20;
+  border-color: rgba(245, 165, 36, 0.48);
+}
+
+.field-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-block-end: 0.2rem;
+}
+
+.field-tag {
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.12rem 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.kin-command-dock {
+  position: relative;
+  z-index: 3;
+  margin-block-start: 1.5rem;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #111115;
+  box-shadow: 0 24px 54px rgba(10, 10, 18, 0.24);
+  overflow: hidden;
+}
+
+.kin-dock-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.95rem 1.25rem;
+  border-block-end: 1px solid var(--border);
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
+.kin-dock-prompt {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kin-dock-keys {
+  display: inline-flex;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.kin-dock-keys span {
+  padding: 0.18rem 0.52rem;
+  border-radius: 0.45rem;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--live-pale);
+  font-size: 0.68rem;
+}
+
+.kin-command-dock .stats {
+  border-block: none;
+  background: transparent;
+}
+
+.kin-command-dock .stats .shell {
+  inline-size: 100%;
+}
+
+.kin-command-dock .stats-grid {
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+}
+
+.kin-command-dock .stat {
+  background: #141418;
+  padding: 1.15rem 0.9rem;
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+@media (min-width: 56rem) {
+  .kin-window-stage {
+    grid-template-columns: minmax(12rem, 1fr) minmax(18rem, 1.45fr) minmax(12rem, 1fr);
+    align-items: stretch;
+  }
+
+  .kin-window-connectors {
+    display: block;
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  .kin-window-connectors path {
+    stroke: rgba(20, 20, 28, 0.28);
+    stroke-width: 1.3;
+    stroke-dasharray: 4 5;
+  }
+
+  .kin-window-connectors circle {
+    fill: #c96200;
+  }
+
+  .kin-window {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    min-block-size: 27rem;
+  }
+
+  .kin-window-stage .fields-grid {
+    display: contents;
+  }
+
+  .kin-window-stage .field-card:nth-child(1) { grid-column: 1; grid-row: 1; }
+  .kin-window-stage .field-card:nth-child(2) { grid-column: 1; grid-row: 2; }
+  .kin-window-stage .field-card:nth-child(3) { grid-column: 3; grid-row: 1; }
+  .kin-window-stage .field-card:nth-child(4) { grid-column: 3; grid-row: 2; }
+  .kin-window-stage .field-card:nth-child(5) { grid-column: 1 / 4; grid-row: 3; }
+}
+
+/* ——— Stages 3 & 4: Macro Zoom Telemetry Reels ——— */
+
+.kin-reel {
+  min-block-size: min(56rem, 94svh);
+  display: flex;
+  align-items: center;
+}
+
+.kin-reel-grid {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+}
+
+.kin-reel-viewport {
+  min-block-size: 11rem;
+  pointer-events: none;
+}
+
+.kin-panel {
+  display: grid;
+  gap: 1rem;
+  padding: clamp(1.25rem, 2.5vw, 1.85rem);
+  border-radius: 1.5rem;
+  border: 1px solid var(--border-strong);
+  background: rgba(12, 12, 16, 0.84);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+
+@media (min-width: 62rem) {
+  .kin-reel-grid {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  }
+
+  .kin-reel-grid.is-flipped {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  }
+
+  .kin-reel-viewport {
+    min-block-size: 32rem;
+  }
+}
+
+.kin-pill-row,
+.kin-shortcut-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.kin-pill,
+.kin-shortcut {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.72rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(18, 18, 22, 0.84);
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+}
+
+.kin-pill.is-hot {
+  border-color: rgba(245, 165, 36, 0.45);
+  color: var(--live-pale);
+}
+
+.kin-shortcut b {
+  color: var(--live);
+  font-weight: 600;
+}
+
+.kin-live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-self: start;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: rgba(18, 18, 22, 0.86);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.kin-chart-card,
+.kin-progress-card,
+.kin-timeline-card {
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: rgba(18, 18, 22, 0.88);
+  backdrop-filter: blur(14px);
+  padding: 1.25rem;
+}
+
+.kin-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-block-end: 1rem;
+}
+
+.kin-card-head h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.kin-tabs {
+  display: inline-flex;
+  gap: 0.25rem;
+  padding: 0.2rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-0);
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+.kin-tabs span {
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+}
+
+.kin-tabs .is-on {
+  background: var(--surface-2);
+  color: #c4b8ff;
+}
+
+.kin-bars {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.55rem;
+  align-items: end;
+  margin-block-end: 0.85rem;
+}
+
+.kin-bar-col {
+  display: grid;
+  justify-items: center;
+  gap: 0.35rem;
+}
+
+.kin-bar-val {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+.kin-bar-track {
+  inline-size: 100%;
+  block-size: 6.4rem;
+  display: flex;
+  align-items: flex-end;
+  padding: 0.2rem;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+}
+
+.kin-bar-fill {
+  inline-size: 100%;
+  border-radius: 0.35rem;
+  background: linear-gradient(to top, rgba(164, 152, 238, 0.42), #c4b8ff);
+}
+
+.kin-bar-fill.is-lime {
+  background: linear-gradient(to top, #b5e628, #e4ff66);
+  box-shadow: 0 0 18px rgba(228, 255, 102, 0.36);
+}
+
+.kin-bar-lbl {
+  font-size: 0.62rem;
+  color: var(--text-secondary);
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-inline-size: 100%;
+  white-space: nowrap;
+}
+
+.kin-card-foot {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.kin-badge-lime {
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  background: rgba(228, 255, 102, 0.14);
+  border: 1px solid rgba(228, 255, 102, 0.42);
+  color: #e4ff66;
+}
+
+.kin-badge-amber {
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  background: rgba(245, 165, 36, 0.14);
+  border: 1px solid rgba(245, 165, 36, 0.42);
+  color: var(--live-pale);
+}
+
+.kin-meter {
+  display: flex;
+  gap: 0.3rem;
+  block-size: 0.65rem;
+  padding: 0.12rem;
+  border-radius: 999px;
+  background: var(--surface-0);
+  border: 1px solid var(--border);
+  margin-block-end: 0.75rem;
+}
+
+.kin-meter-main.is-violet {
+  border-radius: 999px;
+  background: linear-gradient(to right, #8f7ee8, #c4b8ff);
+}
+
+.kin-meter-sub {
+  border-radius: 999px;
+  background: #e4ff66;
+}
+
+.kin-pulse-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.4rem;
+  block-size: 3.1rem;
+  margin-block-end: 1rem;
+  padding-inline: 0.25rem;
+}
+
+.kin-pulse-bar {
+  flex: 1;
+  border-radius: 0.25rem;
+  background: rgba(196, 184, 255, 0.35);
+}
+
+.kin-pulse-bar.is-hot {
+  background: linear-gradient(to top, var(--live), #e4ff66);
+  box-shadow: 0 0 12px rgba(228, 255, 102, 0.3);
+}
+
+.kin-station-mini {
+  list-style: none;
+  margin: 0 0 0.9rem;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.kin-station-mini li {
+  display: grid;
+  grid-template-columns: 6.2rem minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: baseline;
+  padding: 0.55rem 0.7rem;
+  border-radius: 0.65rem;
+  border: 1px solid var(--border);
+  background: rgba(9, 9, 11, 0.6);
+}
+
+.kin-station-code {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--live);
+}
+
+.kin-station-copy strong {
+  display: block;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+}
+
+.kin-station-copy p {
+  margin: 0.12rem 0 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+@media (max-width: 34rem) {
+  .kin-station-mini li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.25rem;
+  }
+}
+
+.kin-axis {
+  display: flex;
+  justify-content: space-between;
+  border-block-start: 1px solid var(--border);
+  padding-block-start: 0.55rem;
+  font-size: 0.66rem;
+  color: var(--text-muted);
+}
+
+/* ——— Stage 5: Lab Bento Workspace Grid (12-col on desktop) ——— */
+
+.kin-page #lab {
+  min-block-size: min(48rem, 90svh);
+}
+
+.kin-page .lab-card {
+  background: rgba(16, 16, 20, 0.88);
+  backdrop-filter: blur(12px);
+}
+
+@media (min-width: 56rem) {
+  .kin-page .lab-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 1.15rem;
+  }
+
+  .kin-page .lab-card:nth-child(1),
+  .kin-page .lab-card:nth-child(2) {
+    grid-column: span 6;
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.15fr);
+  }
+
+  .kin-page .lab-card:nth-child(1) .lab-shot,
+  .kin-page .lab-card:nth-child(2) .lab-shot {
+    aspect-ratio: auto;
+    min-block-size: 14rem;
+  }
+
+  .kin-page .lab-card:nth-child(n + 3) {
+    grid-column: span 4;
+  }
+}
+
+/* ——— Stage 6: Process, About & Contact OS Inspector Deck ——— */
+
+.kin-page #process,
+.kin-page #about,
+.kin-page #contact {
+  min-block-size: min(44rem, 84svh);
+  display: flex;
+  align-items: center;
+}
+
+.kin-page .process-card,
+.kin-page .contact-form {
+  background: rgba(16, 16, 20, 0.88);
+  backdrop-filter: blur(12px);
+}
+
+.kin-page #about .shell {
+  padding-block: 2rem;
+  padding-inline: clamp(1.25rem, 3vw, 2.25rem);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: rgba(16, 16, 20, 0.82);
+  backdrop-filter: blur(12px);
+}
+
+@media (min-width: 68rem) {
+  .kin-page #lab .shell {
+    max-inline-size: 47rem;
+    margin-inline-start: auto;
+    margin-inline-end: max(1.25rem, calc((100% - 86rem) / 2));
+  }
+
+  .kin-page #process .process-split {
+    grid-template-columns: minmax(0, 1fr);
+    margin-inline-start: auto;
+    max-inline-size: 46rem;
+    padding: 2rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: rgba(16, 16, 20, 0.82);
+    backdrop-filter: blur(12px);
+  }
+
+  .kin-page #about .shell {
+    max-inline-size: 46rem;
+    margin-inline-start: auto;
+    margin-inline-end: max(1.25rem, calc((100% - 84rem) / 2));
+  }
+
+  .kin-page #contact .shell {
+    padding-inline-end: min(32rem, 36%);
+  }
+}
+
+/* The figure canvas fades in once its points are loaded. */
+.kin-figure { opacity: 0; transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+.kin-figure[data-ready] { opacity: 1; }
+
+/* ——— Home motion (src/ui/kin-motion.tsx) ——— */
+
+/* Reveal: only once the script has run; content never waits on it otherwise. */
+html.kin-reveal .kin-r:not(.is-in) {
+  opacity: 0;
+  translate: 0 28px;
+  filter: blur(6px);
+}
+html.kin-reveal .kin-r {
+  transition:
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    translate 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(var(--ki, 0) * 70ms);
+}
+
+/* Depth: panels lean with the pointer, nearer ones further. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .kin-page .kin-panel,
+  .kin-page .hero-corner-start {
+    transform: translate3d(calc(var(--kx, 0) * -9px), calc(var(--ky, 0) * -6px), 0);
+    transition: transform 0.2s linear;
+  }
+  .kin-page .glow-card {
+    translate: calc(var(--kx, 0) * -4px) calc(var(--ky, 0) * -3px);
+  }
+  .kin-page .hero-giant {
+    transform: translate3d(calc(var(--kx, 0) * 14px), calc(var(--ky, 0) * 8px), 0);
+  }
+}
+
+/* Pin: on a wide screen each reel holds its panel while the figure plays. */
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .kin-page .kin-reel {
+    min-block-size: 175svh;
+    align-items: flex-start;
+  }
+  /* The grid is the section's .shell, so match .kin-page .section > .shell's
+     weight to win its position. */
+  .kin-page .kin-reel > .kin-reel-grid {
+    position: sticky;
+    top: var(--pin-top, 5.5rem);
+  }
+}

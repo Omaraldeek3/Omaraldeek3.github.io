@@ -7,6 +7,7 @@ export function Section({
   label,
   title,
   intro,
+  scene,
   children,
 }: {
   id: string;
@@ -14,11 +15,13 @@ export function Section({
   label: string;
   title: string;
   intro?: string;
+  /** What the figure does while this section is on screen (see figure-stage). */
+  scene?: string;
   children: React.ReactNode;
 }) {
   const [plain, accent] = splitTitle(title);
   return (
-    <section id={id} className="section">
+    <section id={id} className="section" data-scene={scene}>
       <div className="shell">
         <div className="section-head">
           <p className="section-label">{label}</p>

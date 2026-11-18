@@ -8,7 +8,8 @@ export const NAQSH_URL = "https://naqsh.omardeek.tech";
 const REPO = "https://github.com/Omaraldeek3/naqsh-svg-studio";
 
 const features: [string, string][] = [
-  ["384 ornamental compositions", "٣٨٤ تكويناً زخرفياً"],
+  ["123,306 ready designs in 20 sections, all CC0", "١٢٣٬٣٠٦ تصميماً جاهزاً في ٢٠ قسماً، كلها CC0"],
+  ["480 original designs, 384 of them ornament", "٤٨٠ تصميماً أصلياً، منها ٣٨٤ تكويناً زخرفياً"],
   ["Islamic geometry and arabesque", "هندسة إسلامية وأرابيسك"],
   ["Floral motifs, rosettes and frames", "زخارف نباتية ووردات وإطارات"],
   ["Borders and dividers", "فواصل وحواف"],

@@ -8,8 +8,9 @@ export const QALIB_URL = "https://qalib.omardeek.tech";
 const REPO = "https://github.com/Omaraldeek3/qalib";
 
 const features: [string, string][] = [
-  ["324 website and app designs", "٣٢٤ تصميم موقع وتطبيق"],
-  ["27 styles, 12 designs each", "٢٧ أسلوباً، ١٢ تصميماً في كل منها"],
+  ["339 website and app designs", "٣٣٩ تصميم موقع وتطبيق"],
+  ["27 styles, from classic to pixel and tool interfaces", "٢٧ أسلوباً، من الكلاسيكي إلى البكسل وواجهات الأدوات"],
+  ["15 portfolio designs with bespoke architectural layouts", "١٥ تصميماً لمعارض الأعمال بتخطيطات معمارية خاصة"],
   ["Every design in Arabic and English", "كل تصميم بالعربية والإنجليزية"],
   ["A live demo for every design", "معاينة حية لكل تصميم"],
   ["A detailed prompt for Claude Code", "برومبت مفصّل لـ Claude Code"],

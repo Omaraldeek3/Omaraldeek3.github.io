@@ -8,7 +8,7 @@ import type { Locale } from "@/content/locales";
 export function LabSection({ locale }: { locale: Locale }) {
   const t = copy[locale];
   return (
-    <Section id="lab" index="02 / 05" label={t.labLabel} title={t.labTitle} intro={t.labIntro}>
+    <Section id="lab" scene="lab" index="02 / 05" label={t.labLabel} title={t.labTitle} intro={t.labIntro}>
       <div className="lab-grid">
         {labWorks.map(work => (
           <article key={work.slug} className="lab-card glow-card" data-slug={work.slug} data-status={work.status}>

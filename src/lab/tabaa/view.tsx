@@ -9,6 +9,7 @@ const REPO = "https://github.com/Omaraldeek3/tabaa";
 
 const features: [string, string][] = [
   ["200 original templates, no repeats", "٢٠٠ قالب أصلي بلا تكرار"],
+  ["An ornate frame for every template", "إطار مزخرف خاص بكل قالب"],
   ["Wedding and occasion invitations", "دعوات أعراس ومناسبات"],
   ["Posters, menus and business cards", "بوسترات وقوائم طعام وكروت أعمال"],
   ["Product labels, greetings, certificates", "ملصقات منتجات وتهاني وشهادات"],
